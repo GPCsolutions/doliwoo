@@ -33,6 +33,7 @@ require_once '/var/www/wp-content/plugins/woocommerce/classes/class-wc-cart.php'
             public function __construct() {
                 // called only after woocommerce has finished loading
                 add_action( 'woocommerce_checkout_process', array( &$this, 'dolibarr_create_order' ) );
+                add_action( 'init', array( &$this, 'import_dolibarr_products' ) );
 
                 // take care of anything else that needs to be done immediately upon plugin instantiation, here in the constructor
             }
@@ -43,7 +44,7 @@ require_once '/var/www/wp-content/plugins/woocommerce/classes/class-wc-cart.php'
              */
             public function dolibarr_create_order() {
                 global $woocommerce;
-                require_once '/var/www/wp-content/plugins/woocommerce-dolibarr/nusoap/lib/nusoap.php';		// Include SOAP
+                require_once 'nusoap/lib/nusoap.php';		// Include SOAP
                 //Might want a conf file for this
                 $WS_DOL_URL = 'http://192.168.56.1/webservices/server_order.php';	// If not a page, should end with /
                 $ns='http://www.dolibarr.org/ns/';
@@ -100,6 +101,96 @@ require_once '/var/www/wp-content/plugins/woocommerce/classes/class-wc-cart.php'
                 $parameters = array($authentication, $order);
                 $soapclient->call('createOrder',$parameters,$ns,'');
                 // OK this seems to work, TODO put it in a warm, comfy plugin
+            }
+
+            public function dolibarr_product_exists($dolibarr_id) {
+                global $wpdb;
+                $sql = 'SELECT count(post_id) as nb from ' . $wpdb->prefix . 'postmeta WHERE meta_key = "dolibarr_id" AND meta_value = ' . $dolibarr_id;
+                $result = $wpdb->query($sql);
+                $exists = $wpdb->last_result[0]->nb;
+                return $exists;
+            }
+
+            public function import_dolibarr_products() {
+                global $woocommerce;
+                require_once 'nusoap/lib/nusoap.php';		// Include SOAP
+
+                $WS_DOL_URL = 'http://192.168.56.1/webservices/server_productorservice.php';	// If not a page, should end with /
+                $ns='http://www.dolibarr.org/ns/';
+
+                // Set the WebService URL
+                $soapclient = new nusoap_client($WS_DOL_URL);
+                if ($soapclient)
+                {
+                    $soapclient->soap_defencoding='UTF-8';
+                    $soapclient->decodeUTF8(false);
+                }
+
+                // Call the WebService method and store its result in $result.
+                $authentication=array(
+                    'dolibarrkey'=>'5f5097ccee54436b831207f953428567',
+                    'sourceapplication'=>'DEMO',
+                    'login'=>'web',
+                    'password'=>'web',
+                    'entity'=>'');
+
+                // Get all thirdparties
+                $parameters = array('authentication'=>$authentication,'id'=>1);
+                $result = $soapclient->call('getProductsForCategory',$parameters,$ns,'');
+                if (! $result) {
+                    echo $soapclient->error_str,
+                         '<br>',
+                         $soapclient->request,
+                         '<br>',
+                         $soapclient->response;
+                    exit;
+                }
+                if ($result['result']['result_code'] == 'OK') {
+                    $products = $result['products'];
+                    foreach($products as $product) {
+                        if ($this->dolibarr_product_exists($product['id'])) {
+                            $post_id = 0;
+                        } else {
+                            $post = array(
+                                'post_title' 	=> $product['label'],
+                                'post_content' 	=> $product['description'],
+                                'post_status' 	=> 'publish',
+                                'post_type' 	=> 'product',
+                            );
+                            $post_id = wp_insert_post($post);
+                        }
+                        if ($post_id > 0) {
+                            add_post_meta($post_id, 'total_sales', '0', true );
+                            add_post_meta($post_id, 'dolibarr_id', $product['id'], true );
+                            add_post_meta($post_id, 'type', $product['type'], true );
+                            //$is_downloadable 	= isset( $_POST['_downloadable'] ) ? 'yes' : 'no';
+                            //$is_virtual 		= isset( $_POST['_virtual'] ) ? 'yes' : 'no';
+                            // Gallery Images
+                            //$attachment_ids = array_filter( explode( ',', woocommerce_clean( $_POST['product_image_gallery'] ) ) );
+                            //update_post_meta( $post_id, '_product_image_gallery', implode( ',', $attachment_ids ) );
+                            // Update post meta
+                            update_post_meta($post_id, '_regular_price', $product['price_net']);
+                            update_post_meta($post_id, '_sale_price', $product['price_net']);
+                            update_post_meta($post_id, '_price', $product['price_net']);
+                            update_post_meta($post_id, '_visibility', 'visible' );
+                            /*if ( isset( $_POST['_tax_status'] ) )
+                                update_post_meta( $post_id, '_tax_status', stripslashes( $_POST['_tax_status'] ) );
+
+                            if ( isset( $_POST['_tax_class'] ) )
+                                update_post_meta( $post_id, '_tax_class', stripslashes( $_POST['_tax_class'] ) );
+                            } */
+                            //TODO FIND A WAY TO GET THE TAX
+                            update_post_meta( $post_id, '_tax_class', 'tva');
+                            if (get_option('woocommerce_manage_stock') == 'yes') {
+                                if ($product['stock_real'] > 0) {
+                                   update_post_meta($post_id, '_stock_status', 'instock');
+                                   update_post_meta($post_id, '_stock', $product['stock_real']);
+                                }
+                            }
+                            $woocommerce->clear_product_transients($post_id);
+                        }
+                    }
+                }
             }
         }
         $GLOBALS['woocommerce-dolibarr'] = new WooCommerceDolibarr();
