@@ -1,0 +1,15 @@
+<?php
+/**
+ * Configuration file for the doliwoo module
+ */
+
+require_once 'nusoap/lib/nusoap.php';
+
+$webservs_url = ''; // Webservices url, end with /
+$ns = 'http://www.dolibarr.org/ns/';
+$authentication = array(
+    'dolibarrkey'=>'', //get this from the webservice module
+    'sourceapplication'=>'',
+    'login'=>'',
+    'password'=>'',
+    'entity'=>'');

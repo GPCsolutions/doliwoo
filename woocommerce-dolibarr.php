@@ -44,10 +44,9 @@ require_once '/var/www/wp-content/plugins/woocommerce/classes/class-wc-cart.php'
              */
             public function dolibarr_create_order() {
                 global $woocommerce;
-                require_once 'nusoap/lib/nusoap.php';		// Include SOAP
-                //Might want a conf file for this
-                $WS_DOL_URL = 'http://192.168.56.1/webservices/server_order.php';	// If not a page, should end with /
-                $ns='http://www.dolibarr.org/ns/';
+                require_once 'conf.php';
+
+                $WS_DOL_URL = $webservs_url . 'server_order.php';
 
                 // Set the WebService URL
                 $soapclient = new nusoap_client($WS_DOL_URL);
@@ -56,15 +55,6 @@ require_once '/var/www/wp-content/plugins/woocommerce/classes/class-wc-cart.php'
                     $soapclient->soap_defencoding='UTF-8';
                     $soapclient->decodeUTF8(false);
                 }
-
-                // Call the WebService method and store its result in $result.
-                //Might want a conf file for this
-                $authentication=array(
-                    'dolibarrkey'=>'5f5097ccee54436b831207f953428567',
-                    'sourceapplication'=>'DEMO',
-                    'login'=>'web',
-                    'password'=>'web',
-                    'entity'=>'');
 
                 $order = array();
                 //fill this array with all data required to create an order in Dolibarr
@@ -97,10 +87,8 @@ require_once '/var/www/wp-content/plugins/woocommerce/classes/class-wc-cart.php'
                     $order['lines'][] = $line;
                 }
 
-                //We're all set. Activate warp drive. There's a chance we teleport into a star and die a horrible death, but it's ok.
                 $parameters = array($authentication, $order);
                 $soapclient->call('createOrder',$parameters,$ns,'');
-                // OK this seems to work, TODO put it in a warm, comfy plugin
             }
 
             public function dolibarr_product_exists($dolibarr_id) {
@@ -113,10 +101,9 @@ require_once '/var/www/wp-content/plugins/woocommerce/classes/class-wc-cart.php'
 
             public function import_dolibarr_products() {
                 global $woocommerce;
-                require_once 'nusoap/lib/nusoap.php';		// Include SOAP
+                require_once 'conf.php';
 
-                $WS_DOL_URL = 'http://192.168.56.1/webservices/server_productorservice.php';	// If not a page, should end with /
-                $ns='http://www.dolibarr.org/ns/';
+                $WS_DOL_URL = $webservs_url . 'server_productorservice.php';
 
                 // Set the WebService URL
                 $soapclient = new nusoap_client($WS_DOL_URL);
@@ -125,14 +112,6 @@ require_once '/var/www/wp-content/plugins/woocommerce/classes/class-wc-cart.php'
                     $soapclient->soap_defencoding='UTF-8';
                     $soapclient->decodeUTF8(false);
                 }
-
-                // Call the WebService method and store its result in $result.
-                $authentication=array(
-                    'dolibarrkey'=>'5f5097ccee54436b831207f953428567',
-                    'sourceapplication'=>'DEMO',
-                    'login'=>'web',
-                    'password'=>'web',
-                    'entity'=>'');
 
                 // Get all thirdparties
                 $parameters = array('authentication'=>$authentication,'id'=>1);
