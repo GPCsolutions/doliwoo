@@ -1,6 +1,6 @@
-=== Woocommerce-Dolibarr ===
+=== Doliwoo ===
 Contributors: Cédric Salvador
-Tags: wordpress, woocommerce, dolibarr
+Tags: wordpress, woocommerce, dolibarr, doliwoo
 Requires at least: 3.7.1.
 Tested up to: 3.7.1.
 License: GPLv3 or later
@@ -9,11 +9,11 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Interactions between Woocommerce and Dolibarr
 
 == Description ==
-Allow Woocommerce to pull user and product datas from Dolibarr.
+Allow Woocommerce to pull user, thirdparty and product datas from Dolibarr.
 Create orders and thirdparties in Dolibarr using Woocommerce purchase data
 
 == Installation ==
-1. Upload \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"test-plugin.php\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\" to the \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"/wp-content/plugins/\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\" directory.
+1. Upload the doliwoo folder to the \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"/wp-content/plugins/\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\" directory.
 1. Activate the plugin through the \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"Plugins\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\" menu in WordPress.
 1. Place \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"do_action( \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\'plugin_name_hook\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\' );\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\" in your templates.
 
