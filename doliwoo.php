@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Woocommerce-Dolibarr
+ * Plugin Name: Doliwoo
  * Plugin URI:
  * Description:
  * Version:
@@ -26,16 +26,117 @@
  */
 
 require_once '/var/www/wp-content/plugins/woocommerce/classes/class-wc-cart.php';
+require_once 'nusoap/lib/nusoap.php';
 
  if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
-    if ( ! class_exists( 'WooCommerceDolibarr' ) ) {
-        class WooCommerceDolibarr {
+    if ( ! class_exists( 'Doliwoo' ) ) {
+        class Doliwoo {
             public function __construct() {
                 // called only after woocommerce has finished loading
-                add_action( 'woocommerce_checkout_process', array( &$this, 'dolibarr_create_order' ) );
-                add_action( 'init', array( &$this, 'import_dolibarr_products' ) );
+                add_action('woocommerce_checkout_process', array(&$this, 'dolibarr_create_order'));
+                add_action('wp', array(&$this, 'schedule_import_products'));
+                add_action('import_products', array(&$this, 'import_dolibarr_products'));
+                add_filter('manage_users_columns', array(&$this, 'doliwoo_user_columns'));
+                add_action('show_user_profile', array(&$this, 'doliwoo_customer_meta_fields'));
+                add_action('edit_user_profile', array(&$this, 'doliwoo_customer_meta_fields'));
+                add_action('personal_options_update', array(&$this, 'doliwoo_save_customer_meta_fields'));
+                add_action('edit_user_profile_update', array(&$this, 'doliwoo_save_customer_meta_fields'));
 
+                //add_action( 'init', array( &$this, 'create_dolibarr_thirdparty_if_not_exists' ) );
+                add_action('wp', array(&$this, 'schedule_create_thirdparties'));
+                add_action('create_thirdparties', array(&$this, 'create_dolibarr_thirdparties'));
                 // take care of anything else that needs to be done immediately upon plugin instantiation, here in the constructor
+            }
+
+             /**
+             * Define columns to show on the users page.
+             *
+             * @access public
+             * @param array $columns Columns on the manage users page
+             * @return array The modified columns
+             */
+            function doliwoo_user_columns( $columns ) {
+                //if ( ! current_user_can( 'manage_woocommerce' ) )
+                  //  return $columns;
+
+                $columns['dolibarr_id'] = __( 'Dolibarr ID', 'doliwoo' );
+                return $columns;
+            }
+
+            /**
+             * Get custom fields for the edit user pages.
+             *
+             * @access public
+             * @return array fields to display
+             */
+            function doliwoo_get_customer_meta_fields() {
+                $show_fields = apply_filters('doliwoo_customer_meta_fields', array(
+                    'dolibarr' => array(
+                        'title' => __( 'Dolibarr', 'doliwoo' ),
+                        'fields' => array(
+                            'dolibarr_id' => array(
+                                    'label' => __( 'Dolibarr ID', 'doliwoo' ),
+                                    'description' => ''
+                                )
+                        )
+                    ),
+
+                ));
+                return $show_fields;
+            }
+
+            /**
+             * Show Address Fields on edit user pages.
+             *
+             * @access public
+             * @param mixed $user User (object) being displayed
+             * @return void
+             */
+            function doliwoo_customer_meta_fields( $user ) {
+                //if ( ! current_user_can( 'manage_woocommerce' ) )
+                 //   return;
+
+                $show_fields = $this->doliwoo_get_customer_meta_fields();
+
+                foreach( $show_fields as $fieldset ) :
+                    ?>
+                    <h3><?php echo $fieldset['title']; ?></h3>
+                    <table class="form-table">
+                        <?php
+                        foreach( $fieldset['fields'] as $key => $field ) :
+                            ?>
+                            <tr>
+                                <th><label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $field['label'] ); ?></label></th>
+                                <td>
+                                    <input type="text" name="<?php echo esc_attr( $key ); ?>" id="<?php echo esc_attr( $key ); ?>" value="<?php echo esc_attr( get_user_meta( $user->ID, $key, true ) ); ?>" class="regular-text" /><br/>
+                                    <span class="description"><?php echo wp_kses_post( $field['description'] ); ?></span>
+                                </td>
+                            </tr>
+                            <?php
+                        endforeach;
+                        ?>
+                    </table>
+                    <?php
+                endforeach;
+            }
+
+            /**
+             * Save Address Fields on edit user pages
+             *
+             * @access public
+             * @param mixed $user_id User ID of the user being saved
+             * @return void
+             */
+            function doliwoo_save_customer_meta_fields( $user_id ) {
+               // if ( ! current_user_can( 'manage_woocommerce' ) )
+                //    return $columns;
+
+                $save_fields = $this->doliwoo_get_customer_meta_fields();
+
+                foreach( $save_fields as $fieldset )
+                    foreach( $fieldset['fields'] as $key => $field )
+                        if ( isset( $_POST[ $key ] ) )
+                            update_user_meta( $user_id, $key, woocommerce_clean( $_POST[ $key ] ) );
             }
 
             /**
@@ -45,7 +146,6 @@ require_once '/var/www/wp-content/plugins/woocommerce/classes/class-wc-cart.php'
             public function dolibarr_create_order() {
                 global $woocommerce;
                 require_once 'conf.php';
-
                 $WS_DOL_URL = $webservs_url . 'server_order.php';
 
                 // Set the WebService URL
@@ -58,7 +158,7 @@ require_once '/var/www/wp-content/plugins/woocommerce/classes/class-wc-cart.php'
 
                 $order = array();
                 //fill this array with all data required to create an order in Dolibarr
-                $order['thirdparty_id'] = '1'; //we'll need to get that from WooCommerce and make sure it's the same in Dolibarr
+                $order['thirdparty_id'] = get_user_meta(get_current_user_id(), 'dolibarr_id', true);//'1'; //we'll need to get that from WooCommerce and make sure it's the same in Dolibarr
                 //$order['ref_ext']; Bullshit?
                 $order['date'] = time();
                 //$order['date_due'] = ; Needed?
@@ -70,11 +170,11 @@ require_once '/var/www/wp-content/plugins/woocommerce/classes/class-wc-cart.php'
                 //$order['cond_reglement_id'] = ; Needed?
                 //$order['demand_reason_id'] = ; Needed?
                 $order['lines'] = array();
-                //go through the product list and fill this array. Or just cheat, for now
+
                 $_tax  = new WC_Tax(); //use this object to get the tax rates
                 foreach($woocommerce->cart->cart_contents as $product) {
                     $line = array();
-                    $line['type'] = get_post_meta($product['product_id'], 'type', 1);//    //How do we get this?
+                    $line['type'] = get_post_meta($product['product_id'], 'type', 1);
                     $line['desc'] = $product['data']->post->post_content;
                     $line['product_id'] = get_post_meta($product['product_id'], 'dolibarr_id', 1);
                     $line['vat_rate'] = $_tax->get_rates($product['data']->get_tax_class())[1]['rate'];
@@ -91,6 +191,18 @@ require_once '/var/www/wp-content/plugins/woocommerce/classes/class-wc-cart.php'
                 $soapclient->call('createOrder',$parameters,$ns,'');
             }
 
+            public function schedule_import_products() {
+                if (!wp_next_scheduled('import_products')) {
+                    wp_schedule_event(time(), 'daily', 'import_products');
+                }
+            }
+
+            public function schedule_create_thirdparties() {
+                if (!wp_next_scheduled('create_thirdparties')) {
+                    wp_schedule_event(time(), 'daily', 'create_thirdparties');
+                }
+            }
+
             public function dolibarr_product_exists($dolibarr_id) {
                 global $wpdb;
                 $sql = 'SELECT count(post_id) as nb from ' . $wpdb->prefix . 'postmeta WHERE meta_key = "dolibarr_id" AND meta_value = ' . $dolibarr_id;
@@ -102,7 +214,6 @@ require_once '/var/www/wp-content/plugins/woocommerce/classes/class-wc-cart.php'
             public function import_dolibarr_products() {
                 global $woocommerce;
                 require_once 'conf.php';
-
                 $WS_DOL_URL = $webservs_url . 'server_productorservice.php';
 
                 // Set the WebService URL
@@ -116,14 +227,6 @@ require_once '/var/www/wp-content/plugins/woocommerce/classes/class-wc-cart.php'
                 // Get all thirdparties
                 $parameters = array('authentication'=>$authentication,'id'=>1);
                 $result = $soapclient->call('getProductsForCategory',$parameters,$ns,'');
-                if (! $result) {
-                    echo $soapclient->error_str,
-                         '<br>',
-                         $soapclient->request,
-                         '<br>',
-                         $soapclient->response;
-                    exit;
-                }
                 if ($result['result']['result_code'] == 'OK') {
                     $products = $result['products'];
                     foreach($products as $product) {
@@ -171,7 +274,92 @@ require_once '/var/www/wp-content/plugins/woocommerce/classes/class-wc-cart.php'
                     }
                 }
             }
+
+            public function get_dolibarr_thirdparties() {
+                require_once 'conf.php';
+                $WS_DOL_URL = $webservs_url . 'server_thirdparty.php';	// If not a page, should end with /
+                // Set the WebService URL
+                $soapclient = new nusoap_client($WS_DOL_URL);
+                if ($soapclient)
+                {
+                    $soapclient->soap_defencoding='UTF-8';
+                    $soapclient->decodeUTF8(false);
+                }
+
+                // Get all thirdparties
+                $parameters = array('authentication'=>$authentication,null);
+                $result = $soapclient->call('getListOfThirdParties',$parameters,$ns,'');
+                if($result['result']['result_code'] == 'OK') {
+                    return $result['thirdparties'];
+                } else {
+                    return null;
+                }
+            }
+
+            public function exists_thirdparty($user_id) {
+                $thirdparties = $this->get_dolibarr_thirdparties();
+                $found = false;
+                $i = 0;
+                if ($thirdparties) {
+                    while ($i < count($thirdparties) and !$found) {
+                        $found = ($thirdparties[$i]['id'] == get_user_meta($user_id, 'dolibarr_id', true));
+                        $i++;
+                    }
+                    return $found;
+                } else {
+                    return null;
+                }
+            }
+
+            public function create_dolibarr_thirdparty($user_id) {
+                require 'conf.php';
+                $WS_DOL_URL = $webservs_url . 'server_thirdparty.php';	// If not a page, should end with /
+                // Set the WebService URL
+                $soapclient = new nusoap_client($WS_DOL_URL);
+                if ($soapclient)
+                {
+                    $soapclient->soap_defencoding='UTF-8';
+                    $soapclient->decodeUTF8(false);
+                }
+                $new_thirdparty = array(
+                                    'ref'=> get_user_meta($user_id, 'billing_company', true),
+                                    //'ref_ext'=>'WS0001',
+                                    'fk_user_author'=>'2',  // put this in the conf
+                                    'status'=>'1',
+                                    'client'=>'1',
+                                    'supplier'=>'0',
+                                    'address'=>get_user_meta($user_id, 'billing_address', true),//$customer->get_address(),
+                                    'zip'=>get_user_meta($user_id, 'billing_postcode', true),//$customer->get_postcode(),
+                                    'town'=>get_user_meta($user_id, 'billing_city', true),//$customer->get_city(),
+                                    'country_code'=>get_user_meta($user_id, 'billing_country', true),//$customer->get_country(),//France
+                                    'supplier_code'=>'0',
+                                    'phone'=>get_user_meta($user_id, 'billing_phone', true),//'0141414141',
+                                    'email'=>get_user_meta($user_id, 'billing_email', true)//'webtest1@test.fr',
+                );
+                $parameters = array('authentication'=>$authentication,'thirdparty'=>$new_thirdparty);
+
+                $result = $soapclient->call('createThirdParty',$parameters,$ns,'');
+                return $result;
+            }
+
+            public function create_dolibarr_thirdparty_if_not_exists($user_id) {
+                $exists = $this->exists_thirdparty();
+                if (!$exists && !is_null($exists)) {
+                    $result = $this->create_dolibarr_thirdparty();
+                    if ($result['result']['result_code'] == 'OK') {
+                        update_user_meta($user_id, 'dolibarr_id', $result['id'] );
+                    }
+                }
+            }
+
+            public function create_thirdparties() {
+                $users = get_users('blog_id='.$GLOBALS['blog_id']);
+                foreach ($users as $user) {
+                    $this->create_dolibarr_thirdparty_if_not_exists($user->ID);  //TODO optimize
+                }
+            }
+
         }
-        $GLOBALS['woocommerce-dolibarr'] = new WooCommerceDolibarr();
+        $GLOBALS['doliwoo'] = new Doliwoo();
     }
 }
