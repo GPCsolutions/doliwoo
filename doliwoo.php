@@ -42,8 +42,6 @@ require_once 'nusoap/lib/nusoap.php';
                 add_action('personal_options_update', array(&$this, 'doliwoo_save_customer_meta_fields'));
                 add_action('edit_user_profile_update', array(&$this, 'doliwoo_save_customer_meta_fields'));
                 add_action('manage_users_custom_column', array(&$this, 'doliwoo_user_column_values'), 10, 3);
-
-                //add_action( 'init', array( &$this, 'create_dolibarr_thirdparty_if_not_exists' ) );
                 add_action('wp', array(&$this, 'schedule_create_thirdparties'));
                 add_action('create_thirdparties', array(&$this, 'create_dolibarr_thirdparties'));
                 // take care of anything else that needs to be done immediately upon plugin instantiation, here in the constructor
@@ -310,8 +308,7 @@ require_once 'nusoap/lib/nusoap.php';
                 }
             }
 
-            public function exists_thirdparty($user_id) {
-                $thirdparties = $this->get_dolibarr_thirdparties();
+            public function exists_thirdparty($user_id, $thirdparties) {
                 $found = false;
                 $i = 0;
                 if ($thirdparties) {
@@ -356,20 +353,21 @@ require_once 'nusoap/lib/nusoap.php';
                 return $result;
             }
 
-            public function create_dolibarr_thirdparty_if_not_exists($user_id) {
-                $exists = $this->exists_thirdparty();
+            public function create_dolibarr_thirdparty_if_not_exists($user_id, $thirdparties) {
+                $exists = $this->exists_thirdparty($user_id, $thirdparties);
                 if (!$exists && !is_null($exists)) {
-                    $result = $this->create_dolibarr_thirdparty();
+                    $result = $this->create_dolibarr_thirdparty($user_id);
                     if ($result['result']['result_code'] == 'OK') {
                         update_user_meta($user_id, 'dolibarr_id', $result['id'] );
                     }
                 }
             }
 
-            public function create_thirdparties() {
+            public function create_dolibarr_thirdparties() {
+                $thirdparties = $this->get_dolibarr_thirdparties();
                 $users = get_users('blog_id='.$GLOBALS['blog_id']);
                 foreach ($users as $user) {
-                    $this->create_dolibarr_thirdparty_if_not_exists($user->ID);  //TODO optimize
+                    $this->create_dolibarr_thirdparty_if_not_exists($user->data->ID, $thirdparties);  //TODO optimize
                 }
             }
 
