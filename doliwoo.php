@@ -317,15 +317,12 @@ require_once 'nusoap/lib/nusoap.php';
             }
 
             /**
-             * Pull thirdparties data from Dolibarr via webservice
-             *
+             * Checks if a thirdparty exists in Dolibarr
              * @access public
-             * @return array $result['thirdparties'] if success, else null   the array contains all thirdparties data
+             * @return mixed $result    array with the request results if it succeeds, null if there's an error
              */
-
-            public function get_dolibarr_thirdparties()
-            {
-                require_once 'conf.php';
+            public function exists_thirdparty($user_id) {
+                require 'conf.php';
                 $WS_DOL_URL = $webservs_url . 'server_thirdparty.php';
                 // Set the WebService URL
                 $soapclient = new nusoap_client($WS_DOL_URL);
@@ -333,31 +330,15 @@ require_once 'nusoap/lib/nusoap.php';
                     $soapclient->soap_defencoding='UTF-8';
                     $soapclient->decodeUTF8(false);
                 }
-
-                // Get all thirdparties
-                $parameters = array('authentication' => $authentication, null);
-                $result = $soapclient->call('getListOfThirdParties',$parameters,$ns,'');
-                if($result['result']['result_code'] == 'OK') {
-                    return $result['thirdparties'];
+                $dol_id = get_user_meta($user_id, 'dolibarr_id', true);
+                if ($dol_id) {
+                    $parameters = array($authentication, $dol_id);
                 } else {
-                    return null;
+                    $parameters = array($authentication, '', get_user_meta($user_id, 'billing_company', true));
                 }
-            }
-
-            /**
-             * Checks for the existence of a tirdparty in Dolibarr
-             * @access public
-             * @return boolean $found      true if the thirdparty exists, else false
-             */
-            public function exists_thirdparty($user_id, $thirdparties) {
-                $found = false;
-                $i = 0;
-                if ($thirdparties) {
-                    while ($i < count($thirdparties) && !$found) {
-                        $found = ($thirdparties[$i]['id'] == get_user_meta($user_id, 'dolibarr_id', true));
-                        $i++;
-                    }
-                    return $found;
+                $result = $soapclient->call('getThirdParty', $parameters, $ns, '');
+                if ($result) {
+                    return $result;
                 } else {
                     return null;
                 }
@@ -401,15 +382,18 @@ require_once 'nusoap/lib/nusoap.php';
             /**
              * Creates a thirdparty in Dolibarr via webservice using WooCommerce user data, if it doesn't already exists
              * @param  int   $user_id         a Wordpress user id
-             * @param  mixed $thirdparties    array filled by get_dolibarr_thirdparties()
              * @return void
              */
-            public function create_dolibarr_thirdparty_if_not_exists($user_id, $thirdparties) {
-                $exists = $this->exists_thirdparty($user_id, $thirdparties);
-                if (!$exists && !is_null($exists)) {
-                    $result = $this->create_dolibarr_thirdparty($user_id);
-                    if ($result['result']['result_code'] == 'OK') {
-                        update_user_meta($user_id, 'dolibarr_id', $result['id'] );
+            public function create_dolibarr_thirdparty_if_not_exists($user_id) {
+                $result = $this->exists_thirdparty($user_id);
+                if ($result) {
+                    if ($result['thirdparty'] && get_user_meta($user_id, 'dolibarr_id', true) != $result['thirdparty']['id']) {
+                        update_user_meta($user_id, 'dolibarr_id', $result['thirdparty']['id']);
+                    } elseif (is_null($result['thirdparty'])) {
+                        $res = $this->create_dolibarr_thirdparty($user_id);
+                        if ($res['result']['result_code'] == 'OK') {
+                            update_user_meta($user_id, 'dolibarr_id', $res['thirdparty']['id'] );
+                        }
                     }
                 }
             }
@@ -419,10 +403,9 @@ require_once 'nusoap/lib/nusoap.php';
              * @return void
              */
             public function create_dolibarr_thirdparties() {
-                $thirdparties = $this->get_dolibarr_thirdparties();
                 $users = get_users('blog_id='.$GLOBALS['blog_id']);
                 foreach ($users as $user) {
-                    $this->create_dolibarr_thirdparty_if_not_exists($user->data->ID, $thirdparties);  //TODO optimize
+                    $this->create_dolibarr_thirdparty_if_not_exists($user->data->ID);
                 }
             }
 
