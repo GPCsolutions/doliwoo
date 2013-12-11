@@ -25,7 +25,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once '/var/www/wp-content/plugins/woocommerce/classes/class-wc-cart.php';
 require_once 'nusoap/lib/nusoap.php';
 
  if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
