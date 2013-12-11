@@ -41,6 +41,7 @@ require_once 'nusoap/lib/nusoap.php';
                 add_action('edit_user_profile', array(&$this, 'doliwoo_customer_meta_fields'));
                 add_action('personal_options_update', array(&$this, 'doliwoo_save_customer_meta_fields'));
                 add_action('edit_user_profile_update', array(&$this, 'doliwoo_save_customer_meta_fields'));
+                add_action('manage_users_custom_column', array(&$this, 'doliwoo_user_column_values'), 10, 3);
 
                 //add_action( 'init', array( &$this, 'create_dolibarr_thirdparty_if_not_exists' ) );
                 add_action('wp', array(&$this, 'schedule_create_thirdparties'));
@@ -137,6 +138,19 @@ require_once 'nusoap/lib/nusoap.php';
                     foreach( $fieldset['fields'] as $key => $field )
                         if ( isset( $_POST[ $key ] ) )
                             update_user_meta( $user_id, $key, woocommerce_clean( $_POST[ $key ] ) );
+            }
+
+            /**
+             * Define values for custom columns.
+             *
+             * @access public
+             * @param mixed $value The value of the column being displayed
+             * @param mixed $column_name The name of the column being displayed
+             * @param mixed $user_id The ID of the user being displayed
+             * @return string Value for the column
+             */
+            function doliwoo_user_column_values( $value, $column_name, $user_id ) {
+                return get_user_meta($user_id, 'dolibarr_id', true);
             }
 
             /**
