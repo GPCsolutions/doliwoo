@@ -259,10 +259,13 @@ require_once 'nusoap/lib/nusoap.php';
             {
                 global $woocommerce;
                 require_once 'conf.php';
-                $WS_DOL_URL = $webservs_url . 'server_productorservice.php';
+                require_once ABSPATH . 'wp-admin/includes/file.php';
+                WP_Filesystem();
+                require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php';
+                $filesystem = new WP_Filesystem_Direct('arg');
 
                 // Set the WebService URL
-                $soapclient = new nusoap_client($WS_DOL_URL);
+                $soapclient = new nusoap_client($webservs_url . 'server_productorservice.php');
                 if ($soapclient) {
                     $soapclient->soap_defencoding = 'UTF-8';
                     $soapclient->decodeUTF8(false);
@@ -308,6 +311,24 @@ require_once 'nusoap/lib/nusoap.php';
                                 if ($product['stock_real'] > 0) {
                                    update_post_meta($post_id, '_stock_status', 'instock');
                                    update_post_meta($post_id, '_stock', $product['stock_real']);
+                                }
+                            }
+                            //webservice calls to get the product's images
+                            unset($soapclient);
+                            $soapclient = new nusoap_client($webservs_url . 'server_other.php');
+                            $upload_dir = wp_upload_dir();
+                            $path = $upload_dir['path'];
+                            foreach ($product['images'] as $image) {
+                                foreach($image as $filename) {
+                                    $parameters = array('authentication'=>$authentication, 'modulepart'=>'product', 'file' => $product['dir'] . $filename);
+                                    $result = $soapclient->call('getDocument', $parameters, $ns, '');
+                                    if ($result['result']['result_code'] == 'OK') {
+                                        $res = $filesystem->put_contents($path . '/' . $result['document']['filename'], base64_decode($result['document']['content']));
+                                        if ($res) {
+                                            // TODO now that the images are uploaded, assign them to the product gallery
+
+                                        }
+                                    }
                                 }
                             }
                             $woocommerce->clear_product_transients($post_id);
