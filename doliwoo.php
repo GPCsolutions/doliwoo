@@ -25,7 +25,7 @@
 
 require_once 'nusoap/lib/nusoap.php';
 
- if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins')))) {
+if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins')))) {
     if (!class_exists('Doliwoo')) {
         class Doliwoo
         {
@@ -51,7 +51,7 @@ require_once 'nusoap/lib/nusoap.php';
                 add_action('create_thirdparties', array(&$this, 'create_dolibarr_thirdparties'));
             }
 
-             /**
+            /**
              * Define columns to show on the users page.
              *
              * @access public
@@ -79,9 +79,9 @@ require_once 'nusoap/lib/nusoap.php';
                         'title' => __('Dolibarr', 'doliwoo'),
                         'fields' => array(
                             'dolibarr_id' => array(
-                                    'label' => __('Dolibarr ID', 'doliwoo'),
-                                    'description' => ''
-                                )
+                                'label' => __('Dolibarr ID', 'doliwoo'),
+                                'description' => ''
+                            )
                         )
                     ),
                 ));
@@ -99,25 +99,30 @@ require_once 'nusoap/lib/nusoap.php';
             function doliwoo_customer_meta_fields($user)
             {
                 $show_fields = $this->doliwoo_get_customer_meta_fields();
-                foreach( $show_fields as $fieldset ) :
+                foreach ($show_fields as $fieldset) :
                     ?>
                     <h3><?php echo $fieldset['title']; ?></h3>
                     <table class="form-table">
                         <?php
-                        foreach( $fieldset['fields'] as $key => $field ) :
+                        foreach ($fieldset['fields'] as $key => $field) :
                             ?>
                             <tr>
-                                <th><label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $field['label'] ); ?></label></th>
+                                <th><label
+                                        for="<?php echo esc_attr($key); ?>"><?php echo esc_html($field['label']); ?></label>
+                                </th>
                                 <td>
-                                    <input type="text" name="<?php echo esc_attr( $key ); ?>" id="<?php echo esc_attr( $key ); ?>" value="<?php echo esc_attr( get_user_meta( $user->ID, $key, true ) ); ?>" class="regular-text" /><br/>
-                                    <span class="description"><?php echo wp_kses_post( $field['description'] ); ?></span>
+                                    <input type="text" name="<?php echo esc_attr($key); ?>"
+                                           id="<?php echo esc_attr($key); ?>"
+                                           value="<?php echo esc_attr(get_user_meta($user->ID, $key, true)); ?>"
+                                           class="regular-text"/><br/>
+                                    <span class="description"><?php echo wp_kses_post($field['description']); ?></span>
                                 </td>
                             </tr>
-                            <?php
+                        <?php
                         endforeach;
                         ?>
                     </table>
-                    <?php
+                <?php
                 endforeach;
             }
 
@@ -132,8 +137,8 @@ require_once 'nusoap/lib/nusoap.php';
             function doliwoo_save_customer_meta_fields($user_id)
             {
                 $save_fields = $this->doliwoo_get_customer_meta_fields();
-                foreach($save_fields as $fieldset) {
-                    foreach($fieldset['fields'] as $key => $field) {
+                foreach ($save_fields as $fieldset) {
+                    foreach ($fieldset['fields'] as $key => $field) {
                         if (isset($_POST[$key])) {
                             update_user_meta($user_id, $key, woocommerce_clean($_POST[$key]));
                         }
@@ -184,8 +189,8 @@ require_once 'nusoap/lib/nusoap.php';
                 $order['status'] = 1;
                 $order['lines'] = array();
 
-                $_tax  = new WC_Tax(); //use this object to get the tax rates
-                foreach($woocommerce->cart->cart_contents as $product) {
+                $_tax = new WC_Tax(); //use this object to get the tax rates
+                foreach ($woocommerce->cart->cart_contents as $product) {
                     $line = array();
                     $line['type'] = get_post_meta($product['product_id'], 'type', 1);
                     $line['desc'] = $product['data']->post->post_content;
@@ -204,7 +209,7 @@ require_once 'nusoap/lib/nusoap.php';
                 $soapclient->call('createOrder', $parameters, $ns, '');
             }
 
-             /**
+            /**
              * Schedules the daily import of Dolibarr products
              *
              * @access public
@@ -218,7 +223,7 @@ require_once 'nusoap/lib/nusoap.php';
                 }
             }
 
-             /**
+            /**
              * Schedules the daily creation of Dolibarr thirdparties using WooCommerce users data
              *
              * @access public
@@ -248,7 +253,7 @@ require_once 'nusoap/lib/nusoap.php';
                 return $exists;
             }
 
-             /**
+            /**
              * Pull products data from Dolibarr via webservice and save it in Wordpress
              *
              * @access public
@@ -263,6 +268,7 @@ require_once 'nusoap/lib/nusoap.php';
                 WP_Filesystem();
                 require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php';
                 $filesystem = new WP_Filesystem_Direct('arg');
+                require_once(ABSPATH . 'wp-admin/includes/image.php');
 
                 // Set the WebService URL
                 $soapclient = new nusoap_client($webservs_url . 'server_productorservice.php');
@@ -270,20 +276,20 @@ require_once 'nusoap/lib/nusoap.php';
                     $soapclient->soap_defencoding = 'UTF-8';
                     $soapclient->decodeUTF8(false);
                 }
-
+                //TODO PUT CATEGORY ID IN THE CONF
                 $parameters = array('authentication' => $authentication, 'id' => 1);
                 $result = $soapclient->call('getProductsForCategory', $parameters, $ns, '');
                 if ($result['result']['result_code'] == 'OK') {
                     $products = $result['products'];
-                    foreach($products as $product) {
+                    foreach ($products as $product) {
                         if ($this->dolibarr_product_exists($product['id'])) {
                             $post_id = 0;
                         } else {
                             $post = array(
-                                'post_title'    => $product['label'],
-                                'post_content'  => $product['description'],
-                                'post_status'   => 'publish',
-                                'post_type'     => 'product',
+                                'post_title' => $product['label'],
+                                'post_content' => $product['description'],
+                                'post_status' => 'publish',
+                                'post_type' => 'product',
                             );
                             $post_id = wp_insert_post($post);
                         }
@@ -291,10 +297,6 @@ require_once 'nusoap/lib/nusoap.php';
                             add_post_meta($post_id, 'total_sales', '0', true);
                             add_post_meta($post_id, 'dolibarr_id', $product['id'], true);
                             add_post_meta($post_id, 'type', $product['type'], true);
-                            // Gallery Images
-                            //$attachment_ids = array_filter( explode( ',', woocommerce_clean( $_POST['product_image_gallery'] ) ) );
-                            //update_post_meta( $post_id, '_product_image_gallery', implode( ',', $attachment_ids ) );
-                            // Update post meta
                             update_post_meta($post_id, '_regular_price', $product['price_net']);
                             update_post_meta($post_id, '_sale_price', $product['price_net']);
                             update_post_meta($post_id, '_price', $product['price_net']);
@@ -309,8 +311,8 @@ require_once 'nusoap/lib/nusoap.php';
                             update_post_meta($post_id, '_tax_class', 'tva');
                             if (get_option('woocommerce_manage_stock') == 'yes') {
                                 if ($product['stock_real'] > 0) {
-                                   update_post_meta($post_id, '_stock_status', 'instock');
-                                   update_post_meta($post_id, '_stock', $product['stock_real']);
+                                    update_post_meta($post_id, '_stock_status', 'instock');
+                                    update_post_meta($post_id, '_stock', $product['stock_real']);
                                 }
                             }
                             //webservice calls to get the product's images
@@ -318,19 +320,34 @@ require_once 'nusoap/lib/nusoap.php';
                             $soapclient = new nusoap_client($webservs_url . 'server_other.php');
                             $upload_dir = wp_upload_dir();
                             $path = $upload_dir['path'];
+                            $attach_ids = array();
                             foreach ($product['images'] as $image) {
-                                foreach($image as $filename) {
-                                    $parameters = array('authentication'=>$authentication, 'modulepart'=>'product', 'file' => $product['dir'] . $filename);
+                                foreach ($image as $filename) {
+                                    $parameters = array('authentication' => $authentication, 'modulepart' => 'product', 'file' => $product['dir'] . $filename);
                                     $result = $soapclient->call('getDocument', $parameters, $ns, '');
                                     if ($result['result']['result_code'] == 'OK') {
                                         $res = $filesystem->put_contents($path . '/' . $result['document']['filename'], base64_decode($result['document']['content']));
                                         if ($res) {
-                                            // TODO now that the images are uploaded, assign them to the product gallery
-
+                                            $filename = $result['document']['filename'];
+                                            $wp_filetype = wp_check_filetype(basename($filename), null);
+                                            $wp_upload_dir = wp_upload_dir();
+                                            $attachment = array(
+                                                'guid' => $wp_upload_dir['url'] . '/' . basename($filename),
+                                                'post_mime_type' => $wp_filetype['type'],
+                                                'post_title' => preg_replace('/\.[^.]+$/', '', basename($filename)),
+                                                'post_content' => '',
+                                                'post_status' => 'inherit'
+                                            );
+                                            $attach_id = wp_insert_attachment($attachment, $wp_upload_dir['path'] . '/' . $filename, $post_id);
+                                            $attach_data = wp_generate_attachment_metadata($attach_id, $wp_upload_dir['path'] . '/' . $filename);
+                                            wp_update_attachment_metadata($attach_id, $attach_data);
+                                            $attach_ids[] = $attach_id;
                                         }
                                     }
                                 }
                             }
+                            update_post_meta($post_id, '_thumbnail_id', $attach_ids[0]);
+                            update_post_meta($post_id, '_product_image_gallery', implode(',', $attach_ids));
                             $woocommerce->clear_product_transients($post_id);
                         }
                     }
@@ -342,13 +359,14 @@ require_once 'nusoap/lib/nusoap.php';
              * @access public
              * @return mixed $result    array with the request results if it succeeds, null if there's an error
              */
-            public function exists_thirdparty($user_id) {
+            public function exists_thirdparty($user_id)
+            {
                 require 'conf.php';
                 $WS_DOL_URL = $webservs_url . 'server_thirdparty.php';
                 // Set the WebService URL
                 $soapclient = new nusoap_client($WS_DOL_URL);
                 if ($soapclient) {
-                    $soapclient->soap_defencoding='UTF-8';
+                    $soapclient->soap_defencoding = 'UTF-8';
                     $soapclient->decodeUTF8(false);
                 }
                 $dol_id = get_user_meta($user_id, 'dolibarr_id', true);
@@ -367,45 +385,46 @@ require_once 'nusoap/lib/nusoap.php';
 
             /**
              * Creates a thirdparty in Dolibarr via webservice using WooCommerce user data
-             * @param int $user_id      a Wordpress user id
+             * @param int $user_id a Wordpress user id
              * @return mixed $result    the SOAP response
              */
-            public function create_dolibarr_thirdparty($user_id) {
+            public function create_dolibarr_thirdparty($user_id)
+            {
                 require 'conf.php';
-                $WS_DOL_URL = $webservs_url . 'server_thirdparty.php';	// If not a page, should end with /
+                $WS_DOL_URL = $webservs_url . 'server_thirdparty.php'; // If not a page, should end with /
                 // Set the WebService URL
                 $soapclient = new nusoap_client($WS_DOL_URL);
-                if ($soapclient)
-                {
-                    $soapclient->soap_defencoding='UTF-8';
+                if ($soapclient) {
+                    $soapclient->soap_defencoding = 'UTF-8';
                     $soapclient->decodeUTF8(false);
                 }
                 $new_thirdparty = array(
-                                    'ref'=> get_user_meta($user_id, 'billing_company', true),
-                                    //'ref_ext'=>'WS0001',
-                                    'status'=>'1',
-                                    'client'=>'1',
-                                    'supplier'=>'0',
-                                    'address'=>get_user_meta($user_id, 'billing_address', true),
-                                    'zip'=>get_user_meta($user_id, 'billing_postcode', true),
-                                    'town'=>get_user_meta($user_id, 'billing_city', true),
-                                    'country_code'=>get_user_meta($user_id, 'billing_country', true),
-                                    'supplier_code'=>'0',
-                                    'phone'=>get_user_meta($user_id, 'billing_phone', true),
-                                    'email'=>get_user_meta($user_id, 'billing_email', true)
+                    'ref' => get_user_meta($user_id, 'billing_company', true),
+                    //'ref_ext'=>'WS0001',
+                    'status' => '1',
+                    'client' => '1',
+                    'supplier' => '0',
+                    'address' => get_user_meta($user_id, 'billing_address', true),
+                    'zip' => get_user_meta($user_id, 'billing_postcode', true),
+                    'town' => get_user_meta($user_id, 'billing_city', true),
+                    'country_code' => get_user_meta($user_id, 'billing_country', true),
+                    'supplier_code' => '0',
+                    'phone' => get_user_meta($user_id, 'billing_phone', true),
+                    'email' => get_user_meta($user_id, 'billing_email', true)
                 );
-                $parameters = array('authentication'=>$authentication,'thirdparty'=>$new_thirdparty);
+                $parameters = array('authentication' => $authentication, 'thirdparty' => $new_thirdparty);
 
-                $result = $soapclient->call('createThirdParty',$parameters,$ns,'');
+                $result = $soapclient->call('createThirdParty', $parameters, $ns, '');
                 return $result;
             }
 
             /**
              * Creates a thirdparty in Dolibarr via webservice using WooCommerce user data, if it doesn't already exists
-             * @param  int   $user_id         a Wordpress user id
+             * @param  int $user_id a Wordpress user id
              * @return void
              */
-            public function create_dolibarr_thirdparty_if_not_exists($user_id) {
+            public function create_dolibarr_thirdparty_if_not_exists($user_id)
+            {
                 $result = $this->exists_thirdparty($user_id);
                 if ($result) {
                     if ($result['thirdparty'] && get_user_meta($user_id, 'dolibarr_id', true) != $result['thirdparty']['id']) {
@@ -413,7 +432,7 @@ require_once 'nusoap/lib/nusoap.php';
                     } elseif (is_null($result['thirdparty'])) {
                         $res = $this->create_dolibarr_thirdparty($user_id);
                         if ($res['result']['result_code'] == 'OK') {
-                            update_user_meta($user_id, 'dolibarr_id', $res['thirdparty']['id'] );
+                            update_user_meta($user_id, 'dolibarr_id', $res['thirdparty']['id']);
                         }
                     }
                 }
@@ -423,14 +442,16 @@ require_once 'nusoap/lib/nusoap.php';
              * Creates the missing thirdparties in Dolibarr via webservice using WooCommerce user data
              * @return void
              */
-            public function create_dolibarr_thirdparties() {
-                $users = get_users('blog_id='.$GLOBALS['blog_id']);
+            public function create_dolibarr_thirdparties()
+            {
+                $users = get_users('blog_id=' . $GLOBALS['blog_id']);
                 foreach ($users as $user) {
                     $this->create_dolibarr_thirdparty_if_not_exists($user->data->ID);
                 }
             }
 
         }
+
         // Plugin instanciation
         $GLOBALS['doliwoo'] = new Doliwoo();
     }
