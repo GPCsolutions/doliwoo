@@ -195,7 +195,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                     $line['type'] = get_post_meta($product['product_id'], 'type', 1);
                     $line['desc'] = $product['data']->post->post_content;
                     $line['product_id'] = get_post_meta($product['product_id'], 'dolibarr_id', 1);
-                    $line['vat_rate'] = $_tax->get_rates($product['data']->get_tax_class())[1]['rate'];
+                    $line['vat_rate'] = $this->get_vat_rate($product['data']->get_tax_class());
                     $line['qty'] = $product['quantity'];
                     $line['price'] = $product['data']->get_price();
                     $line['unitprice'] = $product['data']->get_price();
@@ -253,13 +253,23 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 return $exists;
             }
 
+            //FIX ME : the following two methods don't take into account multiple rates in the same tax class
             public function get_tax_class($tax_rate)
             {
                 global $wpdb;
                 $sql = 'SELECT tax_rate_class FROM ' . $wpdb->prefix . 'woocommerce_tax_rates';
-                $sql .= ' WHERE tax_rate = ' . $tax_rate . ' AND tax_rate_name = "TVA"';
+                $sql .= ' WHERE tax_rate = ' . $tax_rate . ' AND tax_rate_name = "TVA" AND tax_rate_country = "FR"';
                 $result = $wpdb->query($sql);
                 return $wpdb->last_result[0]->tax_rate_class;
+            }
+
+            public function get_vat_rate($tax_class)
+            {
+                global $wpdb;
+                $sql = 'SELECT tax_rate FROM ' . $wpdb->prefix . 'woocommerce_tax_rates';
+                $sql .= ' WHERE tax_rate_class = "' . $tax_class . '" AND tax_rate_name = "TVA" AND tax_rate_country = "FR"';
+                $result = $wpdb->query($sql);
+                return $wpdb->last_result[0]->tax_rate;
             }
 
             /**
