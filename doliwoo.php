@@ -253,6 +253,15 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 return $exists;
             }
 
+            public function get_tax_class($tax_rate)
+            {
+                global $wpdb;
+                $sql = 'SELECT tax_rate_class FROM ' . $wpdb->prefix . 'woocommerce_tax_rates';
+                $sql .= ' WHERE tax_rate = ' . $tax_rate . ' AND tax_rate_name = "TVA"';
+                $result = $wpdb->query($sql);
+                return $wpdb->last_result[0]->tax_rate_class;
+            }
+
             /**
              * Pull products data from Dolibarr via webservice and save it in Wordpress
              *
@@ -308,7 +317,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                                 update_post_meta( $post_id, '_tax_class', stripslashes( $_POST['_tax_class'] ) );
                             } */
                             //TODO FIND A WAY TO GET THE TAX
-                            update_post_meta($post_id, '_tax_class', 'tva');
+                            update_post_meta($post_id, '_tax_class', $this->get_tax_class($product['vat_rate']));
                             if (get_option('woocommerce_manage_stock') == 'yes') {
                                 if ($product['stock_real'] > 0) {
                                     update_post_meta($post_id, '_stock_status', 'instock');
