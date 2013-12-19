@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Doliwoo
- * Description: Interface bewteen WooCommerce and Dolibarr
+ * Description: Interface between WooCommerce and Dolibarr
  * Version: 0.1
  * Author: Cédric Salvador <csalvador@gpcsolutions.fr>
  * License: GPL3
@@ -31,6 +31,9 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
         {
             public function __construct()
             {
+                // Create custom tax classes and VAT rates on plugin activation
+                register_activation_hook(__FILE__, array($this, 'create_custom_tax_classes' ));
+
                 // Hook on woocommerce_checkout_process to create a Dolibarr order using WooCommerce order data
                 add_action('woocommerce_checkout_process', array(&$this, 'dolibarr_create_order'));
 
@@ -49,6 +52,65 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 // Schedule the creation of Dolibarr thirdparties using WooCommerce usera data
                 add_action('wp', array(&$this, 'schedule_create_thirdparties'));
                 add_action('create_thirdparties', array(&$this, 'create_dolibarr_thirdparties'));
+            }
+
+            /**
+             * Create tax classes for Dolibarr tax rates
+             *
+             */
+            function create_custom_tax_classes()
+            {
+                global $wpdb;
+                //first, create the rates
+                $data = array(
+                    array(
+                        'tax_rate_country' => 'FR',
+                        'tax_rate' => '20',
+                        'tax_rate_name' => 'TVA',
+                        'tax_rate_priority' => 1,
+                        'tax_rate_order' => 0,
+                        'tax_rate_class' => ''
+                    ),
+                    array(
+                        'tax_rate_country' => 'FR',
+                        'tax_rate' => '10',
+                        'tax_rate_name' => 'TVA',
+                        'tax_rate_priority' => 1,
+                        'tax_rate_order' => 0,
+                        'tax_rate_class' => 'reduced-rate'
+                    ),
+                    array(
+                        'tax_rate_country' => 'FR',
+                        'tax_rate' => '5',
+                        'tax_rate_name' => 'TVA',
+                        'tax_rate_priority' => 1,
+                        'tax_rate_order' => 0,
+                        'tax_rate_class' => 'super-reduced-rate'
+                    ),
+                    array(
+                        'tax_rate_country' => 'FR',
+                        'tax_rate' => '2.1',
+                        'tax_rate_name' => 'TVA',
+                        'tax_rate_priority' => 1,
+                        'tax_rate_order' => 0,
+                        'tax_rate_class' => 'minimum-rate'
+                    ),
+                    array(
+                        'tax_rate_country' => 'FR',
+                        'tax_rate' => '0',
+                        'tax_rate_name' => 'TVA',
+                        'tax_rate_priority' => 1,
+                        'tax_rate_order' => 0,
+                        'tax_rate_class' => 'zero-rate'
+                    )
+                );
+                //test return value
+                // FIX ME test for duplicates
+                foreach($data as $entry) {
+                    $wpdb->insert('wp_woocommerce_tax_rates', $entry);
+                }
+                //now take care of classes
+                update_option('woocommerce_tax_classes', "Reduced Rate\nSuper-reduced Rate\nMinimum Rate\nZero Rate");
             }
 
             /**
@@ -189,7 +251,6 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 $order['status'] = 1;
                 $order['lines'] = array();
 
-                $_tax = new WC_Tax(); //use this object to get the tax rates
                 foreach ($woocommerce->cart->cart_contents as $product) {
                     $line = array();
                     $line['type'] = get_post_meta($product['product_id'], 'type', 1);
@@ -204,7 +265,6 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                     $line['total_vat'] = $line['total'] - $line['total_net'];
                     $order['lines'][] = $line;
                 }
-
                 $parameters = array($authentication, $order);
                 $soapclient->call('createOrder', $parameters, $ns, '');
             }
@@ -254,6 +314,11 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
             }
 
             //FIX ME : the following two methods don't take into account multiple rates in the same tax class
+            /**
+             * Get the tax class associated with a VAT rate
+             * @param $tax_rate a product VAT rate
+             * @return string   the tax class corresponding to the input VAT rate
+             */
             public function get_tax_class($tax_rate)
             {
                 global $wpdb;
@@ -263,9 +328,16 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 return $wpdb->last_result[0]->tax_rate_class;
             }
 
+            /**
+             * Get the VAT rate associated with a tax class
+             * @param $tax_class    a woocommerce tax class
+             * @return string       the assciated VAT rate
+             */
             public function get_vat_rate($tax_class)
             {
                 global $wpdb;
+                //workaround
+                if ($tax_class == 'standard') $tax_class = '';
                 $sql = 'SELECT tax_rate FROM ' . $wpdb->prefix . 'woocommerce_tax_rates';
                 $sql .= ' WHERE tax_rate_class = "' . $tax_class . '" AND tax_rate_name = "TVA" AND tax_rate_country = "FR"';
                 $result = $wpdb->query($sql);
@@ -320,13 +392,6 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                             update_post_meta($post_id, '_sale_price', $product['price_net']);
                             update_post_meta($post_id, '_price', $product['price_net']);
                             update_post_meta($post_id, '_visibility', 'visible');
-                            /*if ( isset( $_POST['_tax_status'] ) )
-                                update_post_meta( $post_id, '_tax_status', stripslashes( $_POST['_tax_status'] ) );
-
-                            if ( isset( $_POST['_tax_class'] ) )
-                                update_post_meta( $post_id, '_tax_class', stripslashes( $_POST['_tax_class'] ) );
-                            } */
-                            //TODO FIND A WAY TO GET THE TAX
                             update_post_meta($post_id, '_tax_class', $this->get_tax_class($product['vat_rate']));
                             if (get_option('woocommerce_manage_stock') == 'yes') {
                                 if ($product['stock_real'] > 0) {
