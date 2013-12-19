@@ -367,8 +367,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                     $soapclient->soap_defencoding = 'UTF-8';
                     $soapclient->decodeUTF8(false);
                 }
-                //TODO PUT CATEGORY ID IN THE CONF
-                $parameters = array('authentication' => $authentication, 'id' => 1);
+                $parameters = array('authentication' => $authentication, 'id' => $category_id);
                 $result = $soapclient->call('getProductsForCategory', $parameters, $ns, '');
                 if ($result['result']['result_code'] == 'OK') {
                     $products = $result['products'];

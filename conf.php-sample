@@ -13,3 +13,4 @@ $authentication = array(
     'login'=>'',
     'password'=>'',
     'entity'=>'');
+$category_id =  // the ID of your category in Dolibarr
