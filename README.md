@@ -1,32 +1,21 @@
-=== Doliwoo ===
-Contributors: Cédric Salvador
-Tags: wordpress, woocommerce, dolibarr, doliwoo
-Requires at least: 3.7.1.
-Tested up to: 3.7.1.
-License: GPLv3 or later
-License URI: http://www.gnu.org/licenses/gpl-3.0.html
+#**Doliwoo**
+* Contributors: Cédric Salvador
+* Tags: Dolibarr, WooCommerce, Doliwoo
+* Requires at least: 3.7.1
+* Tested up to: 3.7.1
+* Stable tag: 1.0
+* License: GPLv3
+* License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Interactions between Woocommerce and Dolibarr
+A Wordpress plugin acting as an interface between WooCommerce and Dolibarr
 
-== Description ==
-Allow Woocommerce to pull user, thirdparty and product datas from Dolibarr.
-Create orders and thirdparties in Dolibarr using Woocommerce purchase data
+##**Description**
 
-== Installation ==
-1. Upload the doliwoo folder to the \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"/wp-content/plugins/\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\" directory.
-1. Activate the plugin through the \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"Plugins\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\" menu in WordPress.
-1. Place \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"do_action( \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\'plugin_name_hook\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\' );\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\" in your templates.
+* Allows Woocommerce to pull user, thirdparty and product datas from Dolibarr.
+* Can create orders and thirdparties in Dolibarr via its webservices, using WooCommerce purchase data
 
-== Frequently Asked Questions ==
-= A question that someone might have =
-An answer to that question.
+##**Installation**
 
-= What about foo bar? =
-Answer to foo bar dilemma.
-
-== Screenshots ==
-1. The screenshot description corresponds to screenshot-1.(png|jpg|jpeg|gif).
-2. The screenshot description corresponds to screenshot-2.(png|jpg|jpeg|gif).
-3. The screenshot description corresponds to screenshot-3.(png|jpg|jpeg|gif).
-
-== Changelog ==
+* Extract the zip file
+* Drop the contents in the wp-content/plugins/ directory of your WordPress installation
+* Activate the Plugin from Plugins page.
