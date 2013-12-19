@@ -247,7 +247,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 $order = array();
                 //fill this array with all data required to create an order in Dolibarr
                 $order['thirdparty_id'] = get_user_meta(get_current_user_id(), 'dolibarr_id', true);
-                $order['date'] = time();
+                $order['date'] = date('Ymd');
                 $order['status'] = 1;
                 $order['lines'] = array();
 
