@@ -32,7 +32,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
             public function __construct()
             {
                 // Create custom tax classes and VAT rates on plugin activation
-                register_activation_hook(__FILE__, array($this, 'create_custom_tax_classes' ));
+                register_activation_hook(__FILE__, array($this, 'create_custom_tax_classes'));
 
                 // Hook on woocommerce_checkout_process to create a Dolibarr order using WooCommerce order data
                 add_action('woocommerce_checkout_process', array(&$this, 'dolibarr_create_order'));
@@ -106,7 +106,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 );
                 //test return value
                 // FIX ME test for duplicates
-                foreach($data as $entry) {
+                foreach ($data as $entry) {
                     $wpdb->insert('wp_woocommerce_tax_rates', $entry);
                 }
                 //now take care of classes
@@ -367,6 +367,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                     $soapclient->soap_defencoding = 'UTF-8';
                     $soapclient->decodeUTF8(false);
                 }
+                // Get all products that are meant to be displayed on the website
                 $parameters = array('authentication' => $authentication, 'id' => $category_id);
                 $result = $soapclient->call('getProductsForCategory', $parameters, $ns, '');
                 if ($result['result']['result_code'] == 'OK') {
@@ -406,11 +407,14 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                             $attach_ids = array();
                             foreach ($product['images'] as $image) {
                                 foreach ($image as $filename) {
+                                    // as we know what images are associated with the product, we can retrieve them via webservice
                                     $parameters = array('authentication' => $authentication, 'modulepart' => 'product', 'file' => $product['dir'] . $filename);
                                     $result = $soapclient->call('getDocument', $parameters, $ns, '');
                                     if ($result['result']['result_code'] == 'OK') {
+                                        // copy the image to the wordpress uploads folder
                                         $res = $filesystem->put_contents($path . '/' . $result['document']['filename'], base64_decode($result['document']['content']));
                                         if ($res) {
+                                            // attach the new image to the product post
                                             $filename = $result['document']['filename'];
                                             $wp_filetype = wp_check_filetype(basename($filename), null);
                                             $wp_upload_dir = wp_upload_dir();
@@ -429,6 +433,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                                     }
                                 }
                             }
+                            // use the first image as the product thumbnail, fill the image gallery
                             update_post_meta($post_id, '_thumbnail_id', $attach_ids[0]);
                             update_post_meta($post_id, '_product_image_gallery', implode(',', $attach_ids));
                             $woocommerce->clear_product_transients($post_id);
@@ -453,6 +458,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                     $soapclient->decodeUTF8(false);
                 }
                 $dol_id = get_user_meta($user_id, 'dolibarr_id', true);
+                // if the user has a Dolibarr ID, use it, else use his company name
                 if ($dol_id) {
                     $parameters = array($authentication, $dol_id);
                 } else {
