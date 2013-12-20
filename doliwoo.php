@@ -33,6 +33,10 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
             {
                 // Create custom tax classes and VAT rates on plugin activation
                 register_activation_hook(__FILE__, array($this, 'create_custom_tax_classes'));
+                // Import Dolibarr products on plugin activation
+                register_activation_hook(__FILE__, array($this, 'import_dolibarr_products'));
+                // Create Dolibarr user on plugin activation
+                register_activation_hook(__FILE__, array($this, 'create_dolibarr_thirdparties'));
 
                 // Hook on woocommerce_checkout_process to create a Dolibarr order using WooCommerce order data
                 add_action('woocommerce_checkout_process', array(&$this, 'dolibarr_create_order'));
