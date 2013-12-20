@@ -14,3 +14,4 @@ $authentication = array(
     'password'=>'',
     'entity'=>'');
 $category_id =  // the ID of your category in Dolibarr
+$generic_id = // the ID of the generic user in Dolibarr

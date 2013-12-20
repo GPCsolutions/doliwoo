@@ -35,8 +35,6 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 register_activation_hook(__FILE__, array($this, 'create_custom_tax_classes'));
                 // Import Dolibarr products on plugin activation
                 register_activation_hook(__FILE__, array($this, 'import_dolibarr_products'));
-                // Create Dolibarr user on plugin activation
-                register_activation_hook(__FILE__, array($this, 'create_dolibarr_thirdparties'));
 
                 // Hook on woocommerce_checkout_process to create a Dolibarr order using WooCommerce order data
                 add_action('woocommerce_checkout_process', array(&$this, 'dolibarr_create_order'));
@@ -53,9 +51,6 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 add_action('edit_user_profile_update', array(&$this, 'doliwoo_save_customer_meta_fields'));
                 add_action('manage_users_custom_column', array(&$this, 'doliwoo_user_column_values'), 10, 3);
 
-                // Schedule the creation of Dolibarr thirdparties using WooCommerce usera data
-                add_action('wp', array(&$this, 'schedule_create_thirdparties'));
-                add_action('create_thirdparties', array(&$this, 'create_dolibarr_thirdparties'));
             }
 
             /**
@@ -257,7 +252,19 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
                 $order = array();
                 //fill this array with all data required to create an order in Dolibarr
-                $order['thirdparty_id'] = get_user_meta(get_current_user_id(), 'dolibarr_id', true);
+                $user_id = get_current_user_id();
+                if ($user_id == '') {
+                    // default to the generic user
+                    $thirdparty_id = $generic_id;
+                } else {
+                    $thirdparty_id = get_user_meta($user_id, 'dolibarr_id', true);
+                }
+                if ($thirdparty_id != '') {
+                    $order['thirdparty_id'] = $thirdparty_id;
+                } else {
+                    $this->create_dolibarr_thirdparty_if_not_exists($user_id);
+                    $order['thirdparty_id'] = get_user_meta($user_id, 'dolibarr_id', true);
+                }
                 $order['date'] = date('Ymd');
                 $order['status'] = 1;
                 $order['lines'] = array();
@@ -291,20 +298,6 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
             {
                 if (!wp_next_scheduled('import_products')) {
                     wp_schedule_event(time(), 'daily', 'import_products');
-                }
-            }
-
-            /**
-             * Schedules the daily creation of Dolibarr thirdparties using WooCommerce users data
-             *
-             * @access public
-             * @return void
-             */
-
-            public function schedule_create_thirdparties()
-            {
-                if (!wp_next_scheduled('create_thirdparties')) {
-                    wp_schedule_event(time(), 'daily', 'create_thirdparties');
                 }
             }
 
@@ -498,8 +491,14 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                     $soapclient->soap_defencoding = 'UTF-8';
                     $soapclient->decodeUTF8(false);
                 }
+                $ref = get_user_meta($user_id, 'billing_company', true);
+                $individual = 0;
+                if ($ref == '') {
+                    $ref = get_user_meta($user_id, 'billing_last_name', true);
+                    $individual = 1;
+                }
                 $new_thirdparty = array(
-                    'ref' => get_user_meta($user_id, 'billing_company', true),
+                    'ref' => $ref,
                     //'ref_ext'=>'WS0001',
                     'status' => '1',
                     'client' => '1',
@@ -510,7 +509,9 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                     'country_code' => get_user_meta($user_id, 'billing_country', true),
                     'supplier_code' => '0',
                     'phone' => get_user_meta($user_id, 'billing_phone', true),
-                    'email' => get_user_meta($user_id, 'billing_email', true)
+                    'email' => get_user_meta($user_id, 'billing_email', true),
+                    'individual' => $individual,
+                    'firstname' => get_user_meta($user_id, 'billing_first_name', true)
                 );
                 $parameters = array('authentication' => $authentication, 'thirdparty' => $new_thirdparty);
 
@@ -532,7 +533,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                     } elseif (is_null($result['thirdparty'])) {
                         $res = $this->create_dolibarr_thirdparty($user_id);
                         if ($res['result']['result_code'] == 'OK') {
-                            update_user_meta($user_id, 'dolibarr_id', $res['thirdparty']['id']);
+                            update_user_meta($user_id, 'dolibarr_id', $res['id']);
                         }
                     }
                 }
