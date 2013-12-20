@@ -104,10 +104,17 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                         'tax_rate_class' => 'zero-rate'
                     )
                 );
-                //test return value
-                // FIX ME test for duplicates
+
                 foreach ($data as $entry) {
-                    $wpdb->insert('wp_woocommerce_tax_rates', $entry);
+                    $query = 'SELECT tax_rate_id FROM ' . $wpdb->prefix . 'woocommerce_tax_rates WHERE ';
+                    foreach ($entry as $field => $value) {
+                        $query .= $field . ' = "' . $value . '" AND ';
+                    }
+                    $query = rtrim($query, ' AND ');
+                    $row = $wpdb->get_row($query);
+                    if (is_null($row)) {
+                        $wpdb->insert('wp_woocommerce_tax_rates', $entry);
+                    }
                 }
                 //now take care of classes
                 update_option('woocommerce_tax_classes', "Reduced Rate\nSuper-reduced Rate\nMinimum Rate\nZero Rate");
