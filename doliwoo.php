@@ -142,7 +142,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
             function doliwoo_get_customer_meta_fields()
             {
-                if ( ! current_user_can( 'manage_woocommerce' ) )
+                if (!current_user_can('manage_woocommerce'))
                     return;
                 $show_fields = apply_filters('doliwoo_customer_meta_fields', array(
                     'dolibarr' => array(
@@ -168,7 +168,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
             function doliwoo_customer_meta_fields($user)
             {
-                if ( ! current_user_can( 'manage_woocommerce' ) )
+                if (!current_user_can('manage_woocommerce'))
                     return;
                 $show_fields = $this->doliwoo_get_customer_meta_fields();
                 foreach ($show_fields as $fieldset) {
