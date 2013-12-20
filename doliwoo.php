@@ -142,6 +142,8 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
             function doliwoo_get_customer_meta_fields()
             {
+                if ( ! current_user_can( 'manage_woocommerce' ) )
+                    return;
                 $show_fields = apply_filters('doliwoo_customer_meta_fields', array(
                     'dolibarr' => array(
                         'title' => __('Dolibarr', 'doliwoo'),
@@ -166,32 +168,24 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
             function doliwoo_customer_meta_fields($user)
             {
+                if ( ! current_user_can( 'manage_woocommerce' ) )
+                    return;
                 $show_fields = $this->doliwoo_get_customer_meta_fields();
-                foreach ($show_fields as $fieldset) :
-                    ?>
-                    <h3><?php echo $fieldset['title']; ?></h3>
-                    <table class="form-table">
-                        <?php
-                        foreach ($fieldset['fields'] as $key => $field) :
-                            ?>
-                            <tr>
-                                <th><label
-                                        for="<?php echo esc_attr($key); ?>"><?php echo esc_html($field['label']); ?></label>
-                                </th>
-                                <td>
-                                    <input type="text" name="<?php echo esc_attr($key); ?>"
-                                           id="<?php echo esc_attr($key); ?>"
-                                           value="<?php echo esc_attr(get_user_meta($user->ID, $key, true)); ?>"
-                                           class="regular-text"/><br/>
-                                    <span class="description"><?php echo wp_kses_post($field['description']); ?></span>
-                                </td>
-                            </tr>
-                        <?php
-                        endforeach;
-                        ?>
-                    </table>
-                <?php
-                endforeach;
+                foreach ($show_fields as $fieldset) {
+                    echo '<h3>', $fieldset['title'], '</h3>',
+                    '<table class="form-table">';
+                    foreach ($fieldset['fields'] as $key => $field) {
+                        echo '<tr>',
+                        '<th><label for="', esc_attr($key), '">', esc_html($field['label']), '</label></th>',
+                        '<td>',
+                        '<input type="text" name="', esc_attr($key), '" id="', esc_attr($key), '"
+                        value="', esc_attr(get_user_meta($user->ID, $key, true)), '" class="regular-text"/><br/>',
+                        '<span class="description">', wp_kses_post($field['description']), '</span>',
+                        '</td>',
+                        '</tr>';
+                    }
+                    echo '</table>';
+                }
             }
 
             /**
