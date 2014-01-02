@@ -51,6 +51,17 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 add_action('edit_user_profile_update', array(&$this, 'doliwoo_save_customer_meta_fields'));
                 add_action('manage_users_custom_column', array(&$this, 'doliwoo_user_column_values'), 10, 3);
 
+                // Hook for adding admin menus
+                add_action('admin_menu',  array(&$this, 'addMenu'));
+
+            }
+
+            /**
+             * This will create a menu item under the option menu
+             * @see http://codex.wordpress.org/Function_Reference/add_options_page
+             */
+            public function addMenu(){
+                add_menu_page('Parameters', 'Doliwoo', 'manage_options', '/doliwoo/doliwoo-admin.php', '', plugin_dir_url( __FILE__ ) . 'dolibarr.png', '56.1');
             }
 
             /**
