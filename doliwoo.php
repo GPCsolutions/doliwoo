@@ -53,7 +53,6 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
                 // Hook for adding admin menus
                 add_action('admin_menu', array(&$this, 'addMenu'));
-
             }
 
             /**
@@ -571,5 +570,6 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
         // Plugin instanciation
         $GLOBALS['doliwoo'] = new Doliwoo();
+        load_plugin_textdomain('doliwoo', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
     }
 }

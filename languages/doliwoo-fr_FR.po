@@ -1,0 +1,50 @@
+# Copyright (C) 2013 WordPress
+# This file is distributed under the same license as the WordPress package.
+msgid ""
+msgstr ""
+"Project-Id-Version: WordPress 3.8-RC1\n"
+"Report-Msgid-Bugs-To: http://wppolyglots.wordpress.com\n"
+"POT-Creation-Date: 2013-12-08 08:13:13+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2014-01-03\n"
+"Last-Translator: Cédric Salvador <csalvador@gpcsolutions.fr>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: doliwoo-admin.php:38
+msgid "Doliwoo settings"
+msgstr "Réglages Doliwoo"
+
+#: doliwoo-admin.php:40
+msgid "Dolibarr webservice URL"
+msgstr "URL des webservices Dolibarr"
+
+#: doliwoo-admin.php:41
+msgid "Dolibarr webservice key"
+msgstr "Clé des webservices Dolibarr"
+
+#: doliwoo-admin.php:42
+msgid "Source application"
+msgstr "Nom de l'application"
+
+#: doliwoo-admin.php:43
+msgid "Dolibarr login"
+msgstr "Identifiant Dolibarr"
+
+#: doliwoo-admin.php:44
+msgid "Dolibarr password"
+msgstr "Mot de passe Dolibarr"
+
+#: doliwoo-admin.php:45
+msgid "Dolibarr entity"
+msgstr "ID de l'entité Dolibarr"
+
+#: doliwoo-admin.php:46
+msgid "Dolibarr category ID"
+msgstr "ID de la catégorie Dolibarr"
+
+#: doliwoo-admin.php:47
+msgid "Dolibarr generic user ID"
+msgstr "ID du tiers générique Dolibarr"
+
