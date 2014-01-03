@@ -33,20 +33,22 @@ $generic_id = \'' . $_POST['dolibarr_generic_id'] . '\';';
     fwrite($fp, $s);
     fclose($fp);
 }
-echo '<form method="post" action="' . $_SERVER['REQUEST_URI'] . '">',
+echo '<div class="wrap">',
+    '<form method="post" action="' . $_SERVER['REQUEST_URI'] . '">',
     '<input type="hidden" name="action" value="update">',
-    '<table width="100%">',
-    '<tr><td>Dolibarr webservice URL</td><td><input type="text" value="' . $webservs_url . '" name="webservs_url"></td></tr>',
-    '<tr><td>Dolibarr webservice key</td><td><input type="text" value="' . $authentication['dolibarrkey'] . '" name="dolibarr_key"></td></tr>',
-    '<tr><td>Source application</td><td><input type="text" value="' . $authentication['sourceapplication'] . '" name="source_application"></td></tr>',
-    '<tr><td>Dolibarr login</td><td><input type="text" value="' . $authentication['login'] . '" name="dolibarr_login"></td></tr>',
-    '<tr><td>Dolibarr password</td><td><input type="text" value="' . $authentication['password'] . '" name="dolibarr_password"></td></tr>',
-    '<tr><td>Dolibarr entity</td><td><input type="text" value="' . $authentication['entity'] . '" name="dolibarr_entity"></td></tr>',
-    '<tr><td>Dolibarr category ID</td><td><input type="text" value="' . $category_id . '" name="dolibarr_category_id"></td></tr>',
-    '<tr><td>Dolibarr generic user ID</td><td><input type="text" value="' . $generic_id . '" name="dolibarr_generic_id"></td></tr>',
+    '<h2>Réglages Doliwoo</h2>',
+    '<table class="wc_tax_rates widefat">',
+    '<tr><td>Dolibarr webservice URL</td><td><input type="text" value="' . $webservs_url . '" name="webservs_url" class="regular-text"></td></tr>',
+    '<tr><td>Dolibarr webservice key</td><td><input type="text" value="' . $authentication['dolibarrkey'] . '" name="dolibarr_key" class="regular-text"></td></tr>',
+    '<tr><td>Source application</td><td><input type="text" value="' . $authentication['sourceapplication'] . '" name="source_application" class="regular-text"></td></tr>',
+    '<tr><td>Dolibarr login</td><td><input type="text" value="' . $authentication['login'] . '" name="dolibarr_login" class="regular-text"></td></tr>',
+    '<tr><td>Dolibarr password</td><td><input type="text" value="' . $authentication['password'] . '" name="dolibarr_password" class="regular-text"></td></tr>',
+    '<tr><td>Dolibarr entity</td><td><input type="text" value="' . $authentication['entity'] . '" name="dolibarr_entity" class="regular-text"></td></tr>',
+    '<tr><td>Dolibarr category ID</td><td><input type="text" value="' . $category_id . '" name="dolibarr_category_id" class="regular-text"></td></tr>',
+    '<tr><td>Dolibarr generic user ID</td><td><input type="text" value="' . $generic_id . '" name="dolibarr_generic_id" class="regular-text"></td></tr>',
     '</table>',
-    '<input type="submit">',
-    '</form>';
-?>
+    '<input type="submit" class="button-primary" name="save" value="' . __('Save changes', 'woocommerce') . '">',
+    '</form>',
+    '</div>';
 
 
