@@ -52,7 +52,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 add_action('manage_users_custom_column', array(&$this, 'doliwoo_user_column_values'), 10, 3);
 
                 // Hook for adding admin menus
-                add_action('admin_menu',  array(&$this, 'addMenu'));
+                add_action('admin_menu', array(&$this, 'addMenu'));
 
             }
 
@@ -60,8 +60,9 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
              * This will create a menu item under the option menu
              * @see http://codex.wordpress.org/Function_Reference/add_options_page
              */
-            public function addMenu(){
-                add_menu_page('Parameters', 'Doliwoo', 'manage_options', '/doliwoo/doliwoo-admin.php', '', plugin_dir_url( __FILE__ ) . 'dolibarr.png', '56.1');
+            public function addMenu()
+            {
+                add_menu_page('Parameters', 'Doliwoo', 'manage_options', '/doliwoo/doliwoo-admin.php', '', plugin_dir_url(__FILE__) . 'dolibarr.png', '56.1');
             }
 
             /**
@@ -154,7 +155,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
             function doliwoo_get_customer_meta_fields()
             {
                 if (!current_user_can('manage_woocommerce'))
-                    return;
+                    return null;
                 $show_fields = apply_filters('doliwoo_customer_meta_fields', array(
                     'dolibarr' => array(
                         'title' => __('Dolibarr', 'doliwoo'),
@@ -310,6 +311,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
              * Checks for the existence of a product in Wordpress database
              *
              * @access public
+             * @param  int $dolibarr_id ID of a product in Dolibarr
              * @return int $exists      0 if the product doesn't exists, else >0
              */
 
@@ -318,14 +320,16 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 global $wpdb;
                 $sql = 'SELECT count(post_id) as nb from ' . $wpdb->prefix . 'postmeta WHERE meta_key = "dolibarr_id" AND meta_value = ' . $dolibarr_id;
                 $result = $wpdb->query($sql);
-                $exists = $wpdb->last_result[0]->nb;
+                if ($result) {
+                    $exists = $wpdb->last_result[0]->nb;
+                }
                 return $exists;
             }
 
             //FIX ME : the following two methods don't take into account multiple rates in the same tax class
             /**
              * Get the tax class associated with a VAT rate
-             * @param $tax_rate a product VAT rate
+             * @param float $tax_rate a product VAT rate
              * @return string   the tax class corresponding to the input VAT rate
              */
             public function get_tax_class($tax_rate)
@@ -334,13 +338,16 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 $sql = 'SELECT tax_rate_class FROM ' . $wpdb->prefix . 'woocommerce_tax_rates';
                 $sql .= ' WHERE tax_rate = ' . $tax_rate . ' AND tax_rate_name = "TVA" AND tax_rate_country = "FR"';
                 $result = $wpdb->query($sql);
-                return $wpdb->last_result[0]->tax_rate_class;
+                if ($result) {
+                    $res = $wpdb->last_result[0]->tax_rate_class;
+                }
+                return $res;
             }
 
             /**
              * Get the VAT rate associated with a tax class
-             * @param $tax_class    a woocommerce tax class
-             * @return string       the assciated VAT rate
+             * @param string    $tax_class    a woocommerce tax class
+             * @return string       the associated VAT rate
              */
             public function get_vat_rate($tax_class)
             {
@@ -350,7 +357,10 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 $sql = 'SELECT tax_rate FROM ' . $wpdb->prefix . 'woocommerce_tax_rates';
                 $sql .= ' WHERE tax_rate_class = "' . $tax_class . '" AND tax_rate_name = "TVA" AND tax_rate_country = "FR"';
                 $result = $wpdb->query($sql);
-                return $wpdb->last_result[0]->tax_rate;
+                if ($result) {
+                    $res = $wpdb->last_result[0]->tax_rate;
+                }
+                return $res;
             }
 
             /**
@@ -454,6 +464,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
             /**
              * Checks if a thirdparty exists in Dolibarr
              * @access public
+             * @param int $user_id      wordpress ID of an user
              * @return mixed $result    array with the request results if it succeeds, null if there's an error
              */
             public function exists_thirdparty($user_id)
