@@ -14,25 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-require_once 'conf.php';
 if ($_POST['action'] == 'update') {
-    // TODO secure
     $s = '<?php
 
-$webservs_url = \'' . $_POST["webservs_url"] . '\';	// If not a page, should end with /
+$webservs_url = \'' . sanitize_text_field($_POST["webservs_url"]) . '\';	// If not a page, should end with /
 $ns = \'http://www.dolibarr.org/ns/\';
 $authentication = array(
-    \'dolibarrkey\'=> \'' . $_POST["dolibarr_key"] . '\',
-    \'sourceapplication\'=>\'' . $_POST["source_application"] . '\',
-    \'login\'=>\'' . $_POST['dolibarr_login'] . '\',
-    \'password\'=> \'' . $_POST['dolibarr_password'] . '\',
-    \'entity\'=>\'' . $_POST['dolibarr_entity'] . '\');
-$category_id = \'' . $_POST['dolibarr_category_id'] . '\';
-$generic_id = \'' . $_POST['dolibarr_generic_id'] . '\';';
+    \'dolibarrkey\'=> \'' . sanitize_text_field($_POST["dolibarr_key"]) . '\',
+    \'sourceapplication\'=>\'' . sanitize_text_field($_POST["source_application"]) . '\',
+    \'login\'=>\'' . sanitize_text_field($_POST['dolibarr_login']) . '\',
+    \'password\'=> \'' . sanitize_text_field($_POST['dolibarr_password']) . '\',
+    \'entity\'=>\'' . sanitize_text_field($_POST['dolibarr_entity']) . '\');
+$category_id = \'' . sanitize_text_field($_POST['dolibarr_category_id']) . '\';
+$generic_id = \'' . sanitize_text_field($_POST['dolibarr_generic_id']) . '\';';
     $fp = fopen(plugin_dir_path( __FILE__ ) . "conf.php", "w");
     fwrite($fp, $s);
     fclose($fp);
 }
+require_once 'conf.php';
 echo '<div class="wrap">',
     '<form method="post" action="' . $_SERVER['REQUEST_URI'] . '">',
     '<input type="hidden" name="action" value="update">',
