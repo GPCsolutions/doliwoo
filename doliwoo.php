@@ -61,7 +61,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
             public function conf_notice($message)
             {
                 if ($message) {
-                    echo '<div class="error"><p>', __($message,'doliwoo') , '</p></div>';
+                    echo '<div class="error"><p>', __($message, 'doliwoo'), '</p></div>';
                 }
             }
 
@@ -81,7 +81,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
             function create_custom_tax_classes()
             {
                 global $wpdb;
-                $tax_name =  __('VAT', 'doliwoo');
+                $tax_name = __('VAT', 'doliwoo');
                 //first, create the rates
                 $data = array(
                     array(
@@ -265,7 +265,6 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                     $soapclient->soap_defencoding = 'UTF-8';
                     $soapclient->decodeUTF8(false);
                 }
-
                 $order = array();
                 //fill this array with all data required to create an order in Dolibarr
                 $user_id = get_current_user_id();
@@ -359,7 +358,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
             /**
              * Get the VAT rate associated with a tax class
-             * @param string    $tax_class    a woocommerce tax class
+             * @param string $tax_class a woocommerce tax class
              * @return string       the associated VAT rate
              */
             public function get_vat_rate($tax_class)
@@ -391,7 +390,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 WP_Filesystem();
                 require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php';
                 $filesystem = new WP_Filesystem_Direct('arg');
-                require_once(ABSPATH . 'wp-admin/includes/image.php');
+                require_once ABSPATH . 'wp-admin/includes/image.php';
 
                 // Set the WebService URL
                 $soapclient = new nusoap_client($webservs_url . 'server_productorservice.php');
@@ -477,7 +476,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
             /**
              * Checks if a thirdparty exists in Dolibarr
              * @access public
-             * @param int $user_id      wordpress ID of an user
+             * @param int $user_id wordpress ID of an user
              * @return mixed $result    array with the request results if it succeeds, null if there's an error
              */
             public function exists_thirdparty($user_id)
@@ -584,6 +583,6 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
         // Plugin instanciation
         $GLOBALS['doliwoo'] = new Doliwoo();
-        load_plugin_textdomain('doliwoo', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+        load_plugin_textdomain('doliwoo', false, dirname(plugin_basename(__FILE__)) . '/languages/');
     }
 }
