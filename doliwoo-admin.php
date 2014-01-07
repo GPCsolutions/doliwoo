@@ -38,7 +38,7 @@ $generic_id = \'' . sanitize_text_field($_POST['dolibarr_generic_id']) . '\';';
         do_action('admin_notices', 'Could not open doliwoo/conf.php');
     }
 }
-require_once 'conf.php';
+if (file_exists(plugin_dir_path(__FILE__) . 'conf.php')) require_once 'conf.php';
 echo '<div class="wrap">',
 '<form method="post" action="' . $_SERVER['REQUEST_URI'] . '">',
 '<input type="hidden" name="action" value="update">',
