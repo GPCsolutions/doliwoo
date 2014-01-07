@@ -278,6 +278,9 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 if ($thirdparty_id != '') {
                     $order['thirdparty_id'] = $thirdparty_id;
                 } else {
+                    if (get_user_meta($user_id, 'billing_company', true) == '') {
+                        update_user_meta($user_id, 'billing_company', $_POST['billing_company']);
+                    }
                     $this->create_dolibarr_thirdparty_if_not_exists($user_id);
                     $order['thirdparty_id'] = get_user_meta($user_id, 'dolibarr_id', true);
                 }
