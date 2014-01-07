@@ -28,8 +28,15 @@ $authentication = array(
 $category_id = \'' . sanitize_text_field($_POST['dolibarr_category_id']) . '\';
 $generic_id = \'' . sanitize_text_field($_POST['dolibarr_generic_id']) . '\';';
     $fp = fopen(plugin_dir_path( __FILE__ ) . "conf.php", "w");
-    fwrite($fp, $s);
-    fclose($fp);
+    if ($fp) {
+        $res = fwrite($fp, $s);
+        if (!$res) {
+            do_action('admin_notices', 'Could not write in doliwoo/conf.php');
+        }
+        fclose($fp);
+    } else {
+        do_action('admin_notices', 'Could not open doliwoo/conf.php');
+    }
 }
 require_once 'conf.php';
 echo '<div class="wrap">',
