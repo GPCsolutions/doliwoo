@@ -51,8 +51,18 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 add_action('edit_user_profile_update', array(&$this, 'doliwoo_save_customer_meta_fields'));
                 add_action('manage_users_custom_column', array(&$this, 'doliwoo_user_column_values'), 10, 3);
 
-                // Hook for adding admin menus
+                // Hook to add Doliwoo settings menu
                 add_action('admin_menu', array(&$this, 'addMenu'));
+
+                // Add error message if something is wrong with the conf file
+                add_action('admin_notices', array(&$this, 'conf_notice'));
+            }
+
+            public function conf_notice($message)
+            {
+                if ($message) {
+                    echo '<div class="error"><p>', __($message, 'doliwoo'), '</p></div>';
+                }
             }
 
             /**
@@ -71,12 +81,13 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
             function create_custom_tax_classes()
             {
                 global $wpdb;
+                $tax_name = __('VAT', 'doliwoo');
                 //first, create the rates
                 $data = array(
                     array(
                         'tax_rate_country' => 'FR',
                         'tax_rate' => '20',
-                        'tax_rate_name' => 'TVA',
+                        'tax_rate_name' => $tax_name,
                         'tax_rate_priority' => 1,
                         'tax_rate_order' => 0,
                         'tax_rate_class' => ''
@@ -84,7 +95,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                     array(
                         'tax_rate_country' => 'FR',
                         'tax_rate' => '10',
-                        'tax_rate_name' => 'TVA',
+                        'tax_rate_name' => $tax_name,
                         'tax_rate_priority' => 1,
                         'tax_rate_order' => 0,
                         'tax_rate_class' => 'reduced-rate'
@@ -92,7 +103,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                     array(
                         'tax_rate_country' => 'FR',
                         'tax_rate' => '5',
-                        'tax_rate_name' => 'TVA',
+                        'tax_rate_name' => $tax_name,
                         'tax_rate_priority' => 1,
                         'tax_rate_order' => 0,
                         'tax_rate_class' => 'super-reduced-rate'
@@ -100,7 +111,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                     array(
                         'tax_rate_country' => 'FR',
                         'tax_rate' => '2.1',
-                        'tax_rate_name' => 'TVA',
+                        'tax_rate_name' => $tax_name,
                         'tax_rate_priority' => 1,
                         'tax_rate_order' => 0,
                         'tax_rate_class' => 'minimum-rate'
@@ -108,7 +119,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                     array(
                         'tax_rate_country' => 'FR',
                         'tax_rate' => '0',
-                        'tax_rate_name' => 'TVA',
+                        'tax_rate_name' => $tax_name,
                         'tax_rate_priority' => 1,
                         'tax_rate_order' => 0,
                         'tax_rate_class' => 'zero-rate'
@@ -254,7 +265,6 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                     $soapclient->soap_defencoding = 'UTF-8';
                     $soapclient->decodeUTF8(false);
                 }
-
                 $order = array();
                 //fill this array with all data required to create an order in Dolibarr
                 $user_id = get_current_user_id();
@@ -267,6 +277,9 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 if ($thirdparty_id != '') {
                     $order['thirdparty_id'] = $thirdparty_id;
                 } else {
+                    if (get_user_meta($user_id, 'billing_company', true) == '') {
+                        update_user_meta($user_id, 'billing_company', $_POST['billing_company']);
+                    }
                     $this->create_dolibarr_thirdparty_if_not_exists($user_id);
                     $order['thirdparty_id'] = get_user_meta($user_id, 'dolibarr_id', true);
                 }
@@ -335,7 +348,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
             {
                 global $wpdb;
                 $sql = 'SELECT tax_rate_class FROM ' . $wpdb->prefix . 'woocommerce_tax_rates';
-                $sql .= ' WHERE tax_rate = ' . $tax_rate . ' AND tax_rate_name = "TVA" AND tax_rate_country = "FR"';
+                $sql .= ' WHERE tax_rate = ' . $tax_rate . ' AND tax_rate_name = "' . __('VAT', 'doliwoo') . '"';
                 $result = $wpdb->query($sql);
                 if ($result) {
                     $res = $wpdb->last_result[0]->tax_rate_class;
@@ -345,7 +358,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
             /**
              * Get the VAT rate associated with a tax class
-             * @param string    $tax_class    a woocommerce tax class
+             * @param string $tax_class a woocommerce tax class
              * @return string       the associated VAT rate
              */
             public function get_vat_rate($tax_class)
@@ -354,7 +367,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 //workaround
                 if ($tax_class == 'standard') $tax_class = '';
                 $sql = 'SELECT tax_rate FROM ' . $wpdb->prefix . 'woocommerce_tax_rates';
-                $sql .= ' WHERE tax_rate_class = "' . $tax_class . '" AND tax_rate_name = "TVA" AND tax_rate_country = "FR"';
+                $sql .= ' WHERE tax_rate_class = "' . $tax_class . '" AND tax_rate_name = "' . __('VAT', 'doliwoo') . '"';
                 $result = $wpdb->query($sql);
                 if ($result) {
                     $res = $wpdb->last_result[0]->tax_rate;
@@ -377,7 +390,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 WP_Filesystem();
                 require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php';
                 $filesystem = new WP_Filesystem_Direct('arg');
-                require_once(ABSPATH . 'wp-admin/includes/image.php');
+                require_once ABSPATH . 'wp-admin/includes/image.php';
 
                 // Set the WebService URL
                 $soapclient = new nusoap_client($webservs_url . 'server_productorservice.php');
@@ -463,7 +476,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
             /**
              * Checks if a thirdparty exists in Dolibarr
              * @access public
-             * @param int $user_id      wordpress ID of an user
+             * @param int $user_id wordpress ID of an user
              * @return mixed $result    array with the request results if it succeeds, null if there's an error
              */
             public function exists_thirdparty($user_id)
@@ -570,6 +583,6 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
         // Plugin instanciation
         $GLOBALS['doliwoo'] = new Doliwoo();
-        load_plugin_textdomain('doliwoo', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+        load_plugin_textdomain('doliwoo', false, dirname(plugin_basename(__FILE__)) . '/languages/');
     }
 }
