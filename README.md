@@ -11,6 +11,12 @@ A Wordpress plugin acting as an interface between WooCommerce and Dolibarr.
 * License: GPLv3
 * License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
+Status
+------
+This is alpha code. Contributors and testers are welcome.
+
+If you need this to be finished, you can buy paid support to GPC.solutions <https://gpcsolutions.fr>
+
 Description
 -----------
 * Allows Woocommerce to pull user, thirdparty and product datas from Dolibarr.
