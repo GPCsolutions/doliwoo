@@ -71,7 +71,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
              */
             public function addMenu()
             {
-                add_menu_page('Parameters', 'Doliwoo', 'manage_options', '/doliwoo/doliwoo-admin.php', '', plugin_dir_url(__FILE__) . 'dolibarr.png', '56.1');
+                add_menu_page('Parameters', 'Doliwoo', 'manage_options', 'doliwoo/doliwoo-admin.php', '', plugin_dir_url(__FILE__) . 'dolibarr.png', '56.1');
             }
 
             /**
