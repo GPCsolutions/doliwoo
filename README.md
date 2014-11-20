@@ -42,6 +42,6 @@ Installation
 ------------
 * Extract the zip file.
 * Drop the contents in the wp-content/plugins/ directory of your WordPress installation.
-* Copy conf.php-sample, modify it to fit your installation, then save it as conf.php.
 * Activate the Plugin from Plugins page.
+* Go to the Doliwoo menu and configure it according to your Dolibarr installation
 
