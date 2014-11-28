@@ -26,7 +26,7 @@ This plugin uses Dolibarr webservices to :
 
 Dolibarr prerequisites
 ----------------------
-* Dolibarr >= 5.4.0
+* Dolibarr >= 3.4.0
 * Modules:
     * Webservices
     * Thirdparties
