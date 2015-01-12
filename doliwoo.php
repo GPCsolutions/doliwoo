@@ -4,13 +4,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 /**
  * Plugin Name: Doliwoo
+ * Plugin URI:
  * Description: Interface between WooCommerce and Dolibarr
- * Version: 0.1
- * Author: Cédric Salvador <csalvador@gpcsolutions.fr>
+ * Version: 0.2
+ * Author: Maxime Lafourcade <mlafourcade@gpcsolutions.fr>
  * License: GPL3
  */
 
 /* Copyright (C) 2013 Cédric Salvador  <csalvador@gpcsolutions.fr>
+ * Copyright (C) 2015 Maxime Lafourcade <mlafourcade@gpcsolutions.fr>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,8 +28,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+// TODO: Get rid of nusoap and use php native SOAP extension
 require_once 'nusoap/lib/nusoap.php';
 
+// If Woocommerce is active
 if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
 	if ( ! class_exists( 'Doliwoo' ) ) {
 		class Doliwoo {
@@ -329,7 +333,7 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			 *
 			 * @param  int $dolibarr_id ID of a product in Dolibarr
 			 *
-			 * @return int $exists      0 if the product doesn't exists, else >0
+			 * @return int $exists 0 if the product doesn't exists, else >0
 			 */
 
 			public function dolibarr_product_exists( $dolibarr_id ) {
@@ -493,7 +497,7 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			 *
 			 * @param int $user_id wordpress ID of an user
 			 *
-			 * @return mixed $result    array with the request results if it succeeds, null if there's an error
+			 * @return mixed $result  array with the request results if it succeeds, null if there's an error
 			 */
 			public function exists_thirdparty( $user_id ) {
 				require 'conf.php';

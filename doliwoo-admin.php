@@ -2,6 +2,9 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
+
+
+
 /* Copyright (C) 2013 Cédric Salvador  <csalvador@gpcsolutions.fr>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -18,6 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 if ( $_POST['action'] == 'update' ) {
+	// TODO: Use wordpress db facility to store plugin settings
 	$s  = '<?php
 
 $webservs_url = \'' . sanitize_text_field( $_POST["webservs_url"] ) . '\';	// If not a page, should end with /
@@ -30,6 +34,8 @@ $authentication = array(
     \'entity\'=>\'' . sanitize_text_field( $_POST['dolibarr_entity'] ) . '\');
 $category_id = \'' . sanitize_text_field( $_POST['dolibarr_category_id'] ) . '\';
 $generic_id = \'' . sanitize_text_field( $_POST['dolibarr_generic_id'] ) . '\';';
+
+
 	$fp = fopen( plugin_dir_path( __FILE__ ) . "conf.php", "w" );
 	if ( $fp ) {
 		$res = fwrite( $fp, $s );
@@ -41,25 +47,52 @@ $generic_id = \'' . sanitize_text_field( $_POST['dolibarr_generic_id'] ) . '\';'
 		do_action( 'admin_notices', 'Could not open doliwoo/conf.php' );
 	}
 }
+
+// TODO: Use wordpress db facility to read plugin settings
 if ( file_exists( plugin_dir_path( __FILE__ ) . 'conf.php' ) ) {
 	require_once 'conf.php';
 }
+
+
 echo '<div class="wrap">',
-	'<form method="post" action="' . $_SERVER['REQUEST_URI'] . '">',
-'<input type="hidden" name="action" value="update">',
 	'<h2>' . __( 'Doliwoo settings', 'doliwoo' ) . '</h2>',
-'<table class="wc_tax_rates widefat">',
-	'<tr><td>' . __( 'Dolibarr webservice URL', 'doliwoo' ) . '</td><td><input type="text" value="' . $webservs_url . '" name="webservs_url" class="regular-text"></td></tr>',
-	'<tr><td>' . __( 'Dolibarr webservice key', 'doliwoo' ) . '</td><td><input type="text" value="' . $authentication['dolibarrkey'] . '" name="dolibarr_key" class="regular-text"></td></tr>',
-	'<tr><td>' . __( 'Source application', 'doliwoo' ) . '</td><td><input type="text" value="' . $authentication['sourceapplication'] . '" name="source_application" class="regular-text"></td></tr>',
-	'<tr><td>' . __( 'Dolibarr login', 'doliwoo' ) . '</td><td><input type="text" value="' . $authentication['login'] . '" name="dolibarr_login" class="regular-text"></td></tr>',
-	'<tr><td>' . __( 'Dolibarr password', 'doliwoo' ) . '</td><td><input type="text" value="' . $authentication['password'] . '" name="dolibarr_password" class="regular-text"></td></tr>',
-	'<tr><td>' . __( 'Dolibarr entity', 'doliwoo' ) . '</td><td><input type="text" value="' . $authentication['entity'] . '" name="dolibarr_entity" class="regular-text"></td></tr>',
-	'<tr><td>' . __( 'Dolibarr category ID', 'doliwoo' ) . '</td><td><input type="text" value="' . $category_id . '" name="dolibarr_category_id" class="regular-text"></td></tr>',
-	'<tr><td>' . __( 'Dolibarr generic user ID', 'doliwoo' ) . '</td><td><input type="text" value="' . $generic_id . '" name="dolibarr_generic_id" class="regular-text"></td></tr>',
-'</table>',
-	'<input type="submit" class="button-primary" name="save" value="' . __( 'Save changes', 'woocommerce' ) . '">',
-'</form>',
-'</div>';
-
-
+		'<form method="post" action="' . $_SERVER['REQUEST_URI'] . '">',
+			'<input type="hidden" name="action" value="update">',
+			'<table class="wc_tax_rates widefat">',
+				'<tr>
+					<td>' . __( 'Dolibarr webservice URL', 'doliwoo' ) . '</td>
+					<td><input type="text" value="' . $webservs_url . '" name="webservs_url" class="regular-text"></td>
+				</tr>',
+				'<tr>
+					<td>' . __( 'Dolibarr webservice key', 'doliwoo' ) . '</td>
+					<td><input type="text" value="' . $authentication['dolibarrkey'] . '" name="dolibarr_key" class="regular-text"></td>
+				</tr>',
+				'<tr>
+					<td>' . __( 'Source application', 'doliwoo' ) . '</td>
+					<td><input type="text" value="' . $authentication['sourceapplication'] . '" name="source_application" class="regular-text"></td>
+				</tr>',
+				'<tr>
+					<td>' . __( 'Dolibarr login', 'doliwoo' ) . '</td>
+					<td><input type="text" value="' . $authentication['login'] . '" name="dolibarr_login" class="regular-text"></td>
+				</tr>',
+				'<tr>
+					<td>' . __( 'Dolibarr password', 'doliwoo' ) . '</td>
+					<td><input type="text" value="' . $authentication['password'] . '" name="dolibarr_password" class="regular-text"></td>
+				</tr>',
+				'<tr>
+					<td>' . __( 'Dolibarr entity', 'doliwoo' ) . '</td>
+					<td><input type="text" value="' . $authentication['entity'] . '" name="dolibarr_entity" class="regular-text"></td>
+				</tr>',
+				'<tr>
+					<td>' . __( 'Dolibarr category ID', 'doliwoo' ) . '</td>
+					<td><input type="text" value="' . $category_id . '" name="dolibarr_category_id" class="regular-text"></td>
+				</tr>',
+				'<tr>
+					<td>' . __( 'Dolibarr generic user ID', 'doliwoo' ) . '</td>
+					<td><input type="text" value="' . $generic_id . '" name="dolibarr_generic_id" class="regular-text"></td>
+				</tr>',
+			'</table>',
+			'<br />',
+			'<input type="submit" class="button-primary" name="save" value="' . __( 'Save changes', 'woocommerce' ) . '">',
+		'</form>',
+	'</div>';
