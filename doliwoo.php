@@ -35,6 +35,9 @@ require_once 'nusoap/lib/nusoap.php';
 if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
 	if ( ! class_exists( 'Doliwoo' ) ) {
 		class Doliwoo {
+
+			private $options;
+
 			public function __construct() {
 				// Create custom tax classes and VAT rates on plugin activation
 				register_activation_hook( __FILE__, array( $this, 'create_custom_tax_classes' ) );
@@ -56,6 +59,10 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 				add_action( 'edit_user_profile_update', array( &$this, 'doliwoo_save_customer_meta_fields' ) );
 				add_action( 'manage_users_custom_column', array( &$this, 'doliwoo_user_column_values' ), 10, 3 );
 
+				// Do by maxime
+				add_action( 'admin_menu', array( &$this, 'add_plugin_page' ) );
+				add_action( 'admin_init', array( &$this, 'page_init' ) );
+
 				// Hook to add Doliwoo settings menu
 				add_action( 'admin_menu', array( &$this, 'addMenu' ) );
 
@@ -75,6 +82,233 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			 */
 			public function addMenu() {
 				add_menu_page( 'Parameters', 'Doliwoo', 'manage_options', 'doliwoo/doliwoo-admin.php', '', plugin_dir_url( __FILE__ ) . 'dolibarr.png', '56.1' );
+			}
+
+
+			/**
+			 * Add options page
+			 */
+			public function add_plugin_page()
+			{
+				// This page will be under "Settings"
+				add_options_page(
+					'Settings admin',
+					'Doliwoo',
+					'manage_options',
+					'my-settings-Doliwoo',
+					array( $this, 'create_admin_page' )
+				);
+			}
+
+			/**
+			 * Options page callback
+			 */
+			public function create_admin_page()
+			{
+				// Set class property
+				$this->options = get_option( 'Doliwoo_Settings' );
+
+				echo '<div class="wrap">',
+				'<h2>' . __( 'Doliwoo settings', 'doliwoo' ) . '</h2>';
+				?>
+					<form method="post" action="options.php">
+						<?php
+						// This prints out all hidden setting fields
+						settings_fields( 'doliwoo' );
+						do_settings_sections( 'my-settings-Doliwoo' );
+						submit_button();
+						?>
+					</form>
+				</div>
+			<?php
+			}
+
+			/**
+			 * Register and add settings
+			 */
+
+			public function page_init()
+			{
+				register_setting(
+					'doliwoo', // Option group
+					'Doliwoo_Settings', // Option name
+					array($this, 'sanitize') // Sanitize
+				);
+
+				add_settings_section(
+					'setting_section_settings', // ID
+					__('Major Settings', 'doliwoo'),// Title
+					array($this, 'print_section_info'), // Callback
+					'my-settings-Doliwoo' // Page
+				);
+
+				add_settings_field(
+					'webservs_url',
+					__('Dolibarr webservice URL','doliwoo'), // Dolibar Webservices URL
+					array($this, 'webservs_url_callback'), // Callback
+					'my-settings-Doliwoo', // Page
+					'setting_section_settings' // Section
+				);
+
+				add_settings_field(
+					'dolibarr_key',
+					__('Dolibarr webservice key','doliwoo'),
+					array($this, 'dolibarr_key_callback'),
+					'my-settings-Doliwoo',
+					'setting_section_settings'
+				);
+
+
+				add_settings_field(
+					'sourceapplication',
+					__('Source application','doliwoo'),
+					array($this, 'sourceapplication_callback'),
+					'my-settings-Doliwoo',
+					'setting_section_settings'
+				);
+
+				add_settings_field(
+					'dolibarr_login',
+					__('Dolibarr login','doliwoo'),
+					array($this, 'dolibarr_login_callback'),
+					'my-settings-Doliwoo',
+					'setting_section_settings'
+				);
+
+				add_settings_field(
+					'dolibarr_password',
+					__('Dolibarr password','doliwoo'),
+					array($this, 'dolibarr_password_callback'),
+					'my-settings-Doliwoo',
+					'setting_section_settings'
+				);
+
+				add_settings_field(
+					'dolibarr_entity',
+					__('Dolibarr entity','doliwoo'),
+					array($this, 'dolibarr_entity_callback'),
+					'my-settings-Doliwoo',
+					'setting_section_settings'
+				);
+
+				add_settings_field(
+					'dolibarr_category_id',
+					__('Dolibarr category ID','doliwoo'),
+					array($this, 'dolibarr_category_id_callback'),
+					'my-settings-Doliwoo',
+					'setting_section_settings'
+				);
+
+				add_settings_field(
+					'dolibarr_generic_id',
+					__('Dolibarr generic user ID', 'doliwoo'),
+					array($this, 'dolibarr_generic_id_callback'),
+					'my-settings-Doliwoo',
+					'setting_section_settings'
+				);
+			}
+
+			public function sanitize( $input )
+			{
+				$new_input = array();
+				if( isset( $input['webservs_url'] ) )
+					$new_input['webservs_url'] = sanitize_text_field( $input['webservs_url'] );
+
+				if( isset( $input['dolibarr_key'] ) )
+					$new_input['dolibarr_key'] = sanitize_text_field( $input['dolibarr_key'] );
+
+				if( isset( $input['sourceapplication'] ) )
+					$new_input['sourceapplication'] = sanitize_text_field( $input['sourceapplication'] );
+
+				if( isset( $input['dolibarr_login'] ) )
+					$new_input['dolibarr_login'] = sanitize_text_field( $input['dolibarr_login'] );
+
+				if( isset( $input['dolibarr_password'] ) )
+					$new_input['dolibarr_password'] = sanitize_text_field( $input['dolibarr_password'] );
+
+				if( isset( $input['dolibarr_entity'] ) )
+					$new_input['dolibarr_entity'] = sanitize_text_field( $input['dolibarr_entity'] );
+
+				if( isset( $input['dolibarr_category_id'] ) )
+					$new_input['dolibarr_category_id'] = sanitize_text_field( $input['dolibarr_category_id'] );
+
+				if( isset( $input['dolibarr_generic_id'] ) )
+					$new_input['dolibarr_generic_id'] = sanitize_text_field( $input['dolibarr_generic_id'] );
+
+				return $new_input;
+			}
+
+			public function print_section_info()
+			{
+				print '';
+			}
+
+			/**
+			 * Get the settings option array and print one of its values
+			 */
+
+
+			public function webservs_url_callback()
+			{
+				printf(
+					'<input type="text" id="webservs_url" name="Doliwoo_Settings[webservs_url]" value="%s" />',
+					isset( $this->options['webservs_url'] ) ? esc_attr( $this->options['webservs_url']) : ''
+				);
+			}
+
+			public function dolibarr_key_callback()
+			{
+				printf(
+					'<input type="text" id="dolibarr_key" name="Doliwoo_Settings[dolibarr_key]" value="%s" />',
+					isset( $this->options['dolibarr_key'] ) ? esc_attr( $this->options['dolibarr_key']) : ''
+				);
+			}
+
+			public function sourceapplication_callback()
+			{
+				printf(
+					'<input type="text" id="sourceapplication" name="Doliwoo_Settings[sourceapplication]" value="%s" />',
+					isset( $this->options['sourceapplication'] ) ? esc_attr( $this->options['sourceapplication']) : ''
+				);
+			}
+
+			public function dolibarr_login_callback()
+			{
+				printf(
+					'<input type="text" id="dolibarr_login" name="Doliwoo_Settings[dolibarr_login]" value="%s" />',
+					isset( $this->options['dolibarr_login'] ) ? esc_attr( $this->options['dolibarr_login']) : ''
+				);
+			}
+
+			public function dolibarr_password_callback()
+			{
+				printf(
+					'<input type="text" id="dolibarr_password" name="Doliwoo_Settings[dolibarr_password]" value="%s" />',
+					isset($this->options['dolibarr_password']) ? esc_attr($this->options['dolibarr_password']) : ''
+				);
+			}
+
+			Public function dolibarr_entity_callback()
+			{
+				printf(
+					'<input type="text" id="dolibarr_entity" name="Doliwoo_Settings[dolibarr_entity]" value="%s" />',
+					isset($this->options['dolibarr_entity']) ? esc_attr($this->options['dolibarr_entity']) : ''
+				);
+			}
+
+			public function dolibarr_category_id_callback(){
+					printf(
+						'<input type="text" id="dolibarr_category_id" name="Doliwoo_Settings[dolibarr_category_id]" value="%s" />',
+						isset($this->options['dolibarr_category_id']) ? esc_attr($this->options['dolibarr_category_id']) : ''
+					);
+			}
+
+			public function dolibarr_generic_id_callback()
+			{
+				printf(
+					'<input type="text" id="dolibarr_generic_id" name="Doliwoo_Settings[dolibarr_generic_id]" value="%s" />',
+					isset( $this->options['dolibarr_generic_id'] ) ? esc_attr( $this->options['dolibarr_generic_id']) : ''
+				);
 			}
 
 			/**
