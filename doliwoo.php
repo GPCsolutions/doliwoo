@@ -7,6 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Plugin URI:
  * Description: Interface between WooCommerce and Dolibarr
  * Version: 0.2
+ * Author: Cédric Salvador <csalvador@gpcsolutions.fr>
  * Author: Maxime Lafourcade <mlafourcade@gpcsolutions.fr>
  * License: GPL3
  */
@@ -70,7 +71,6 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 				add_action( 'edit_user_profile_update', array( &$this, 'doliwoo_save_customer_meta_fields' ) );
 				add_action( 'manage_users_custom_column', array( &$this, 'doliwoo_user_column_values' ), 10, 3 );
 
-				// Do by maxime
 				add_action( 'admin_menu', array( &$this, 'add_plugin_page' ) );
 				add_action( 'admin_init', array( &$this, 'page_init' ) );
 
@@ -82,6 +82,14 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			}
 
 			/**
+			 * This will create a menu item under the option menu
+			 * @see http://codex.wordpress.org/Function_Reference/add_options_page
+			 */
+			public function addMenu() {
+				add_menu_page( 'Parameters', 'Doliwoo', 'manage_options', 'doliwoo/doliwoo-admin.php', '', plugin_dir_url( __FILE__ ) . 'dolibarr.png', '56.1' );
+			}
+
+			/**
 			 * Displays a message
 			 *
 			 * @param string $message Error message
@@ -90,14 +98,6 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 				if ( $message ) {
 					echo '<div class="error"><p>', __( $message, 'doliwoo' ), '</p></div>';
 				}
-			}
-
-			/**
-			 * This will create a menu item under the option menu
-			 * @see http://codex.wordpress.org/Function_Reference/add_options_page
-			 */
-			public function addMenu() {
-				add_menu_page( 'Parameters', 'Doliwoo', 'manage_options', 'doliwoo/doliwoo-admin.php', '', plugin_dir_url( __FILE__ ) . 'dolibarr.png', '56.1' );
 			}
 
 			/**
@@ -607,7 +607,7 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 				return $exists;
 			}
 
-			//FIXE ME : the following two methods don't take into account multiple rates in the same tax class
+			// FIXME : the following two methods don't take into account multiple rates in the same tax class
 			/**
 			 * Get the tax class associated with a VAT rate
 			 *
@@ -662,7 +662,7 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 				$filesystem = new WP_Filesystem_Direct( 'arg' );
 				require_once ABSPATH . 'wp-admin/includes/image.php';
 				// Set the WebService URL
-				$soapclient = new nusoap_client( $this->options['webservs_url']. 'server_productorservice.php' );
+				$soapclient = new nusoap_client( $this->options['webservs_url'] . 'server_productorservice.php' );
 				if ( $soapclient ) {
 					$soapclient->soap_defencoding = 'UTF-8';
 					$soapclient->decodeUTF8( false );
@@ -784,7 +784,6 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			 * @return mixed $result    the SOAP response
 			 */
 			public function create_dolibarr_thirdparty( $user_id ) {
-				require 'conf.php';
 				$WS_DOL_URL = $this->options['webservs_url'] . 'server_thirdparty.php'; // If not a page, should end with /
 				// Set the WebService URL
 				$soapclient = new nusoap_client( $WS_DOL_URL );
