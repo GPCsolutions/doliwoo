@@ -2,61 +2,104 @@
 # This file is distributed under the same license as the WordPress package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WordPress 3.8-RC1\n"
+"Project-Id-Version: Doliwoo\n"
 "Report-Msgid-Bugs-To: http://wppolyglots.wordpress.com\n"
-"POT-Creation-Date: 2013-12-08 08:13:13+00:00\n"
+"POT-Creation-Date: 2015-01-15 17:25+0100\n"
+"PO-Revision-Date: 2015-01-15 17:27+0100\n"
+"Last-Translator: Cédric Salvador <csalvador@gpcsolutions.fr>\n"
+"Language-Team: FR <dev@gpcsolutions.fr>\n"
+"Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2014-01-03\n"
-"Last-Translator: Cédric Salvador <csalvador@gpcsolutions.fr>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: Poedit 1.7.1\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo\n"
 
-#: doliwoo-admin.php:34
-msgid "Could not write in doliwoo/conf.php"
-msgstr "Impossible d'écrire dans doliwoo/conf.php"
-
-#: doliwoo-admin.php:38
-msgid "Could not open doliwoo/conf.php"
-msgstr "Impossible d'ouvrir doliwoo/conf.php"
-
-#: doliwoo-admin.php:45
-msgid "Doliwoo settings"
-msgstr "Réglages Doliwoo"
-
-#: doliwoo-admin.php:47
-msgid "Dolibarr webservice URL"
-msgstr "URL des webservices Dolibarr"
-
-#: doliwoo-admin.php:48
-msgid "Dolibarr webservice key"
-msgstr "Clé des webservices Dolibarr"
-
-#: doliwoo-admin.php:49
-msgid "Source application"
-msgstr "Nom de l'application"
-
-#: doliwoo-admin.php:50
-msgid "Dolibarr login"
-msgstr "Identifiant Dolibarr"
-
-#: doliwoo-admin.php:51
-msgid "Dolibarr password"
-msgstr "Mot de passe Dolibarr"
-
-#: doliwoo-admin.php:52
-msgid "Dolibarr entity"
-msgstr "ID de l'entité Dolibarr"
-
-#: doliwoo-admin.php:53
-msgid "Dolibarr category ID"
-msgstr "ID de la catégorie Dolibarr"
-
-#: doliwoo-admin.php:54
-msgid "Dolibarr generic user ID"
-msgstr "ID du tiers générique Dolibarr"
-
-#: doliwoo.php:83
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/doliwoo.php:119
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/doliwoo.php:376
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/doliwoo.php:398
 msgid "VAT"
 msgstr "TVA"
 
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/doliwoo.php:186
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/doliwoo.php:205
+msgid "Dolibarr User ID"
+msgstr "Identifiant Utilisateur Dolibarr"
+
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/doliwoo.php:202
+msgid "Dolibarr"
+msgstr "Dolibarr"
+
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:19
+msgid "Doliwoo Settings"
+msgstr "Réglages DoliWoo"
+
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:20
+msgid "Dolibarr webservices access"
+msgstr "Accès aux webservices Dolibarr"
+
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:48
+msgid "Source application"
+msgstr "Nom de l'application"
+
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:54
+msgid "URL"
+msgstr "URL"
+
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:62
+msgid "Key"
+msgstr "Clé"
+
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:68
+msgid "User login"
+msgstr "Identifiant utilisateur"
+
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:74
+msgid "User password"
+msgstr "Mot de passe utilisateur"
+
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:79
+msgid "Entity"
+msgstr "Entité"
+
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:85
+msgid "Category"
+msgstr "Catégorie"
+
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:91
+msgid "Generic thirdparty"
+msgstr "Tiers générique"
+
+#~ msgid "Could not write in doliwoo/conf.php"
+#~ msgstr "Impossible d'écrire dans doliwoo/conf.php"
+
+#~ msgid "Could not open doliwoo/conf.php"
+#~ msgstr "Impossible d'ouvrir doliwoo/conf.php"
+
+#~ msgid "Doliwoo settings"
+#~ msgstr "Réglages Doliwoo"
+
+#~ msgid "Dolibarr webservice URL"
+#~ msgstr "URL des webservices Dolibarr"
+
+#~ msgid "Dolibarr webservice key"
+#~ msgstr "Clé des webservices Dolibarr"
+
+#~ msgid "Dolibarr login"
+#~ msgstr "Identifiant Dolibarr"
+
+#~ msgid "Dolibarr password"
+#~ msgstr "Mot de passe Dolibarr"
+
+#~ msgid "Dolibarr entity"
+#~ msgstr "ID de l'entité Dolibarr"
+
+#~ msgid "Dolibarr category ID"
+#~ msgstr "ID de la catégorie Dolibarr"
+
+#~ msgid "Dolibarr generic user ID"
+#~ msgstr "ID du tiers générique Dolibarr"
