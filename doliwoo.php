@@ -39,20 +39,33 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
 	if ( ! class_exists( 'Doliwoo' ) ) {
 		class Doliwoo {
-
 			/**
 			 * @var string SOAP namespace
 			 */
 			private $soap_ns = 'http://www.dolibarr.org/ns/';
 
 			/**
+			 * @var WC_Integration_Doliwoo_Settings() Doliwoo Settings
+			 */
+			private $settings;
+
+			/**
+			 * @var string[] SOAP authentication parameters
+			 */
+			private $ws_auth = array();
+
+			/**
 			 * Constructor
 			 */
 			public function __construct() {
+				// Initialize plugin settings
+				add_action( 'plugins_loaded', array( $this, 'init' ) );
+
 				// Create custom tax classes and VAT rates on plugin activation
-				register_activation_hook( __FILE__, array( $this, 'create_custom_tax_classes' ) );
+				add_action( 'woocommerce_init', array( $this, 'create_custom_tax_classes' ) );
+
 				// Import Dolibarr products on plugin activation
-				register_activation_hook( __FILE__, array( $this, 'import_dolibarr_products' ) );
+				add_action( 'woocommerce_init', array( $this, 'import_dolibarr_products' ) );
 
 				// Hook on woocommerce_checkout_process to create a Dolibarr order using WooCommerce order data
 				add_action( 'woocommerce_checkout_process', array( &$this, 'dolibarr_create_order' ) );
@@ -68,34 +81,16 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 				add_action( 'personal_options_update', array( &$this, 'doliwoo_save_customer_meta_fields' ) );
 				add_action( 'edit_user_profile_update', array( &$this, 'doliwoo_save_customer_meta_fields' ) );
 				add_action( 'manage_users_custom_column', array( &$this, 'doliwoo_user_column_values' ), 10, 3 );
-
-				add_action( 'plugins_loaded', array( $this, 'init' ) );
-
-				// Add error message if something is wrong with the conf file
-				add_action( 'admin_notices', array( &$this, 'conf_notice' ) );
 			}
 
 			/**
-			 * Displays a message
-			 *
-			 * @param string $message Error message
-			 */
-			public function conf_notice( $message ) {
-				if ( $message ) {
-					echo '<div class="error"><p>', __( $message, 'doliwoo' ), '</p></div>';
-				}
-			}
-
-			/**
-			 * Initialize the plugin.
+			 * Initialize the plugin
 			 */
 			public function init() {
-
 				// Checks if WooCommerce is installed.
 				if ( class_exists( 'WC_Integration' ) ) {
 					// Include our integration class.
 					include_once 'includes/settings.php';
-
 					// Register the integration.
 					add_filter( 'woocommerce_integrations', array( $this, 'add_integration' ) );
 				} else {
@@ -104,7 +99,10 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			}
 
 			/**
-			 * Add a new integration to WooCommerce.
+			 * Add a new integration to WooCommerce
+			 *
+			 * @param array $integrations Existing integrations
+			 * @return array WooCommerce integrations
 			 */
 			public function add_integration( $integrations ) {
 				$integrations[] = 'WC_Integration_Doliwoo_Settings';
@@ -177,7 +175,7 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			}
 
 			/**
-			 * Define columns to show on the users page.
+			 * Define columns to show on the users page
 			 *
 			 * @param array $columns Columns on the manage users page
 			 * @return array The modified columns
@@ -189,7 +187,7 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			}
 
 			/**
-			 * Get Dolibarr ID for the edit user pages.
+			 * Get Dolibarr ID for the edit user pages
 			 *
 			 * @return array fields to display
 			 */
@@ -213,7 +211,7 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			}
 
 			/**
-			 * Show the Dolibarr ID field on edit user pages.
+			 * Show the Dolibarr ID field on edit user pages
 			 *
 			 * @param mixed $user User (object) being displayed
 			 * @return void
@@ -252,22 +250,23 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 				foreach ( $save_fields as $fieldset ) {
 					foreach ( $fieldset['fields'] as $key => $field ) {
 						if ( isset( $_POST[ $key ] ) ) {
-							update_user_meta( $user_id, $key, woocommerce_clean( $_POST[ $key ] ) );
+							update_user_meta( $user_id, $key, wc_clean( $_POST[ $key ] ) );
 						}
 					}
 				}
 			}
 
 			/**
-			 * Define value for the Dolibarr ID column.
+			 * Define value for the Dolibarr ID column
 			 *
 			 * @param mixed $value The value of the column being displayed
 			 * @param mixed $column_name The name of the column being displayed
 			 * @param mixed $user_id The ID of the user being displayed
 			 *
 			 * @return string Value for the column
+			 *
+			 * @fixme Unused params
 			 */
-
 			private function doliwoo_user_column_values( $value, $column_name, $user_id ) {
 				return get_user_meta( $user_id, 'dolibarr_id', true );
 			}
@@ -279,11 +278,10 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			 * @access public
 			 * @return void
 			 */
-
 			public function dolibarr_create_order() {
-				global $woocommerce;
-				require_once 'conf.php';
-				$WS_DOL_URL = $this->options['webservs_url'] . 'server_order.php';
+				$this->getSettings();
+
+				$WS_DOL_URL = $this->settings->webservs_url . 'server_order.php';
 
 				// Set the WebService URL
 				$soapclient = new nusoap_client( $WS_DOL_URL );
@@ -296,7 +294,7 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 				$user_id = get_current_user_id();
 				if ( $user_id == '' ) {
 					// default to the generic user
-					$thirdparty_id = $this->options['dolibarr_generic_id'];
+					$thirdparty_id = $this->settings->dolibarr_generic_id;
 				} else {
 					$thirdparty_id = get_user_meta( $user_id, 'dolibarr_id', true );
 				}
@@ -313,7 +311,8 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 				$order['status'] = 1;
 				$order['lines']  = array();
 
-				foreach ( $woocommerce->cart->cart_contents as $product ) {
+				// TODO: test me
+				foreach ( WC()->cart->cart_contents as $product ) {
 					$line               = array();
 					$line['type']       = get_post_meta( $product['product_id'], 'type', 1 );
 					$line['desc']       = $product['data']->post->post_content;
@@ -327,7 +326,12 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 					$line['total_vat']  = $line['total'] - $line['total_net'];
 					$order['lines'][]   = $line;
 				}
-				$parameters = array( $this->options, $order );
+
+				$parameters = array(
+					'authentication' => $this->ws_auth,
+					'order' => $order
+				);
+
 				$soapclient->call( 'createOrder', $parameters, $this->soap_ns, '' );
 			}
 
@@ -354,7 +358,12 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			 */
 			public function dolibarr_product_exists( $dolibarr_id ) {
 				global $wpdb;
-				$sql    = 'SELECT count(post_id) as nb from ' . $wpdb->prefix . 'postmeta WHERE meta_key = "dolibarr_id" AND meta_value = ' . $dolibarr_id;
+
+				$exists = 0; // Product doesn't exist
+
+				$sql  = 'SELECT count(post_id) as nb from ' . $wpdb->prefix . 'postmeta ';
+				$sql .= 'WHERE meta_key = "dolibarr_id" AND meta_value = ' . $dolibarr_id;
+
 				$result = $wpdb->query( $sql );
 				if ( $result ) {
 					$exists = $wpdb->last_result[0]->nb;
@@ -372,8 +381,10 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			 */
 			public function get_tax_class( $tax_rate ) {
 				global $wpdb;
+
 				$sql = 'SELECT tax_rate_class FROM ' . $wpdb->prefix . 'woocommerce_tax_rates';
 				$sql .= ' WHERE tax_rate = ' . $tax_rate . ' AND tax_rate_name = "' . __( 'VAT', 'doliwoo' ) . '"';
+
 				$result = $wpdb->query( $sql );
 				if ( $result ) {
 					$res = $wpdb->last_result[0]->tax_rate_class;
@@ -390,16 +401,21 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			 */
 			public function get_vat_rate( $tax_class ) {
 				global $wpdb;
+
 				//workaround
 				if ( $tax_class == 'standard' ) {
 					$tax_class = '';
 				}
+
 				$sql = 'SELECT tax_rate FROM ' . $wpdb->prefix . 'woocommerce_tax_rates';
-				$sql .= ' WHERE tax_rate_class = "' . $tax_class . '" AND tax_rate_name = "' . __( 'VAT', 'doliwoo' ) . '"';
+				$sql .= ' WHERE tax_rate_class = "' . $tax_class . '"' ;
+				$sql .= ' AND tax_rate_name = "' . __( 'VAT', 'doliwoo' ) . '"';
+
 				$result = $wpdb->query( $sql );
 				if ( $result ) {
 					$res = $wpdb->last_result[0]->tax_rate;
 				}
+
 				return $res;
 			}
 
@@ -410,20 +426,30 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			 * @return void
 			 */
 			public function import_dolibarr_products() {
-				global $woocommerce;
+				// FIXME: Get rid of inclusions and use provided tooling
 				require_once ABSPATH . 'wp-admin/includes/file.php';
-				WP_Filesystem();
+				require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php';
 				require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php';
-				$filesystem = new WP_Filesystem_Direct( 'arg' );
 				require_once ABSPATH . 'wp-admin/includes/image.php';
+
+				$this->getSettings();
+
+				WP_Filesystem();
+				$filesystem = new WP_Filesystem_Direct( 'arg' );
+
 				// Set the WebService URL
-				$soapclient = new nusoap_client( $this->options['webservs_url'] . 'server_productorservice.php' );
+				$soapclient = new nusoap_client( $this->settings->webservs_url . 'server_productorservice.php' );
 				if ( $soapclient ) {
 					$soapclient->soap_defencoding = 'UTF-8';
 					$soapclient->decodeUTF8( false );
 				}
+
 				// Get all products that are meant to be displayed on the website
-				$parameters = array( 'authentication' => $this->options, 'id' => $this->options['dolibarr_category_id'] );
+				$parameters = array(
+					'authentication' => $this->ws_auth,
+					'id' => $this->settings->dolibarr_category_id
+				);
+
 				$result     = $soapclient->call( 'getProductsForCategory', $parameters, $this->soap_ns, '' );
 				if ( $result['result']['result_code'] == 'OK' ) {
 					$products = $result['products'];
@@ -456,22 +482,27 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 							}
 							//webservice calls to get the product's images
 							unset( $soapclient );
-							$soapclient = new nusoap_client( $this->options['webservs_url'] . 'server_other.php' );
+							$soapclient = new nusoap_client(  $this->settings->webservs_url . 'server_other.php' );
 							$upload_dir = wp_upload_dir();
 							$path       = $upload_dir['path'];
 							$attach_ids = array();
 							foreach ( $product['images'] as $image ) {
 								foreach ( $image as $filename ) {
+
 									// as we know what images are associated with the product, we can retrieve them via webservice
 									$parameters = array(
-										'authentication' => $this->options,
+										'authentication' => $this->ws_auth,
 										'modulepart'     => 'product',
 										'file'           => $product['dir'] . $filename
 									);
+
 									$result     = $soapclient->call( 'getDocument', $parameters, $this->soap_ns, '' );
 									if ( $result['result']['result_code'] == 'OK' ) {
 										// copy the image to the wordpress uploads folder
-										$res = $filesystem->put_contents( $path . '/' . $result['document']['filename'], base64_decode( $result['document']['content'] ) );
+										$res = $filesystem->put_contents(
+											$path . '/' . $result['document']['filename'],
+											base64_decode( $result['document']['content'] )
+										);
 										if ( $res ) {
 											// attach the new image to the product post
 											$filename      = $result['document']['filename'];
@@ -484,8 +515,12 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 												'post_content'   => '',
 												'post_status'    => 'inherit'
 											);
-											$attach_id     = wp_insert_attachment( $attachment, $wp_upload_dir['path'] . '/' . $filename, $post_id );
-											$attach_data   = wp_generate_attachment_metadata( $attach_id, $wp_upload_dir['path'] . '/' . $filename );
+											$attach_id     = wp_insert_attachment(
+												$attachment, $wp_upload_dir['path'] . '/' . $filename, $post_id
+											);
+											$attach_data   = wp_generate_attachment_metadata(
+												$attach_id, $wp_upload_dir['path'] . '/' . $filename
+											);
 											wp_update_attachment_metadata( $attach_id, $attach_data );
 											$attach_ids[] = $attach_id;
 										}
@@ -495,7 +530,7 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 							// Use the first image as the product thumbnail, fill the image gallery
 							update_post_meta( $post_id, '_thumbnail_id', $attach_ids[0] );
 							update_post_meta( $post_id, '_product_image_gallery', implode( ',', $attach_ids ) );
-							$woocommerce->clear_product_transients( $post_id );
+							wc_delete_product_transients( $post_id );
 						}
 					}
 				}
@@ -509,21 +544,32 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			 * @return mixed $result  array with the request results if it succeeds, null if there's an error
 			 */
 			public function exists_thirdparty( $user_id ) {
-				require 'conf.php';
-				$WS_DOL_URL = $this->options['webservs_url'] . 'server_thirdparty.php';
+				$this->getSettings();
+
+				$WS_DOL_URL = $this->settings->webservs_url . 'server_thirdparty.php';
+
 				// Set the WebService URL
 				$soapclient = new nusoap_client( $WS_DOL_URL );
 				if ( $soapclient ) {
 					$soapclient->soap_defencoding = 'UTF-8';
 					$soapclient->decodeUTF8( false );
 				}
+
 				$dol_id = get_user_meta( $user_id, 'dolibarr_id', true );
+
 				// if the user has a Dolibarr ID, use it, else use his company name
 				if ( $dol_id ) {
-					$parameters = array( $this->options, $dol_id );
+					$parameters = array(
+						'authentication' => $this->ws_auth,
+						'id' => $dol_id
+					);
 				} else {
-					$parameters = array( $this->options, '', get_user_meta( $user_id, 'billing_company', true ) );
+					$parameters = array(
+						'authentication' => $this->ws_auth,
+						'ref' => get_user_meta( $user_id, 'billing_company', true )
+					);
 				}
+
 				$result = $soapclient->call( 'getThirdParty', $parameters, $this->soap_ns, '' );
 				if ( $result ) {
 					return $result;
@@ -539,7 +585,9 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			 * @return mixed $result    the SOAP response
 			 */
 			public function create_dolibarr_thirdparty( $user_id ) {
-				$WS_DOL_URL = $this->options['webservs_url'] . 'server_thirdparty.php'; // If not a page, should end with /
+				$this->getSettings();
+
+				$WS_DOL_URL = $this->settings->webservs_url . 'server_thirdparty.php'; // If not a page, should end with /
 				// Set the WebService URL
 				$soapclient = new nusoap_client( $WS_DOL_URL );
 				if ( $soapclient ) {
@@ -568,7 +616,12 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 					'individual'    => $individual,
 					'firstname'     => get_user_meta( $user_id, 'billing_first_name', true )
 				);
-				$parameters     = array( 'authentication' => $this->options['webservs_url'], 'thirdparty' => $new_thirdparty );
+
+				$parameters     = array(
+					'authentication' => $this->settings->webservs_url,
+					'thirdparty' => $new_thirdparty
+				);
+
 				$result = $soapclient->call( 'createThirdParty', $parameters, $this->soap_ns, '' );
 				return $result;
 			}
@@ -582,7 +635,10 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			public function create_dolibarr_thirdparty_if_not_exists( $user_id ) {
 				$result = $this->exists_thirdparty( $user_id );
 				if ( $result ) {
-					if ( $result['thirdparty'] && get_user_meta( $user_id, 'dolibarr_id', true ) != $result['thirdparty']['id'] ) {
+					if (
+						$result['thirdparty'] &&
+						get_user_meta( $user_id, 'dolibarr_id', true ) != $result['thirdparty']['id']
+					) {
 						update_user_meta( $user_id, 'dolibarr_id', $result['thirdparty']['id'] );
 					} elseif ( is_null( $result['thirdparty'] ) ) {
 						$res = $this->create_dolibarr_thirdparty( $user_id );
@@ -595,6 +651,7 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 
 			/**
 			 * Creates the missing thirdparties in Dolibarr via webservice using WooCommerce user data
+			 *
 			 * @return void
 			 */
 			public function create_dolibarr_thirdparties() {
@@ -602,6 +659,19 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 				foreach ( $users as $user ) {
 					$this->create_dolibarr_thirdparty_if_not_exists( $user->data->ID );
 				}
+			}
+
+			private function getSettings()
+			{
+				// Load settings
+				$this->settings = WC()->integrations->get_integrations()['doliwoo-settings'];
+				$this->ws_auth = array(
+					'dolibarrkey' => $this->settings->dolibarr_key,
+					'sourceapplication' => $this->settings->sourceapplication,
+					'login' => $this->settings->dolibarr_login,
+					'password' => $this->settings->dolibarr_password,
+					'entity' => $this->settings->dolibarr_entity
+				);
 			}
 		}
 

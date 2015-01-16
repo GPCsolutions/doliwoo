@@ -10,7 +10,6 @@
 if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 
 class WC_Integration_Doliwoo_Settings extends WC_Integration {
-
 	/**
 	 * Init and hook in the integration.
 	 */
@@ -19,11 +18,11 @@ class WC_Integration_Doliwoo_Settings extends WC_Integration {
 		$this->method_title       = __( 'Doliwoo Settings', 'doliwoo' );
 		$this->method_description = __( 'Dolibarr webservices access', 'doliwoo' );
 
-		// Load the settings.
+		// Load the settings
 		$this->init_form_fields();
 		$this->init_settings();
 
-		// Define user set variables.
+		// Define user set variables
 		$this->webservs_url = $this->get_option( 'webservs_url' );
 		$this->dolibarr_key = $this->get_option( 'dolibarr_key' );
 		$this->sourceapplication = $this->get_option( 'sourceapplication' );
@@ -33,7 +32,7 @@ class WC_Integration_Doliwoo_Settings extends WC_Integration {
 		$this->dolibarr_category_id =  $this->get_option( 'dolibarr_category_id' );
 		$this->dolibarr_generic_id = $this->get_option( 'dolibarr_generic_id' );
 
-		// Actions.
+		// Actions
 		add_action( 'woocommerce_update_options_integration_' .  $this->id, array( $this, 'process_admin_options' ) );
 	}
 
