@@ -46,50 +46,57 @@ class WC_Integration_Doliwoo_Settings extends WC_Integration {
 			'sourceapplication'     => array(
 				'title'             => __('Source application','doliwoo'),
 				'type'              => 'text',
-				'desc_tip'          => true,
+				'description'		=> __(''),
+				'desc_tip'          => false,
 				'default'           => 'WooCommerce'
 			),
 			'webservs_url'          => array(
 				'title'             => __('URL','doliwoo'),
 				'type'              => 'text',
-				// TODO
-				// 'description'       => __( 'Enter with your API Key. You can find this in "User Profile" drop-down (top right corner) > API Keys.', 'woocommerce-integration-demo' ),
+				'description'       => __( 'Enter your URL webservices.', 'woocommerce-integration-demo' ),
 				'desc_tip'          => false,
 				'default'           => ''
 			),
 			'dolibarr_key'          => array(
 				'title'             => __('Key','doliwoo'),
+				'description'		=> __(' Enter your Dolibarr Key '),
 				'type'              => 'text',
-				'desc_tip'          => true,
+				'desc_tip'          => false,
 				'default'           => ''
 			),
 			'dolibarr_login'        => array(
 				'title'             => __('User login','doliwoo'),
+				'description'		=> __('Dolibarr Login '),
 				'type'              => 'text',
-				'desc_tip'          => true,
+				'desc_tip'          => false,
 				'default'           => ''
 			),
 			'dolibarr_password'     => array(
 				'title'             => __('User password','doliwoo'),
+				'description'		=> __(' Dolibarr Password '),
 				'type'              => 'password',
+				'desc_tip'          => false,
 				'default'           => ''
 			),
 			'dolibarr_entity'       => array(
 				'title'             => __('Entity','doliwoo'),
+				'description'		=> __(''),
 				'type'              => 'text',
-				'desc_tip'          => true,
+				'desc_tip'          => false,
 				'default'           => ''
 			),
 			'dolibarr_category_id'  => array(
 				'title'             => __('Category','doliwoo'),
+				'description'		=> __(''),
 				'type'              => 'text',
-				'desc_tip'          => true,
+				'desc_tip'          => false,
 				'default'           => ''
 			),
 			'dolibarr_generic_id'   => array(
 				'title'             => __('Generic thirdparty', 'doliwoo'),
+				'description'		=> __(''),
 				'type'              => 'text',
-				'desc_tip'          => true,
+				'desc_tip'          => false,
 				'default'           => ''
 			),
 		);
