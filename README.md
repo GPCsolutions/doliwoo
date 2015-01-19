@@ -40,6 +40,14 @@ Wordpress prerequisites
 -----------------------
 * Woocommerce >= 2.0.0
 
+
+Enable extensions
+-----------------
+Enable the following extensions :
+
+    * SOAP
+    * OpenSSL
+
 Status
 ------
 This is alpha code. Contributors and testers are welcome.

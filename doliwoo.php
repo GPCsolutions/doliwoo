@@ -2,6 +2,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
+
 /**
  * Plugin Name: Doliwoo
  * Plugin URI:
@@ -29,8 +30,19 @@ if ( ! defined( 'ABSPATH' ) ) {
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-// TODO: Get rid of nusoap and use php native SOAP extension
-require_once 'nusoap/lib/nusoap.php';
+// Check required extensions
+if (extension_loaded('soap') === false && extension_loaded('openssl') === false) {
+	echo __('You must enable extensions SOAP and OpenSSL');
+	exit;
+}
+if (extension_loaded('soap') === false) {
+	echo __('You must enable extension SOAP');
+	exit;
+}
+if (extension_loaded('openssl') === false) {
+	echo __('You must enable extension OpenSSL');
+	exit;
+}
 
 // Make sure the settings class is available
 if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
@@ -679,6 +691,10 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 		//$GLOBALS['doliwoo'] = new Doliwoo();
 		load_plugin_textdomain( 'doliwoo', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
+} else {
+	// Woocommerce is not available
+	echo __('This extension needs WooCommerce');
+	exit;
 }
 
 $Doliwoo = new Doliwoo(__FILE__);
