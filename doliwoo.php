@@ -56,6 +56,12 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 	if ( in_array( 'woocommerce/woocommerce.php',
 		apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
 		if ( ! class_exists( 'Doliwoo' ) ) {
+
+			/**
+			 * Class Doliwoo
+			 *
+			 * Dolibarr Integration for WooCommerce
+			 */
 			class Doliwoo {
 				/**
 				 * @var WC_Integration_Doliwoo_Settings() Doliwoo Settings

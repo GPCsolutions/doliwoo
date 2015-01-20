@@ -9,6 +9,9 @@
 
 if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 
+	/**
+	 * Doliwoo settings WooCommerce integration
+	 */
 	class WC_Integration_Doliwoo_Settings extends WC_Integration {
 		/**
 		 * Init and hook in the integration.
