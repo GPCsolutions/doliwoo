@@ -53,7 +53,7 @@ if ( extension_loaded( 'openssl' ) === false ) {
 // Make sure the settings class is available
 if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 
-// If Woocommerce is active
+	// If WooCommerce is active
 	if ( in_array( 'woocommerce/woocommerce.php',
 		apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
 		if ( ! class_exists( 'Doliwoo' ) ) {
@@ -454,9 +454,9 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				/**
 				 * Get the VAT rate associated with a tax class
 				 *
-				 * @param string $tax_class a woocommerce tax class
+				 * @param string $tax_class a WooCommerce tax class
 				 *
-				 * @return string       the associated VAT rate
+				 * @return string the associated VAT rate
 				 */
 				private function get_vat_rate( $tax_class ) {
 					global $wpdb;
@@ -768,7 +768,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				}
 
 				/**
-				 * Extract settings from woocommerce integration settings
+				 * Extract settings from WooCommerce integration settings
 				 */
 				private function get_settings() {
 					// Load settings
@@ -785,7 +785,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 			}
 		}
 	} else {
-		// Woocommerce is not available
+		// WooCommerce is not available
 		echo __( 'This extension needs WooCommerce' );
 		exit;
 	}
