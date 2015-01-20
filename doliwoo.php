@@ -30,7 +30,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-load_plugin_textdomain( 'doliwoo', false,
+load_plugin_textdomain( 'doliwoo',
+	false,
 	dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
 // Check required extensions
@@ -191,6 +192,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 					);
 
 					foreach ( $data as $entry ) {
+						// FIXME: use parameterized query
 						$query = 'SELECT tax_rate_id FROM ' . $wpdb->prefix
 						         . 'woocommerce_tax_rates WHERE ';
 						foreach ( $entry as $field => $value ) {
@@ -199,10 +201,11 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 						$query = rtrim( $query, ' AND ' );
 						$row   = $wpdb->get_row( $query );
 						if ( is_null( $row ) ) {
+							// FIXME: check if there isn't any API in WooCommerce for doing that
 							$wpdb->insert( 'wp_woocommerce_tax_rates', $entry );
 						}
 					}
-					//now take care of classes
+					// Now take care of classes
 					update_option( 'woocommerce_tax_classes',
 						"Reduced Rate\nSuper-reduced Rate\nMinimum Rate\nZero Rate" );
 				}
@@ -215,8 +218,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				 * @return array The modified columns
 				 */
 				public function doliwoo_user_columns( $columns ) {
-					$columns['dolibarr_id'] = __( 'Dolibarr User ID',
-						'doliwoo' );
+					$columns['dolibarr_id'] = __( 'Dolibarr User ID', 'doliwoo' );
 
 					return $columns;
 				}
@@ -236,8 +238,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 							'title'  => __( 'Dolibarr', 'doliwoo' ),
 							'fields' => array(
 								'dolibarr_id' => array(
-									'label'       => __( 'Dolibarr User ID',
-										'doliwoo' ),
+									'label'       => __( 'Dolibarr User ID', 'doliwoo' ),
 									'description' => 'The boss'
 								)
 							)
@@ -255,9 +256,11 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				 * @return void
 				 */
 				private function doliwoo_customer_meta_fields( $user ) {
+					// Only allow WooCommerce managers
 					if ( ! current_user_can( 'manage_woocommerce' ) ) {
 						return;
 					}
+
 					$show_fields = $this->doliwoo_get_customer_meta_fields();
 					foreach ( $show_fields as $fieldset ) {
 						echo '<h3>', $fieldset['title'], '</h3>',
@@ -266,9 +269,10 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 							echo '<tr>',
 							'<th><label for="', esc_attr( $key ), '">', esc_html( $field['label'] ), '</label></th>',
 							'<td>',
-							'<input type="text" name="', esc_attr( $key ), '" id="', esc_attr( $key ), '"
-                        value="', esc_attr( get_user_meta( $user->ID, $key,
-								true ) ), '" class="regular-text"/><br/>',
+							'<input type="text" name="', esc_attr( $key ), '"',
+							'" id="', esc_attr( $key ),
+							'" value="', esc_attr( get_user_meta( $user->ID, $key, true ) ),
+							'" class="regular-text"/><br/>',
 							'<span class="description">', wp_kses_post( $field['description'] ), '</span>',
 							'</td>',
 							'</tr>';
@@ -318,14 +322,13 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				public function dolibarr_create_order() {
 					$this->get_settings();
 
-					$dolibarr_ws_url
-						=
-						$this->settings->webservs_url . 'server_order.php?wsdl';
+					$dolibarr_ws_url = $this->settings->webservs_url . 'server_order.php?wsdl';
 
 					// Set the WebService URL
 					$soap_client = new SoapClient( $dolibarr_ws_url );
 					$order       = array();
-					//fill this array with all data required to create an order in Dolibarr
+
+					// Fill this array with all data required to create an order in Dolibarr
 					$user_id = get_current_user_id();
 					if ( $user_id == '' ) {
 						// default to the generic user
@@ -377,7 +380,6 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 						$order['lines'][]  = $line;
 					}
 
-
 					$soap_client->createOrder( $this->ws_auth, $order );
 				}
 
@@ -407,6 +409,8 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 
 					$exists = 0; // Product doesn't exist
 
+					// FIXME: use parameterized query
+					// FIXME: check if there isn't any API in WooCommerce for doing that
 					$sql = 'SELECT count(post_id) as nb from ' . $wpdb->prefix
 					       . 'postmeta ';
 					$sql .= 'WHERE meta_key = "dolibarr_id" AND meta_value = '
@@ -420,7 +424,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 					return $exists;
 				}
 
-				// FIXME : the following two methods don't take into account multiple rates in the same tax class
+				// FIXME: the following two methods don't take into account multiple rates in the same tax class
 				/**
 				 * Get the tax class associated with a VAT rate
 				 *
@@ -431,6 +435,8 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				private function get_tax_class( $tax_rate ) {
 					global $wpdb;
 
+					// FIXME: use parameterized query
+					// FIXME: check if there isn't any API in WooCommerce for doing that
 					$sql = 'SELECT tax_rate_class FROM ' . $wpdb->prefix
 					       . 'woocommerce_tax_rates';
 					$sql .= ' WHERE tax_rate = ' . $tax_rate
@@ -455,11 +461,13 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				private function get_vat_rate( $tax_class ) {
 					global $wpdb;
 
-					//workaround
+					// Workaround
 					if ( $tax_class == 'standard' ) {
 						$tax_class = '';
 					}
 
+					// FIXME: use parameterized query
+					// FIXME: check if there isn't any API in WooCommerce for doing that
 					$sql = 'SELECT tax_rate FROM ' . $wpdb->prefix
 					       . 'woocommerce_tax_rates';
 					$sql .= ' WHERE tax_rate_class = "' . $tax_class . '"';
@@ -481,7 +489,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				 * @return void
 				 */
 				public function dolibarr_import_products() {
-					// FIXME: Get rid of inclusions and use provided tooling
+					// FIXME: Get rid of inclusions and use WordPress provided tooling
 					require_once ABSPATH . 'wp-admin/includes/file.php';
 					require_once ABSPATH
 					             . 'wp-admin/includes/class-wp-filesystem-base.php';
@@ -499,10 +507,12 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 						$this->settings->webservs_url
 						. 'server_productorservice.php?wsdl'
 					);
+
 					// Get all products that are meant to be displayed on the website
 					$result
 						= $soap_client->getProductsForCategory( $this->ws_auth,
 						$this->settings->dolibarr_category_id );
+
 					if ( $result['result']->result_code == 'OK' ) {
 						$products = $result['products'];
 						foreach ( $products as $product ) {
@@ -745,6 +755,8 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 
 				/**
 				 * Creates the missing thirdparties in Dolibarr via webservice using WooCommerce user data
+				 *
+				 * @fixme: use for future batch creation feature
 				 *
 				 * @return void
 				 */
