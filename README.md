@@ -3,7 +3,7 @@ Doliwoo
 A Wordpress plugin to interface a WooCommerce shop with Dolibarr.
 
 * Author: GPC.solutions
-* Contributors: Cédric Salvador ,Raphaël Doursenaud
+* Contributors: Cédric Salvador, Maxime Lafourcade, Raphaël Doursenaud
 * Tags: Dolibarr, WooCommerce, Doliwoo
 * Requires at least: 3.7.1
 * Tested up to: 3.7.1
@@ -25,7 +25,6 @@ Installation
 * Activate the Plugin from Plugins page.
 * Go to the Doliwoo menu and configure it according to your Dolibarr installation
 
-
 Dolibarr prerequisites
 ----------------------
 * Dolibarr >= 3.4.0
@@ -35,22 +34,18 @@ Dolibarr prerequisites
     * Products
     * Categories (products)
     * Orders
-    
+
 Wordpress prerequisites
 -----------------------
 * Woocommerce >= 2.0.0
 
-
-Enable extensions
------------------
-Enable the following extensions :
-
-    * SOAP
-    * OpenSSL
+PHP extensions
+--------------
+* SOAP
+* OpenSSL
 
 Status
 ------
 This is alpha code. Contributors and testers are welcome.
 
 If you need this for commercial application, you can buy paid support and development services from GPC.solutions <https://gpcsolutions.fr>
-
