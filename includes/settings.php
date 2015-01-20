@@ -62,7 +62,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				'webservs_url'         => array(
 					'title'       => __( 'URL', 'doliwoo' ),
 					'type'        => 'text',
-					'description' => __( 'Enter Dolibarr webservices root URL (i.e. https://mydolibarr.fr/webservices/)',
+					'description' => __( 'Enter Dolibarr webservices root URL (i.e. https://mydolibarr.com/webservices/)',
 						'doliwoo' ),
 					'desc_tip'    => false,
 					'default'     => ''
@@ -93,7 +93,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 					'description' => __( 'If you\'re using ulticompany: the ID of the entity you want to integrate. Leave to 1 otherwise.', 'doliwoo' ),
 					'type'        => 'text',
 					'desc_tip'    => false,
-					'default'     => ''
+					'default'     => 1
 				),
 				'dolibarr_category_id' => array(
 					'title'       => __( 'Product category', 'doliwoo' ),
