@@ -1,5 +1,5 @@
 <?php
-/* Copyright (C) 2013 Cédric Salvador <csalvador@gpcsolutions.fr>
+/* Copyright (C) 2013-2014 Cédric Salvador <csalvador@gpcsolutions.fr>
  * Copyright (C) 2015 Maxime Lafourcade <mlafourcade@gpcsolutions.fr>
  * Copyright (C) 2015 Raphaël Doursenaud <rdoursenaud@gpcsolutions.fr>
  *
@@ -15,6 +15,12 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * DoliWoo settings
+ *
+ * WooCommerce settings integration.
  */
 
 if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :

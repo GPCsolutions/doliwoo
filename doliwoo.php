@@ -10,7 +10,7 @@ Text Domain: doliwoo
 Domain Path: /languages
 */
 
-/* Copyright (C) 2013 Cédric Salvador  <csalvador@gpcsolutions.fr>
+/* Copyright (C) 2013-2014 Cédric Salvador <csalvador@gpcsolutions.fr>
  * Copyright (C) 2015 Maxime Lafourcade <mlafourcade@gpcsolutions.fr>
  * Copyright (C) 2015 Raphaël Doursenaud <rdoursenaud@gpcsolutions.fr>
  *
@@ -26,6 +26,14 @@ Domain Path: /languages
  *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * DoliWoo plugin
+ *
+ * Dolibarr WooCommerce integration.
+ *
+ * @package DoliWoo
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
