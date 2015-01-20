@@ -19,8 +19,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 		public function __construct() {
 			$this->id                 = 'doliwoo-settings';
 			$this->method_title       = __( 'Doliwoo Settings', 'doliwoo' );
-			$this->method_description = __( 'Dolibarr webservices access',
-				'doliwoo' );
+			$this->method_description = __( 'Dolibarr webservices access', 'doliwoo' );
 
 			// Load the settings
 			$this->init_form_fields();
@@ -56,56 +55,55 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				'sourceapplication'    => array(
 					'title'       => __( 'Source application', 'doliwoo' ),
 					'type'        => 'text',
-					'description' => __( '' ),
+					'description' => __( 'How this application will identify itself to the webservice.', 'doliwoo' ),
 					'desc_tip'    => false,
 					'default'     => 'WooCommerce'
 				),
 				'webservs_url'         => array(
 					'title'       => __( 'URL', 'doliwoo' ),
 					'type'        => 'text',
-					'description' => __( 'Enter your URL webservices.',
-						'woocommerce-integration-demo' ),
+					'description' => __( 'Enter Dolibarr webservices root URL (i.e. https://mydolibarr.fr/webservices/)',
+						'doliwoo' ),
 					'desc_tip'    => false,
 					'default'     => ''
 				),
 				'dolibarr_key'         => array(
 					'title'       => __( 'Key', 'doliwoo' ),
-					'description' => __( ' Enter your Dolibarr Key ' ),
+					'description' => __( 'Enter your Dolibarr webservices key', 'doliwoo' ),
 					'type'        => 'text',
 					'desc_tip'    => false,
 					'default'     => ''
 				),
 				'dolibarr_login'       => array(
 					'title'       => __( 'User login', 'doliwoo' ),
-					'description' => __( 'Dolibarr Login ' ),
+					'description' => __( 'Dolibarr actions will be done as this user', 'doliwoo' ),
 					'type'        => 'text',
 					'desc_tip'    => false,
 					'default'     => ''
 				),
 				'dolibarr_password'    => array(
-					'title'       => __( 'User password', 'doliwoo' ),
-					'description' => __( ' Dolibarr Password ' ),
-					'type'        => 'password',
-					'desc_tip'    => false,
-					'default'     => ''
+					'title'    => __( 'User password', 'doliwoo' ),
+					'type'     => 'password',
+					'desc_tip' => false,
+					'default'  => ''
 				),
 				'dolibarr_entity'      => array(
 					'title'       => __( 'Entity', 'doliwoo' ),
-					'description' => __( '' ),
+					'description' => __( 'If you\'re using ulticompany: the ID of the entity you want to integrate. Leave to 1 otherwise.', 'doliwoo' ),
 					'type'        => 'text',
 					'desc_tip'    => false,
 					'default'     => ''
 				),
 				'dolibarr_category_id' => array(
-					'title'       => __( 'Category', 'doliwoo' ),
-					'description' => __( '' ),
+					'title'       => __( 'Product category', 'doliwoo' ),
+					'description' => __( 'The ID of the product category you want to automatically import products from.', 'doliwoo' ),
 					'type'        => 'text',
 					'desc_tip'    => false,
 					'default'     => ''
 				),
 				'dolibarr_generic_id'  => array(
 					'title'       => __( 'Generic thirdparty', 'doliwoo' ),
-					'description' => __( '' ),
+					'description' => __( 'The ID of the thirdparty that\'ll be used for anonymous orders.', 'doliwoo' ),
 					'type'        => 'text',
 					'desc_tip'    => false,
 					'default'     => ''
