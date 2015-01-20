@@ -29,6 +29,7 @@ It leverages Dolibarr webservices feature to exchange data.
 
 **Known missing (TODO)**
 * VAT rates management
+* Product's stock informations
 * Invoicing
 * Payments
 * Multiple languages management
