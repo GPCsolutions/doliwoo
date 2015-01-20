@@ -1,16 +1,14 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
-
-/**
- * Plugin Name: Doliwoo
- * Plugin URI: TODO (https://gpcsolutions.fr/doliwoo)
- * Description: Dolibarr WooCommerce integration
- * Version: 0.0.1
- * Author: GPC.solutions
- * License: GPL3
- */
+/*
+Plugin Name: Doliwoo
+Plugin URI: TODO (https://gpcsolutions.fr/doliwoo)
+Description: Dolibarr WooCommerce integration
+Version: 0.0.1-alpha
+Author: GPC.solutions
+License: GPL3
+Text Domain: doliwoo
+Domain Path: /languages
+*/
 
 /* Copyright (C) 2013 Cédric Salvador  <csalvador@gpcsolutions.fr>
  * Copyright (C) 2015 Maxime Lafourcade <mlafourcade@gpcsolutions.fr>
@@ -29,6 +27,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly
+}
 
 load_plugin_textdomain( 'doliwoo',
 	false,
