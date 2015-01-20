@@ -5,8 +5,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Plugin Name: Doliwoo
- * Plugin URI:
- * Description: Interface between WooCommerce and Dolibarr
+ * Plugin URI: TODO (https://gpcsolutions.fr/doliwoo)
+ * Description: Dolibarr WooCommerce integration
  * Version: 0.0.1
  * Author: GPC.solutions
  * License: GPL3
