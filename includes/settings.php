@@ -69,6 +69,8 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 					'desc_tip'    => false,
 					'default'     => 'WooCommerce'
 				),
+				// TODO: make sure we have a trailing slash and automatically add it if need be
+				// TODO: make sure the URL is HTTPS or SOAP requests will fail
 				'webservs_url'         => array(
 					'title'       => __( 'URL', 'doliwoo' ),
 					'type'        => 'text',
