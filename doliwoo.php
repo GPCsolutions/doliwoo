@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Plugin Name: Doliwoo
  * Plugin URI:
  * Description: Interface between WooCommerce and Dolibarr
- * Version: 0.2
+ * Version: 0.0.1
  * Author: Cédric Salvador <csalvador@gpcsolutions.fr>
  * Author: Maxime Lafourcade <mlafourcade@gpcsolutions.fr>
  * License: GPL3
