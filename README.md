@@ -13,7 +13,7 @@ A Wordpress plugin to interface a WooCommerce shop with Dolibarr.
 
 Description
 -----------
-This plugin uses Dolibarr webservices to :
+This plugin uses Dolibarr webservices to:
 
 * Allow Woocommerce to pull user, thirdparty and product informations from Dolibarr
 * Create Dolibarr orders and thirdparties from Woocommerce purchase data
@@ -23,7 +23,7 @@ Installation
 * Extract the zip file.
 * Drop the contents in the wp-content/plugins/ directory of your WordPress installation.
 * Activate the Plugin from Plugins page.
-* Go to the Doliwoo menu and configure it according to your Dolibarr installation
+* Go to WooCommerce Integration settings and configure it according to your Dolibarr installation.
 
 Dolibarr prerequisites
 ----------------------
@@ -39,8 +39,8 @@ Wordpress prerequisites
 -----------------------
 * Woocommerce >= 2.0.0
 
-PHP extensions
---------------
+Required PHP extensions
+-----------------------
 * SOAP
 * OpenSSL
 
