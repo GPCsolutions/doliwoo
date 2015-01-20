@@ -70,7 +70,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				private $settings;
 
 				/**
-				 * @var string[] SOAP authentication parameters
+				 * @var array SOAP authentication parameters
 				 */
 				private $ws_auth = array();
 
@@ -790,6 +790,6 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 		exit;
 	}
 
-	$Doliwoo = new Doliwoo( __FILE__ );
+	$Doliwoo = new Doliwoo();
 
 endif;
