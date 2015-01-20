@@ -8,13 +8,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Plugin URI:
  * Description: Interface between WooCommerce and Dolibarr
  * Version: 0.0.1
- * Author: Cédric Salvador <csalvador@gpcsolutions.fr>
- * Author: Maxime Lafourcade <mlafourcade@gpcsolutions.fr>
+ * Author: GPC.solutions
  * License: GPL3
  */
 
 /* Copyright (C) 2013 Cédric Salvador  <csalvador@gpcsolutions.fr>
  * Copyright (C) 2015 Maxime Lafourcade <mlafourcade@gpcsolutions.fr>
+ * Copyright (C) 2015 Raphaël Doursenaud <rdoursenaud@gpcsolutions.fr>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
