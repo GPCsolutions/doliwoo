@@ -45,17 +45,17 @@ load_plugin_textdomain( 'doliwoo',
 	dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
 // Check required extensions
-if ( extension_loaded( 'soap' ) === false
-     && extension_loaded( 'openssl' ) === false
+if ( false === extension_loaded( 'soap' )
+     && false === extension_loaded( 'openssl' )
 ) {
 	echo __( 'You must enable extensions SOAP and OpenSSL' );
 	exit;
 }
-if ( extension_loaded( 'soap' ) === false ) {
+if ( false === extension_loaded( 'soap' )  ) {
 	echo __( 'You must enable extension SOAP' );
 	exit;
 }
-if ( extension_loaded( 'openssl' ) === false ) {
+if ( false === extension_loaded( 'openssl' )  ) {
 	echo __( 'You must enable extension OpenSSL' );
 	exit;
 }
@@ -83,6 +83,11 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				 * @var array SOAP authentication parameters
 				 */
 				private $ws_auth = array();
+
+				/**
+				 * @var WC_Tax() Woocommerce taxes informations
+				 */
+				private $taxes;
 
 				/**
 				 * Constructor
@@ -136,6 +141,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 						add_filter( 'woocommerce_integrations',
 							array( $this, 'add_integration' ) );
 					}
+					$this->taxes = new WC_Tax();
 				}
 
 				/**
@@ -340,14 +346,14 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 
 					// Fill this array with all data required to create an order in Dolibarr
 					$user_id = get_current_user_id();
-					if ( $user_id == '' ) {
+					if ('' == $user_id ) {
 						// default to the generic user
 						$thirdparty_id = $this->settings->dolibarr_generic_id;
 					} else {
 						$thirdparty_id = get_user_meta( $user_id, 'dolibarr_id',
 							true );
 					}
-					if ( $thirdparty_id != '' ) {
+					if ( '' != $thirdparty_id ) {
 						$order['thirdparty_id'] = $thirdparty_id;
 					} else {
 						if ( get_user_meta( $user_id, 'billing_company', true )
@@ -376,7 +382,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 						                   = get_post_meta( $product['product_id'],
 							'dolibarr_id', 1 );
 						$line['vat_rate']
-						                   = $this->get_vat_rate( $product['data']->get_tax_class() );
+						                   = $this->taxes->get_rates( $product['data']->get_tax_class() );
 						$line['qty']       = $product['quantity'];
 						$line['price']     = $product['data']->get_price();
 						$line['unitprice'] = $product['data']->get_price();
@@ -462,37 +468,6 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				}
 
 				/**
-				 * Get the VAT rate associated with a tax class
-				 *
-				 * @param string $tax_class a WooCommerce tax class
-				 *
-				 * @return string the associated VAT rate
-				 */
-				private function get_vat_rate( $tax_class ) {
-					global $wpdb;
-
-					// Workaround
-					if ( $tax_class == 'standard' ) {
-						$tax_class = '';
-					}
-
-					// FIXME: use parameterized query
-					// FIXME: check if there isn't any API in WooCommerce for doing that
-					$sql = 'SELECT tax_rate FROM ' . $wpdb->prefix
-					       . 'woocommerce_tax_rates';
-					$sql .= ' WHERE tax_rate_class = "' . $tax_class . '"';
-					$sql .= ' AND tax_rate_name = "' . __( 'VAT', 'doliwoo' )
-					        . '"';
-
-					$result = $wpdb->query( $sql );
-					if ( $result ) {
-						$res = $wpdb->last_result[0]->tax_rate;
-					}
-
-					return $res;
-				}
-
-				/**
 				 * Pull products data from Dolibarr via webservice and save it in Wordpress
 				 *
 				 * @access public
@@ -538,7 +513,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 								$post_id = wp_insert_post( $post );
 							}
 
-							if ( $post_id > 0 ) {
+							if ( 0 < $post_id  ) {
 								add_post_meta( $post_id, 'total_sales', '0',
 									true );
 								add_post_meta( $post_id, 'dolibarr_id',
@@ -558,7 +533,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 								if ( get_option( 'woocommerce_manage_stock' )
 								     == 'yes'
 								) {
-									if ( $product->stock_real > 0 ) {
+									if ( 0 < $product->stock_real  ) {
 										update_post_meta( $post_id,
 											'_stock_status', 'instock' );
 										update_post_meta( $post_id, '_stock',
@@ -583,8 +558,8 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 											'product',
 											$product->dir . $filename );
 
-										if ( $result['result']->result_code
-										     == 'OK'
+										if ('OK' ==
+											$result['result']->result_code
 										) {
 											// copy the image to the wordpress uploads folder
 
@@ -698,7 +673,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 					$ref        = get_user_meta( $user_id, 'billing_company',
 						true );
 					$individual = 0;
-					if ( $ref == '' ) {
+					if ( '' == $ref ) {
 						$ref        = get_user_meta( $user_id,
 							'billing_last_name', true );
 						$individual = 1;
@@ -755,7 +730,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 						} elseif ( is_null( $result['thirdparty'] ) ) {
 							$res
 								= $this->dolibarr_create_thirdparty( $user_id );
-							if ( $res['result']->result_code == 'OK' ) {
+							if (  'OK' == $res['result']->result_code ) {
 								update_user_meta( $user_id, 'dolibarr_id',
 									$res->id );
 							}

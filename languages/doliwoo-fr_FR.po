@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Doliwoo\n"
 "Report-Msgid-Bugs-To: http://wppolyglots.wordpress.com\n"
-"POT-Creation-Date: 2015-01-15 17:25+0100\n"
-"PO-Revision-Date: 2015-01-15 17:27+0100\n"
+"POT-Creation-Date: 2015-01-21 14:29+0100\n"
+"PO-Revision-Date: 2015-01-21 14:44+0100\n"
 "Last-Translator: Cédric Salvador <csalvador@gpcsolutions.fr>\n"
 "Language-Team: FR <dev@gpcsolutions.fr>\n"
 "Language: fr_FR\n"
@@ -19,60 +19,111 @@ msgstr ""
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo\n"
 
-#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/doliwoo.php:119
-#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/doliwoo.php:376
-#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/doliwoo.php:398
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/doliwoo.php:51
+msgid "You must enable extensions SOAP and OpenSSL"
+msgstr "Vous devez activer les extensions OpenSSL et SOAP"
+
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/doliwoo.php:55
+msgid "You must enable extension SOAP"
+msgstr "Vous devez activer l'extension SOAP"
+
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/doliwoo.php:59
+msgid "You must enable extension OpenSSL"
+msgstr "Vous devez activer l'extension OpenSSL"
+
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/doliwoo.php:165
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/doliwoo.php:460
 msgid "VAT"
 msgstr "TVA"
 
-#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/doliwoo.php:186
-#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/doliwoo.php:205
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/doliwoo.php:237
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/doliwoo.php:257
 msgid "Dolibarr User ID"
 msgstr "Identifiant Utilisateur Dolibarr"
 
-#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/doliwoo.php:202
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/doliwoo.php:254
 msgid "Dolibarr"
 msgstr "Dolibarr"
 
-#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:19
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/doliwoo.php:781
+msgid "This extension needs WooCommerce"
+msgstr "Cette extension nécessite WooCommerce"
+
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:37
 msgid "Doliwoo Settings"
 msgstr "Réglages DoliWoo"
 
-#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:20
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:38
 msgid "Dolibarr webservices access"
 msgstr "Accès aux webservices Dolibarr"
 
-#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:48
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:72
 msgid "Source application"
 msgstr "Nom de l'application"
 
-#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:54
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:74
+msgid "How this application will identify itself to the webservice."
+msgstr "Comment cette application s'identifie seule auprés du webservice"
+
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:81
 msgid "URL"
 msgstr "URL"
 
-#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:62
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:83
+msgid "Enter Dolibarr webservices root URL (i.e. https://mydolibarr.com/webservices/)"
+msgstr ""
+" Entrez l'URL des webservices de Dolibarr (i.e. https://mydolibarr.com/webservices/)"
+
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:89
 msgid "Key"
 msgstr "Clé"
 
-#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:68
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:90
+msgid "Enter your Dolibarr webservices key"
+msgstr "Entrez votre clé du webservices de Dolibarr"
+
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:96
 msgid "User login"
 msgstr "Identifiant utilisateur"
 
-#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:74
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:97
+msgid "Dolibarr actions will be done as this user"
+msgstr "Les actions de Dolibarr seront attribuées à cet utilisateur"
+
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:103
 msgid "User password"
 msgstr "Mot de passe utilisateur"
 
-#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:79
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:110
 msgid "Entity"
 msgstr "Entité"
 
-#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:85
-msgid "Category"
-msgstr "Catégorie"
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:111
+msgid ""
+"If you're using ulticompany: the ID of the entity you want to integrate. Leave to 1 "
+"otherwise."
+msgstr ""
+"Si vous utilisez plusieurs entreprises : l'ID de l'entité que vous souhaitez "
+"intégrer.Sinon laissez 1."
 
-#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:91
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:117
+msgid "Product category"
+msgstr "Catégorie du Produit"
+
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:118
+msgid "The ID of the product category you want to automatically import products from."
+msgstr "L'ID de la catégorie de produits que vous souhaitez importer automatiquement."
+
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:124
 msgid "Generic thirdparty"
 msgstr "Tiers générique"
+
+#: /home/mlafourcade/src/wordpress/wp-content/plugins/doliwoo/includes/settings.php:125
+msgid "The ID of the thirdparty that'll be used for anonymous orders."
+msgstr "L'Id du tiers qui va être utilisé pour les commandes anonymes"
+
+#~ msgid "Category"
+#~ msgstr "Catégorie"
 
 #~ msgid "Could not write in doliwoo/conf.php"
 #~ msgstr "Impossible d'écrire dans doliwoo/conf.php"
