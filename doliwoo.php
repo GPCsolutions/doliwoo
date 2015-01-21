@@ -85,6 +85,11 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				private $ws_auth = array();
 
 				/**
+				 * @var WC_Tax() Woocommerce taxes informations
+				 */
+				private $taxes;
+
+				/**
 				 * Constructor
 				 */
 				public function __construct() {
@@ -136,6 +141,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 						add_filter( 'woocommerce_integrations',
 							array( $this, 'add_integration' ) );
 					}
+					$this->taxes = new WC_Tax();
 				}
 
 				/**
@@ -376,7 +382,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 						                   = get_post_meta( $product['product_id'],
 							'dolibarr_id', 1 );
 						$line['vat_rate']
-						                   = $this->get_vat_rate( $product['data']->get_tax_class() );
+						                   = $this->taxes->get_rates( $product['data']->get_tax_class() );
 						$line['qty']       = $product['quantity'];
 						$line['price']     = $product['data']->get_price();
 						$line['unitprice'] = $product['data']->get_price();
@@ -456,37 +462,6 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 					$result = $wpdb->query( $sql );
 					if ( $result ) {
 						$res = $wpdb->last_result[0]->tax_rate_class;
-					}
-
-					return $res;
-				}
-
-				/**
-				 * Get the VAT rate associated with a tax class
-				 *
-				 * @param string $tax_class a WooCommerce tax class
-				 *
-				 * @return string the associated VAT rate
-				 */
-				private function get_vat_rate( $tax_class ) {
-					global $wpdb;
-
-					// Workaround
-					if ( $tax_class == 'standard' ) {
-						$tax_class = '';
-					}
-
-					// FIXME: use parameterized query
-					// FIXME: check if there isn't any API in WooCommerce for doing that
-					$sql = 'SELECT tax_rate FROM ' . $wpdb->prefix
-					       . 'woocommerce_tax_rates';
-					$sql .= ' WHERE tax_rate_class = "' . $tax_class . '"';
-					$sql .= ' AND tax_rate_name = "' . __( 'VAT', 'doliwoo' )
-					        . '"';
-
-					$result = $wpdb->query( $sql );
-					if ( $result ) {
-						$res = $wpdb->last_result[0]->tax_rate;
 					}
 
 					return $res;
