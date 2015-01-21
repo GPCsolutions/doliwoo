@@ -1,6 +1,5 @@
 How to contribute
 =================
-
 We love and embrace FLOSS.
 
 Our development process is open and we welcome all contributions.
@@ -38,5 +37,6 @@ We'll integrate your contributions a few weeks before release.
 
 Documentation
 -------------
-The documentation is maintained on the [Wiki](https://github.com/GPCsolutions/doliwoo/wiki)
+The documentation is maintained on the [Wiki](https://github.com/GPCsolutions/doliwoo/wiki).
 
+Access is currently restricted but you can suggest edits in the [Issues](https://github.com/GPCsolutions/doliwoo/issues).
