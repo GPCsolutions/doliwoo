@@ -1,0 +1,9 @@
+[main]
+host = https://www.transifex.com
+
+[doliwoo.doliwoo]
+file_filter = languages/doliwoo-<lang>.po
+source_file = languages/doliwoo.pot
+source_lang = en
+type = PO
+
