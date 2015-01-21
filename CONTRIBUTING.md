@@ -14,9 +14,10 @@ Support requests will be closed on sight.
 
 Code
 ----
-1. Fork the repository hosted at https://github.com/GPCsolutions/doliwoo.
+1. Fork the [repository](https://github.com/GPCsolutions/doliwoo).
 2. Commit your changes.
 3. Make a pull request.
+
 We'll review your changes, make comments if need be and integrate them as soon as they're ready.
 
 ### Resources
