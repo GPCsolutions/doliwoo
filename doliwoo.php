@@ -45,17 +45,17 @@ load_plugin_textdomain( 'doliwoo',
 	dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
 // Check required extensions
-if ( extension_loaded( 'soap' ) === false
-     && extension_loaded( 'openssl' ) === false
+if ( false === extension_loaded( 'soap' )
+     && false === extension_loaded( 'openssl' )
 ) {
 	echo __( 'You must enable extensions SOAP and OpenSSL' );
 	exit;
 }
-if ( extension_loaded( 'soap' ) === false ) {
+if ( false === extension_loaded( 'soap' )  ) {
 	echo __( 'You must enable extension SOAP' );
 	exit;
 }
-if ( extension_loaded( 'openssl' ) === false ) {
+if ( false === extension_loaded( 'openssl' )  ) {
 	echo __( 'You must enable extension OpenSSL' );
 	exit;
 }
@@ -340,14 +340,14 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 
 					// Fill this array with all data required to create an order in Dolibarr
 					$user_id = get_current_user_id();
-					if ( $user_id == '' ) {
+					if ('' == $user_id ) {
 						// default to the generic user
 						$thirdparty_id = $this->settings->dolibarr_generic_id;
 					} else {
 						$thirdparty_id = get_user_meta( $user_id, 'dolibarr_id',
 							true );
 					}
-					if ( $thirdparty_id != '' ) {
+					if ( '' != $thirdparty_id ) {
 						$order['thirdparty_id'] = $thirdparty_id;
 					} else {
 						if ( get_user_meta( $user_id, 'billing_company', true )
@@ -538,7 +538,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 								$post_id = wp_insert_post( $post );
 							}
 
-							if ( $post_id > 0 ) {
+							if ( 0 < $post_id  ) {
 								add_post_meta( $post_id, 'total_sales', '0',
 									true );
 								add_post_meta( $post_id, 'dolibarr_id',
@@ -558,7 +558,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 								if ( get_option( 'woocommerce_manage_stock' )
 								     == 'yes'
 								) {
-									if ( $product->stock_real > 0 ) {
+									if ( 0 < $product->stock_real  ) {
 										update_post_meta( $post_id,
 											'_stock_status', 'instock' );
 										update_post_meta( $post_id, '_stock',
@@ -583,8 +583,8 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 											'product',
 											$product->dir . $filename );
 
-										if ( $result['result']->result_code
-										     == 'OK'
+										if ('OK' ==
+											$result['result']->result_code
 										) {
 											// copy the image to the wordpress uploads folder
 
@@ -698,7 +698,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 					$ref        = get_user_meta( $user_id, 'billing_company',
 						true );
 					$individual = 0;
-					if ( $ref == '' ) {
+					if ( '' == $ref ) {
 						$ref        = get_user_meta( $user_id,
 							'billing_last_name', true );
 						$individual = 1;
@@ -755,7 +755,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 						} elseif ( is_null( $result['thirdparty'] ) ) {
 							$res
 								= $this->dolibarr_create_thirdparty( $user_id );
-							if ( $res['result']->result_code == 'OK' ) {
+							if (  'OK' == $res['result']->result_code ) {
 								update_user_meta( $user_id, 'dolibarr_id',
 									$res->id );
 							}
