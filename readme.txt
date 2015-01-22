@@ -71,8 +71,8 @@ NO! This is alpha code. This project started as an internal proof of concept and
 
 = OK, so how can I make it happen then? =
 
-You can help by testing, providing detailed bug reports, documention or even code.
-Or you can buy paid support and/or development services from [GPC.solutions](https://gpcsolutions.fr)
+You can help by testing, providing detailed bug reports, documentation or even code.
+Or you can buy paid support and/or development services from [GPC.solutions](https://gpcsolutions.fr).
 
 = Why do I need to use HTTPS with a good known SSL certificate? =
 
