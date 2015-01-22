@@ -1,16 +1,16 @@
 === Doliwoo ===
 Contributors: GPC.solutions
-Donate Link: TODO (https://gpcsolutions.fr/donate)
+Donate Link: TODO (https://gpcsolutions.fr/donate) > 404 PAGE
 Tags: dolibarr, woocommerce, ecommerce, erp, integration
 Author URI: https://gpcsolutions.fr
-Plugin URI: TODO (https://gpcsolutions.fr/doliwoo)
-Requires at least: 3.7.1
+Plugin URI: TODO (https://gpcsolutions.fr/doliwoo) > 404 PAGE 
+Requires at least: 3.7.1 (Dolibarr)
 Tested up to: 3.7.1
 Stable tag: master
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Integrate Dolibarr with a WooCommerce shop.
+Integrate Dolibarr ERP/CRM with a WooCommerce shop.
 
 == Description ==
 Doliwoo allows integration of Dolibarr into WooCommerce.
