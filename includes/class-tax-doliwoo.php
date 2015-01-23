@@ -31,7 +31,7 @@ class WC_Tax_Doliwoo extends WC_Tax {
 	/**
 	 * Save tax rates
 	 *
-	 * @param array() $tax_rate
+	 * @param array $tax_rate Rate description
 	 *
 	 * @return int
 	 */
@@ -47,8 +47,8 @@ class WC_Tax_Doliwoo extends WC_Tax {
 	/**
 	 * Update tax rates
 	 *
-	 * @param int     $tax_rate_id
-	 * @param array() $tax_rate
+	 * @param int $tax_rate_id Element to update
+	 * @param array $tax_rate Rate description
 	 */
 	public function update_tax( $tax_rate_id, $tax_rate ) {
 		global $wpdb;

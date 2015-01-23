@@ -150,7 +150,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				 *
 				 * @param array $integrations Existing integrations
 				 *
-				 * @return array WooCommerce integrations
+				 * @return string[] WooCommerce integrations
 				 */
 				public function add_integration( $integrations ) {
 					$integrations[] = 'WC_Integration_Doliwoo_Settings';
