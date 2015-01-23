@@ -85,7 +85,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				private $ws_auth = array();
 
 				/**
-				 * @var WC_Tax() Woocommerce taxes informations
+				 * @var WC_Tax() WooCommerce taxes informations
 				 */
 				private $taxes;
 
@@ -96,8 +96,8 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 					// Initialize plugin settings
 					add_action( 'plugins_loaded', array( $this, 'init' ) );
 
-					// Create custom tax classes and VAT rates on plugin activation
-					add_action( 'woocommerce_init',
+					// Create custom tax classes and VAT rates on plugin settings saved
+					add_action( 'woocommerce_settings_saved',
 						array( $this, 'create_custom_tax_classes' ) );
 
 					// Import Dolibarr products on plugin settings saved
@@ -141,7 +141,8 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 						add_filter( 'woocommerce_integrations',
 							array( $this, 'add_integration' ) );
 					}
-					$this->taxes = new WC_Tax();
+					include_once'includes/class-tax-doliwoo.php';
+					$this->taxes = new WC_Tax_Doliwoo();
 				}
 
 				/**
@@ -149,7 +150,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				 *
 				 * @param array $integrations Existing integrations
 				 *
-				 * @return array WooCommerce integrations
+				 * @return string[] WooCommerce integrations
 				 */
 				public function add_integration( $integrations ) {
 					$integrations[] = 'WC_Integration_Doliwoo_Settings';
@@ -161,7 +162,6 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				 * Create tax classes for Dolibarr tax rates
 				 */
 				public function create_custom_tax_classes() {
-					global $wpdb;
 					$tax_name = __( 'VAT', 'doliwoo' );
 					//first, create the rates
 					$data = array(
@@ -179,7 +179,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 							'tax_rate_name'     => $tax_name,
 							'tax_rate_priority' => 1,
 							'tax_rate_order'    => 0,
-							'tax_rate_class'    => 'reduced-rate'
+							'tax_rate_class'    => 'reduced'
 						),
 						array(
 							'tax_rate_country'  => 'FR',
@@ -187,7 +187,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 							'tax_rate_name'     => $tax_name,
 							'tax_rate_priority' => 1,
 							'tax_rate_order'    => 0,
-							'tax_rate_class'    => 'super-reduced-rate'
+							'tax_rate_class'    => 'super-reduced'
 						),
 						array(
 							'tax_rate_country'  => 'FR',
@@ -195,7 +195,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 							'tax_rate_name'     => $tax_name,
 							'tax_rate_priority' => 1,
 							'tax_rate_order'    => 0,
-							'tax_rate_class'    => 'minimum-rate'
+							'tax_rate_class'    => 'minimum'
 						),
 						array(
 							'tax_rate_country'  => 'FR',
@@ -203,27 +203,46 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 							'tax_rate_name'     => $tax_name,
 							'tax_rate_priority' => 1,
 							'tax_rate_order'    => 0,
-							'tax_rate_class'    => 'zero-rate'
+							'tax_rate_class'    => 'zero'
 						)
 					);
-
 					foreach ( $data as $entry ) {
-						// FIXME: use parameterized query
-						$query = 'SELECT tax_rate_id FROM ' . $wpdb->prefix
-						         . 'woocommerce_tax_rates WHERE ';
-						foreach ( $entry as $field => $value ) {
-							$query .= $field . ' = "' . $value . '" AND ';
-						}
-						$query = rtrim( $query, ' AND ' );
-						$row   = $wpdb->get_row( $query );
-						if ( is_null( $row ) ) {
-							// FIXME: check if there isn't any API in WooCommerce for doing that
-							$wpdb->insert( 'wp_woocommerce_tax_rates', $entry );
-						}
+						$this->taxes->insert_tax( $entry );
 					}
 					// Now take care of classes
 					update_option( 'woocommerce_tax_classes',
-						"Reduced Rate\nSuper-reduced Rate\nMinimum Rate\nZero Rate" );
+						"Reduced\nSuper-reduced\nMinimum\nZero" );
+				}
+
+				/**
+				 * Get the tax class associated with a VAT rate
+				 *
+				 * @param float $tax_rate a product VAT rate
+				 *
+				 * @return string   the tax class corresponding to the input VAT rate
+				 */
+				private function get_tax_class( $tax_rate ) {
+					// Add missing standard rate
+					$nametaxclasses = $this->taxes->get_tax_classes();
+					$nametaxclasses[] = '';
+					foreach($nametaxclasses as $unetaxclass) {
+						$lestaxes = $this->taxes->get_rates($unetaxclass);
+						if (array_values($lestaxes)[0]['rate'] == $tax_rate) {
+							return $unetaxclass;
+						}
+					}
+				}
+
+				/**
+				 * Schedules the daily import of Dolibarr products
+				 *
+				 * @access public
+				 * @return void
+				 */
+				public function schedule_import_products() {
+					if ( ! wp_next_scheduled( 'import_products' ) ) {
+						wp_schedule_event( time(), 'daily', 'import_products' );
+					}
 				}
 
 				/**
@@ -375,7 +394,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 						$line = array();
 						$line['type']
 						                   = get_post_meta( $product['product_id'],
-							'type', 1 );
+							'dolibarr_type', 1 );
 						$line['desc']
 						                   = $product['data']->post->post_content;
 						$line['product_id']
@@ -400,71 +419,22 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				}
 
 				/**
-				 * Schedules the daily import of Dolibarr products
-				 *
-				 * @access public
-				 * @return void
-				 */
-				public function schedule_import_products() {
-					if ( ! wp_next_scheduled( 'import_products' ) ) {
-						wp_schedule_event( time(), 'daily', 'import_products' );
-					}
-				}
-
-				/**
 				 * Checks for the existence of a product in Wordpress database
 				 *
 				 * @access public
 				 *
 				 * @param  int $dolibarr_id ID of a product in Dolibarr
 				 *
-				 * @return int $exists 0 if the product doesn't exists, else >0
+				 * @return bool $exists
 				 */
 				private function dolibarr_product_exists( $dolibarr_id ) {
-					global $wpdb;
-
-					$exists = 0; // Product doesn't exist
-
-					// FIXME: use parameterized query
-					// FIXME: check if there isn't any API in WooCommerce for doing that
-					$sql = 'SELECT count(post_id) as nb from ' . $wpdb->prefix
-					       . 'postmeta ';
-					$sql .= 'WHERE meta_key = "dolibarr_id" AND meta_value = '
-					        . $dolibarr_id;
-
-					$result = $wpdb->query( $sql );
-					if ( $result ) {
-						$exists = $wpdb->last_result[0]->nb;
-					}
-
-					return $exists;
-				}
-
-				// FIXME: the following two methods don't take into account multiple rates in the same tax class
-				/**
-				 * Get the tax class associated with a VAT rate
-				 *
-				 * @param float $tax_rate a product VAT rate
-				 *
-				 * @return string   the tax class corresponding to the input VAT rate
-				 */
-				private function get_tax_class( $tax_rate ) {
-					global $wpdb;
-
-					// FIXME: use parameterized query
-					// FIXME: check if there isn't any API in WooCommerce for doing that
-					$sql = 'SELECT tax_rate_class FROM ' . $wpdb->prefix
-					       . 'woocommerce_tax_rates';
-					$sql .= ' WHERE tax_rate = ' . $tax_rate
-					        . ' AND tax_rate_name = "' . __( 'VAT', 'doliwoo' )
-					        . '"';
-
-					$result = $wpdb->query( $sql );
-					if ( $result ) {
-						$res = $wpdb->last_result[0]->tax_rate_class;
-					}
-
-					return $res;
+					$args = array(
+						'post_type' => 'product',
+						'meta_key' => 'dolibarr_id',
+						'meta_value' => $dolibarr_id
+					);
+					$query = new WP_Query( $args );
+					return $query->have_posts();
 				}
 
 				/**
@@ -514,11 +484,9 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 							}
 
 							if ( 0 < $post_id  ) {
-								add_post_meta( $post_id, 'total_sales', '0',
-									true );
 								add_post_meta( $post_id, 'dolibarr_id',
 									$product->id, true );
-								add_post_meta( $post_id, 'type', $product->type,
+								add_post_meta( $post_id, 'dolibarr_type', $product->type,
 									true );
 								update_post_meta( $post_id, '_regular_price',
 									$product->price_net );
