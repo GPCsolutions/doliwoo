@@ -85,7 +85,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				private $ws_auth = array();
 
 				/**
-				 * @var WC_Tax() Woocommerce taxes informations
+				 * @var WC_Tax() WooCommerce taxes informations
 				 */
 				private $taxes;
 
@@ -96,8 +96,8 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 					// Initialize plugin settings
 					add_action( 'plugins_loaded', array( $this, 'init' ) );
 
-					// Create custom tax classes and VAT rates on plugin activation
-					add_action( 'woocommerce_init',
+					// Create custom tax classes and VAT rates on plugin settings saved
+					add_action( 'woocommerce_settings_saved',
 						array( $this, 'create_custom_tax_classes' ) );
 
 					// Import Dolibarr products on plugin settings saved
@@ -141,7 +141,8 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 						add_filter( 'woocommerce_integrations',
 							array( $this, 'add_integration' ) );
 					}
-					$this->taxes = new WC_Tax();
+					include_once'includes/class-tax-doliwoo.php';
+					$this->taxes = new WC_Tax_Doliwoo();
 				}
 
 				/**
@@ -161,7 +162,6 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				 * Create tax classes for Dolibarr tax rates
 				 */
 				public function create_custom_tax_classes() {
-					global $wpdb;
 					$tax_name = __( 'VAT', 'doliwoo' );
 					//first, create the rates
 					$data = array(
@@ -179,7 +179,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 							'tax_rate_name'     => $tax_name,
 							'tax_rate_priority' => 1,
 							'tax_rate_order'    => 0,
-							'tax_rate_class'    => 'reduced-rate'
+							'tax_rate_class'    => 'reduced'
 						),
 						array(
 							'tax_rate_country'  => 'FR',
@@ -187,7 +187,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 							'tax_rate_name'     => $tax_name,
 							'tax_rate_priority' => 1,
 							'tax_rate_order'    => 0,
-							'tax_rate_class'    => 'super-reduced-rate'
+							'tax_rate_class'    => 'super-reduced'
 						),
 						array(
 							'tax_rate_country'  => 'FR',
@@ -195,7 +195,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 							'tax_rate_name'     => $tax_name,
 							'tax_rate_priority' => 1,
 							'tax_rate_order'    => 0,
-							'tax_rate_class'    => 'minimum-rate'
+							'tax_rate_class'    => 'minimum'
 						),
 						array(
 							'tax_rate_country'  => 'FR',
@@ -203,27 +203,46 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 							'tax_rate_name'     => $tax_name,
 							'tax_rate_priority' => 1,
 							'tax_rate_order'    => 0,
-							'tax_rate_class'    => 'zero-rate'
+							'tax_rate_class'    => 'zero'
 						)
 					);
-
 					foreach ( $data as $entry ) {
-						// FIXME: use parameterized query
-						$query = 'SELECT tax_rate_id FROM ' . $wpdb->prefix
-						         . 'woocommerce_tax_rates WHERE ';
-						foreach ( $entry as $field => $value ) {
-							$query .= $field . ' = "' . $value . '" AND ';
-						}
-						$query = rtrim( $query, ' AND ' );
-						$row   = $wpdb->get_row( $query );
-						if ( is_null( $row ) ) {
-							// FIXME: check if there isn't any API in WooCommerce for doing that
-							$wpdb->insert( 'wp_woocommerce_tax_rates', $entry );
-						}
+						$this->taxes->insert_tax( $entry );
 					}
 					// Now take care of classes
 					update_option( 'woocommerce_tax_classes',
-						"Reduced Rate\nSuper-reduced Rate\nMinimum Rate\nZero Rate" );
+						"Reduced\nSuper-reduced\nMinimum\nZero" );
+				}
+
+				/**
+				 * Get the tax class associated with a VAT rate
+				 *
+				 * @param float $tax_rate a product VAT rate
+				 *
+				 * @return string   the tax class corresponding to the input VAT rate
+				 */
+				private function get_tax_class( $tax_rate ) {
+					// Add missing standard rate
+					$nametaxclasses = $this->taxes->get_tax_classes();
+					$nametaxclasses[] = '';
+					foreach($nametaxclasses as $unetaxclass) {
+						$lestaxes = $this->taxes->get_rates($unetaxclass);
+						if (array_values($lestaxes)[0]['rate'] == $tax_rate) {
+							return $unetaxclass;
+						}
+					}
+				}
+
+				/**
+				 * Schedules the daily import of Dolibarr products
+				 *
+				 * @access public
+				 * @return void
+				 */
+				public function schedule_import_products() {
+					if ( ! wp_next_scheduled( 'import_products' ) ) {
+						wp_schedule_event( time(), 'daily', 'import_products' );
+					}
 				}
 
 				/**
