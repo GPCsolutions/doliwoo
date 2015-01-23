@@ -1,15 +1,4 @@
 <?php
-/*
-Plugin Name: Doliwoo
-Plugin URI: https://gpcsolutions.fr/doliwoo
-Description: Dolibarr WooCommerce integration
-Version: 0.0.1-alpha
-Author: GPC.solutions
-License: GPL3
-Text Domain: doliwoo
-Domain Path: /languages
-*/
-
 /* Copyright (C) 2013-2014 Cédric Salvador <csalvador@gpcsolutions.fr>
  * Copyright (C) 2015 Maxime Lafourcade <mlafourcade@gpcsolutions.fr>
  * Copyright (C) 2015 Raphaël Doursenaud <rdoursenaud@gpcsolutions.fr>
@@ -29,13 +18,13 @@ Domain Path: /languages
  */
 
 /**
- * Class WC_Tax_Doliwoo
- *
- * Extend WC_Tax() to insert and update tax rates
+ * DoliWoo tax management
  */
 
 /**
  * Class WC_Tax_Doliwoo
+ *
+ * Extend WC_Tax() to insert and update tax rates
  */
 class WC_Tax_Doliwoo extends WC_Tax {
 
