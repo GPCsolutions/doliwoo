@@ -1,0 +1,4 @@
+rules:
+    # We use wordpress style
+    php.psr1:
+        enabled: false
