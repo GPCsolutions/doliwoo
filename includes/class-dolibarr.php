@@ -234,7 +234,7 @@ class Dolibarr {
 	 * @return void
 	 */
 	public function dolibarr_import_products() {
-
+		$this->taxes = new WC_Tax_Doliwoo();
 		$this->Doliwoo = new Doliwoo();
 		$this->Doliwoo->get_settings();
 
