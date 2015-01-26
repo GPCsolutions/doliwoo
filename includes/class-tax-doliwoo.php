@@ -61,4 +61,79 @@ class WC_Tax_Doliwoo extends WC_Tax {
 			)
 		);
 	}
+
+	/**
+	 * Get the tax class associated with a VAT rate
+	 *
+	 * @param float $tax_rate a product VAT rate
+	 *
+	 * @return string   the tax class corresponding to the input VAT rate
+	 */
+	public function get_tax_class( $tax_rate ) {
+		// Add missing standard rate
+		$nametaxclasses = $this->get_tax_classes();
+		$nametaxclasses[] = '';
+		foreach($nametaxclasses as $unetaxclass) {
+			$lestaxes = $this->get_rates($unetaxclass);
+			if (array_values($lestaxes)[0]['rate'] == $tax_rate) {
+				return $unetaxclass;
+			}
+		}
+	}
+
+	/**
+	 * Create tax classes for Dolibarr tax rates
+	 */
+	public function create_custom_tax_classes() {
+		$tax_name = __( 'VAT', 'doliwoo' );
+		//first, create the rates
+		$data = array(
+			array(
+				'tax_rate_country'  => 'FR',
+				'tax_rate'          => '20',
+				'tax_rate_name'     => $tax_name,
+				'tax_rate_priority' => 1,
+				'tax_rate_order'    => 0,
+				'tax_rate_class'    => ''
+			),
+			array(
+				'tax_rate_country'  => 'FR',
+				'tax_rate'          => '10',
+				'tax_rate_name'     => $tax_name,
+				'tax_rate_priority' => 1,
+				'tax_rate_order'    => 0,
+				'tax_rate_class'    => 'reduced'
+			),
+			array(
+				'tax_rate_country'  => 'FR',
+				'tax_rate'          => '5',
+				'tax_rate_name'     => $tax_name,
+				'tax_rate_priority' => 1,
+				'tax_rate_order'    => 0,
+				'tax_rate_class'    => 'super-reduced'
+			),
+			array(
+				'tax_rate_country'  => 'FR',
+				'tax_rate'          => '2.1',
+				'tax_rate_name'     => $tax_name,
+				'tax_rate_priority' => 1,
+				'tax_rate_order'    => 0,
+				'tax_rate_class'    => 'minimum'
+			),
+			array(
+				'tax_rate_country'  => 'FR',
+				'tax_rate'          => '0',
+				'tax_rate_name'     => $tax_name,
+				'tax_rate_priority' => 1,
+				'tax_rate_order'    => 0,
+				'tax_rate_class'    => 'zero'
+			)
+		);
+		foreach ( $data as $entry ) {
+			$this->insert_tax( $entry );
+		}
+		// Now take care of classes
+		update_option( 'woocommerce_tax_classes',
+			"Reduced\nSuper-reduced\nMinimum\nZero" );
+	}
 }
