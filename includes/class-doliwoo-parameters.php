@@ -70,7 +70,7 @@ Class Woocomerce_Parameters {
 	/**
 	 * Show the Dolibarr ID field on edit user pages
 	 *
-	 * @param mixed $user User (object) being displayed
+	 * @param WP_User $user being displayed
 	 *
 	 * @return void
 	 */
@@ -123,5 +123,4 @@ Class Woocomerce_Parameters {
 
 		return $columns;
 	}
-
 }
