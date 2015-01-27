@@ -42,7 +42,8 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 			$this->init_settings();
 
 			// Define user set variables
-			$this->webservs_url = $this->get_option( 'webservs_url' );
+			$this->webservs_url = trailingslashit($this->get_option( 'webservs_url' ));
+
 			$this->dolibarr_key = $this->get_option( 'dolibarr_key' );
 			$this->sourceapplication
 			                      = $this->get_option( 'sourceapplication' );
@@ -75,12 +76,12 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 					'desc_tip'    => false,
 					'default'     => 'WooCommerce'
 				),
-				// TODO: make sure we have a trailing slash and automatically add it if need be
 				// TODO: make sure the URL is HTTPS or SOAP requests will fail
+
 				'webservs_url'         => array(
 					'title'       => __( 'URL', 'doliwoo' ),
 					'type'        => 'text',
-					'description' => __( 'Enter Dolibarr webservices root URL (i.e. https://mydolibarr.com/webservices/)',
+					'description' => __( 'Enter Dolibarr webservices root URL (i.e. https://mydolibarr.com/webservices)',
 						'doliwoo' ),
 					'desc_tip'    => false,
 					'default'     => ''

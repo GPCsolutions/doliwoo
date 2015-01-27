@@ -325,24 +325,11 @@ class Dolibarr {
 		return $query->have_posts();
 	}
 
-	/**
-	 * Creates the missing thirdparties in Dolibarr via webservice using WooCommerce user data
-	 *
-	 * @fixme: use for future batch creation feature
-	 *
-	 * @return void
-	 */
-	public function dolibarr_create_multiple_thirdparties() {
-		$users = get_users( 'blog_id=' . $GLOBALS['blog_id'] );
-		foreach ( $users as $user ) {
-			$this->dolibarr_create_thirdparty_if_not_exists( $user->data->ID );
-		}
-	}
 		/**
 		 * Webservice calls to get the product's images
 		 *
-		 * @param $product
-		 * @param $post_id
+		 * @param WC_Product $product
+		 * @param int $post_id
 		 *
 		 * @return array
 		 * @internal param $soap_client
@@ -433,4 +420,18 @@ class Dolibarr {
 
 			return $attach_ids;
 		}
+
+	/**
+	 * Creates the missing thirdparties in Dolibarr via webservice using WooCommerce user data
+	 *
+	 * @fixme: use for future batch creation feature
+	 *
+	 * @return void
+	 */
+	public function dolibarr_create_multiple_thirdparties() {
+		$users = get_users( 'blog_id=' . $GLOBALS['blog_id'] );
+		foreach ( $users as $user ) {
+			$this->dolibarr_create_thirdparty_if_not_exists( $user->data->ID );
+		}
+	}
 }
