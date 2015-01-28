@@ -250,14 +250,14 @@ class Dolibarr {
 			$this->Doliwoo->settings->dolibarr_category_id );
 
 		if ( $result['result']->result_code == 'OK' ) {
-			$products = $result['products'];
-			foreach ( $products as $product ) {
-				if ( $this->dolibarr_product_exists( $product->id ) ) {
+			$dolibarr_products = $result['products'];
+			foreach ( $dolibarr_products as $dolibarr_product ) {
+				if ( $this->dolibarr_product_exists( $dolibarr_product->id ) ) {
 					$post_id = 0;
 				} else {
 					$post    = array(
-						'post_title'   => $product->label,
-						'post_content' => $product->description,
+						'post_title'   => $dolibarr_product->label,
+						'post_content' => $dolibarr_product->description,
 						'post_status'  => 'publish',
 						'post_type'    => 'product',
 					);
@@ -266,39 +266,44 @@ class Dolibarr {
 
 				if ( 0 < $post_id ) {
 					add_post_meta( $post_id, 'dolibarr_id',
-						$product->id, true );
-					add_post_meta( $post_id, 'dolibarr_type', $product->type,
+						$dolibarr_product->id, true );
+					add_post_meta( $post_id, 'dolibarr_type', $dolibarr_product->type,
 						true );
 					update_post_meta( $post_id, '_regular_price',
-						$product->price_net );
+						$dolibarr_product->price_net );
 					update_post_meta( $post_id, '_sale_price',
-						$product->price_net );
+						$dolibarr_product->price_net );
 					update_post_meta( $post_id, '_price',
-						$product->price_net );
+						$dolibarr_product->price_net );
 					update_post_meta( $post_id, '_visibility',
 						'visible' );
 					update_post_meta( $post_id, '_tax_class',
-						$this->taxes->get_tax_class( $product->vat_rate ) );
+						$this->taxes->get_tax_class( $dolibarr_product->vat_rate ) );
 					if ( get_option( 'woocommerce_manage_stock' )
 					     == 'yes'
 					) {
-						if ( 0 < $product->stock_real ) {
+						if ( 0 < $dolibarr_product->stock_real ) {
 							update_post_meta( $post_id,
 								'_stock_status', 'instock' );
 							update_post_meta( $post_id, '_stock',
-								$product->stock_real );
+								$dolibarr_product->stock_real );
 						}
 					}
-					$image_attachment_ids
-						= $this->get_product_image( $product,
-						$post_id );
 
-					// Use the first image as the product thumbnail, fill the image gallery
-					update_post_meta( $post_id, '_thumbnail_id',
-						$image_attachment_ids[0] );
-					update_post_meta( $post_id,
-						'_product_image_gallery',
-						implode( ',', $image_attachment_ids ) );
+					if ($dolibarr_product->images) {
+						$image_attachment_ids = $this->get_product_image( $dolibarr_product,
+							$post_id );
+
+						// Fill the image gallery
+						update_post_meta( $post_id,
+							'_product_image_gallery',
+							implode( ',', $image_attachment_ids ) );
+
+						// Use the first image as the product thumbnail
+						update_post_meta( $post_id, '_thumbnail_id',
+							$image_attachment_ids[0] );
+					}
+
 					wc_delete_product_transients( $post_id );
 				}
 			}
@@ -325,101 +330,53 @@ class Dolibarr {
 		return $query->have_posts();
 	}
 
-		/**
-		 * Webservice calls to get the product's images
-		 *
-		 * @param WC_Product $product
-		 * @param int $post_id
-		 *
-		 * @return array
-		 * @internal param $soap_client
-		 */
-		public function get_product_image(
-			$product, $post_id
-		) {
-			// FIXME: Get rid of inclusions and use WordPress provided tooling
-			require_once ABSPATH . 'wp-admin/includes/file.php';
-			require_once ABSPATH
-			             . 'wp-admin/includes/class-wp-filesystem-base.php';
-			require_once ABSPATH
-			             . 'wp-admin/includes/class-wp-filesystem-direct.php';
-			require_once ABSPATH . 'wp-admin/includes/image.php';
+	/**
+	 * Webservice calls to get the product's images
+	 *
+	 * @param stdClass $dolibarr_product SOAP product object
+	 * @param int      $post_id          WooCommerce product ID
+	 *
+	 * @return int[] Attachment IDs
+	 */
+	public function get_product_image(
+		$dolibarr_product, $post_id
+	) {
+		$this->Doliwoo = new Doliwoo();
+		$this->Doliwoo->get_settings();
 
-			$this->Doliwoo = new Doliwoo();
-			$this->Doliwoo->get_settings();
+		$soap_client = new SoapClient(
+			$this->Doliwoo->settings->webservs_url
+			. 'server_other.php?wsdl'
+		);
 
-			WP_Filesystem();
-			$filesystem = new WP_Filesystem_Direct( 'arg' );
+		$file_array = array();
+		$attach_ids = array();
 
-			$soap_client = new SoapClient(
-				$this->Doliwoo->settings->webservs_url
-				. 'server_other.php?wsdl'
+		foreach ( $dolibarr_product->images as $images ) {
+			// Get the image from Dolibarr
+			$result = $soap_client->getDocument(
+				$this->Doliwoo->ws_auth,
+				'product',
+				$dolibarr_product->dir . $images->photo
 			);
-			$upload_dir  = wp_upload_dir();
-			$path        = $upload_dir['path'];
-			$attach_ids  = array();
-			foreach ( $product->images as $image ) {
-				foreach ( $image as $filename ) {
-					// as we know what images are associated with the product, we can retrieve them via webservice
-					$result
-						= $soap_client->getDocument( $this->Doliwoo->ws_auth,
-						'product',
-						$product->dir . $filename );
 
-					if ( 'OK' ==
-					     $result['result']->result_code
-					) {
-						// copy the image to the wordpress uploads folder
+			if ( 'OK' ==
+				$result['result']->result_code
+			) {
+				$file_array['name'] = $images->photo;
+				$file_array['tmp_name']
+				                    =
+					sys_get_temp_dir() . DIRECTORY_SEPARATOR . $images->photo;
+				file_put_contents( $file_array['tmp_name'],
+					base64_decode( $result['document']->content ) );
 
-						// FIXME: Rewrite using Wordpress framework
-						$res = $filesystem->put_contents(
-							$path . '/'
-							. $result['document']->filename,
-							base64_decode( $result['document']->content )
-						);
-						if ( $res ) {
-							// attach the new image to the product post
-							$filename
-								        = $result['document']->filename;
-							$wp_filetype
-								        = wp_check_filetype( basename( $filename ),
-								null );
-							$wp_upload_dir
-								        = wp_upload_dir();
-							$attachment = array(
-								'guid'           =>
-									$wp_upload_dir['url']
-									. '/'
-									. basename( $filename ),
-								'post_mime_type' => $wp_filetype['type'],
-								'post_title'     => preg_replace( '/\.[^.]+$/',
-									'',
-									basename( $filename ) ),
-								'post_content'   => '',
-								'post_status'    => 'inherit'
-							);
-							$attach_id
-								        = wp_insert_attachment(
-								$attachment,
-								$wp_upload_dir['path'] . '/'
-								. $filename, $post_id
-							);
-							$attach_data
-								        = wp_generate_attachment_metadata(
-								$attach_id,
-								$wp_upload_dir['path'] . '/'
-								. $filename
-							);
-							wp_update_attachment_metadata( $attach_id,
-								$attach_data );
-							$attach_ids[] = $attach_id;
-						}
-					}
-				}
+				// TODO: handle errors nicely ( logging )
+				$attach_ids[] = media_handle_sideload( $file_array, $post_id );
 			}
-
-			return $attach_ids;
 		}
+
+		return $attach_ids;
+	}
 
 	/**
 	 * Creates the missing thirdparties in Dolibarr via webservice using WooCommerce user data
