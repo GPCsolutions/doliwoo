@@ -40,6 +40,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 			// Load the settings
 			$this->init_form_fields();
 			$this->init_settings();
+			//$this->validate_url_webservs();
 
 			// Define user set variables
 			$this->webservs_url = trailingslashit($this->get_option( 'webservs_url' ));
@@ -76,8 +77,6 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 					'desc_tip'    => false,
 					'default'     => 'WooCommerce'
 				),
-				// TODO: make sure the URL is HTTPS or SOAP requests will fail
-
 				'webservs_url'         => array(
 					'title'       => __( 'URL', 'doliwoo' ),
 					'type'        => 'text',
@@ -130,6 +129,43 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				),
 			);
 		}
-	}
 
+		/**
+		 * Check if the fields URL Webservs is HTTPS
+		 *
+		 * @param string $key The form setting
+		 *
+		 * @return string The form value
+		 */
+		public function validate_webservs_url_field( $key ) {
+			$value = $_POST['woocommerce_doliwoo-settings_webservs_url'];
+			if ( ( substr( $value, 0, 8 ) ) !== 'https://' ) {
+				$this->errors[] = $key;
+			}
+
+			return $value;
+		}
+
+		/**
+		 * Display HTTPS is needed
+		 *
+		 * @return void
+		 */
+		public function display_errors() {
+			foreach ( $this->errors as $key => $value ) {
+				?>
+				<div class="error">
+					<p>
+						<?php
+						if ( 'webservs_url' === $value ) {
+							_e( 'The protocol to use is https:// ',
+								'doliwoo' );
+						}
+						?>
+					</p>
+				</div>
+			<?php
+			}
+		}
+	}
 endif;
