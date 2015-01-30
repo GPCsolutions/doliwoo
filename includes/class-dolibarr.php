@@ -197,6 +197,7 @@ class Dolibarr {
 				'billing_last_name', true );
 			$individual = 1;
 		}
+		// TODO : stdClass Object with an id =''
 		$new_thirdparty = array(
 			'ref'           => $ref,
 			//'ref_ext'=>'WS0001',
@@ -237,13 +238,11 @@ class Dolibarr {
 		$this->taxes = new WC_Tax_Doliwoo();
 		$this->Doliwoo = new Doliwoo();
 		$this->Doliwoo->get_settings();
-
 		// Set the WebService URL
 		$soap_client = new SoapClient(
 			$this->Doliwoo->settings->webservs_url
 			. 'server_productorservice.php?wsdl'
 		);
-
 		// Get all products that are meant to be displayed on the website
 		$result
 			= $soap_client->getProductsForCategory( $this->Doliwoo->ws_auth,

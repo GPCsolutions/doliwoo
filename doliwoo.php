@@ -185,8 +185,9 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				 * @return void
 				 */
 				public function schedule_import_products() {
+					$delay = $this->settings->delay_update;
 					if ( ! wp_next_scheduled( 'import_products' ) ) {
-						wp_schedule_event( time(), 'daily', 'import_products' );
+						wp_schedule_event( time(), $delay, 'import_products' );
 					}
 				}
 

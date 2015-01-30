@@ -45,6 +45,8 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 			// Define user set variables
 			$this->webservs_url = trailingslashit($this->get_option( 'webservs_url' ));
 
+			$this->delay_update = $this->get_option('delay_update');
+
 			$this->dolibarr_key = $this->get_option( 'dolibarr_key' );
 			$this->sourceapplication
 			                      = $this->get_option( 'sourceapplication' );
@@ -72,18 +74,29 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 			$this->form_fields = array(
 				'sourceapplication'    => array(
 					'title'       => __( 'Source application', 'doliwoo' ),
-					'type'        => 'text',
 					'description' => __( 'How this application will identify itself to the webservice.', 'doliwoo' ),
+					'type'        => 'text',
 					'desc_tip'    => false,
 					'default'     => 'WooCommerce'
 				),
 				'webservs_url'         => array(
 					'title'       => __( 'URL', 'doliwoo' ),
-					'type'        => 'text',
 					'description' => __( 'Enter Dolibarr webservices root URL (i.e. https://mydolibarr.com/webservices)',
 						'doliwoo' ),
+					'type'        => 'text',
 					'desc_tip'    => false,
 					'default'     => ''
+				),
+				'delay_update' => array(
+					'title'             => __('Delay','doliwoo' ),
+					'description'       => __('Choice the time of the automatically update' ),
+					'type'              => 'select',
+					'desc_tip'          => false,
+					'options'           => array(
+						'hourly'  => __('Once Hourly'),
+						'twicedaily'  => __('Twice Daily'),
+						'daily'  => __('Once Daily'),
+					),
 				),
 				'dolibarr_key'         => array(
 					'title'       => __( 'Key', 'doliwoo' ),
