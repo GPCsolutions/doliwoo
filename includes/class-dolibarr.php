@@ -360,9 +360,7 @@ class Dolibarr {
 				$dolibarr_product->dir . $images->photo
 			);
 
-			if ( 'OK' ==
-				$result['result']->result_code
-			) {
+			if ( 'OK' == $result['result']->result_code ) {
 				$file_array['name'] = $images->photo;
 				$file_array['tmp_name']
 				                    =
@@ -370,8 +368,16 @@ class Dolibarr {
 				file_put_contents( $file_array['tmp_name'],
 					base64_decode( $result['document']->content ) );
 
-				// TODO: handle errors nicely ( logging )
-				$attach_ids[] = media_handle_sideload( $file_array, $post_id );
+				$res = media_handle_sideload( $file_array, $post_id );
+
+				// handle errors nicely ( logging )
+				if ( true === is_wp_error( $res ) ) {
+					$message = $res->get_error_message();
+					$logger  = new WC_Logger();
+					$logger->add( 'doliwoo', $message );
+				} else {
+					$attach_ids[] = $res;
+				}
 			}
 		}
 
