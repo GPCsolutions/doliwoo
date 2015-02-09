@@ -28,122 +28,74 @@ class DolibarrOrder {
 }
 
 class DolibarrOrderLine {
-	/**
-	 * @var int
-	 */
+	/** @var int */
 	public $type;
 
-	/**
-	 * @var boolean
-	 */
+	/** @var boolean */
 	public $desc;
 
-	/**
-	 * @var int
-	 */
+	/** @var int */
 	public $product_id;
 
-	/**
-	 * @var float
-	 */
+	/** @var float|int */
 	public $vat_rate;
 
-	/**
-	 * @var int
-	 */
+	/** @var int */
 	public $qty;
 
-	/**
-	 * @var float
-	 */
+	/** @var float|int */
 	public $price;
 
-	/**
-	 * @var float
-	 */
+	/** @var float|int */
 	public $unitprice;
 
-	/**
-	 * @var float
-	 */
+	/** @var float|int */
 	public $total_net;
 
-	/**
-	 * @var float
-	 */
+	/** @var float|int */
 	public $total;
 
-	/**
-	 * @var float
-	 */
+	/** @var float|int */
 	public $total_vat;
-
 }
 
 class DolibarrThirdparty {
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $ref;
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $status;
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $client;
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $supplier;
 
-	/***
-	 * @var
-	 */
+	/** @var string */
 	public $address ;
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $zip;
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $town;
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $country_code;
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $supplier_code;
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $phone;
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $email;
 
-	/**
-	 * @var int
-	 */
+	/** @var int */
 	public $individual;
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $firstname;
-
 }
