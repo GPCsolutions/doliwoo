@@ -104,7 +104,6 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				 * Constructor
 				 */
 				public function __construct() {
-
 					include_once 'includes/class-doliwoo-parameters.php';
 					include_once 'includes/class-dolibarr.php';
 
@@ -123,7 +122,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 						array( &$this->dolibarr, 'dolibarr_import_products' ) );
 
 					// Hook on woocommerce_checkout_process to create a Dolibarr order using WooCommerce order data
-					add_action( 'woocommerce_checkout_process',
+					add_action( 'woocommerce_checkout_order_processed',
 						array( &$this->dolibarr, 'dolibarr_create_order' ) );
 
 					// Schedule the import of product data from Dolibarr

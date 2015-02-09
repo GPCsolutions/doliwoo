@@ -85,6 +85,7 @@ class WC_Tax_Doliwoo extends WC_Tax {
 	 * Create tax classes for Dolibarr tax rates
 	 */
 	public function create_custom_tax_classes() {
+		// FIXME: only if classes does not yes exist
 		$tax_name = __( 'VAT', 'doliwoo' );
 		//first, create the rates
 		$data = array(

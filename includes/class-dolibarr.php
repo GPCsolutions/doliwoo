@@ -17,10 +17,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+include 'class-dolibarr-soap-elements.php';
+
 /**
  * Class Dolibarr
  */
 class Dolibarr {
+
 	/**
 	 * @var Doliwoo()
 	 */
@@ -40,7 +44,6 @@ class Dolibarr {
 	 * @return void
 	 */
 	public function dolibarr_create_order() {
-
 		$this->taxes = new WC_Tax_Doliwoo();
 
 		$this->Doliwoo  = new Doliwoo();
@@ -49,8 +52,13 @@ class Dolibarr {
 		$dolibarr_ws_url = $this->Doliwoo->settings->webservs_url . 'server_order.php?wsdl';
 
 		// Set the WebService URL
-		$soap_client = new SoapClient( $dolibarr_ws_url );
-		$order       = array();
+		$soap_client = new SoapClient(
+			null,
+			array(
+				'location' => $dolibarr_ws_url,
+				'uri'      => "http://www.dolibar.org/ns/")
+		);
+		$order = new DolibarrOrder();
 
 		// Fill this array with all data required to create an order in Dolibarr
 		$user_id = get_current_user_id();
@@ -62,7 +70,7 @@ class Dolibarr {
 				true );
 		}
 		if ( '' != $thirdparty_id ) {
-			$order['thirdparty_id'] = $thirdparty_id;
+			$order->thirdparty_id = $thirdparty_id;
 		} else {
 			if ( get_user_meta( $user_id, 'billing_company', true )
 			     == ''
@@ -71,36 +79,41 @@ class Dolibarr {
 					$_POST['billing_company'] );
 			}
 			$this->dolibarr_create_thirdparty_if_not_exists( $user_id );
-			$order['thirdparty_id'] = get_user_meta( $user_id,
+			$order->thirdparty_id = get_user_meta( $user_id,
 				'dolibarr_id', true );
 		}
-		$order['date']   = date( 'Ymd' );
-		$order['status'] = 1;
-		$order['lines']  = array();
+		$order->date = date( 'Ymd' );
+		$order->status = 1;
+		$order->lines = array();
 
-		// TODO: test me
 		foreach ( WC()->cart->cart_contents as $product ) {
-			$line = array();
-			$line['type']
+			/** @var WC_Product $woocommerce_product */
+			$woocommerce_product = $product['data'];
+
+			$line = new DolibarrOrderLine();
+			$line->type
 			                   = get_post_meta( $product['product_id'],
 				'dolibarr_type', 1 );
-			$line['desc']
-			                   = $product['data']->post->post_content;
-			$line['product_id']
+			$line->desc
+			                   = $woocommerce_product->post->post_content;
+			$line->product_id
 			                   = get_post_meta( $product['product_id'],
 				'dolibarr_id', 1 );
-			$line['vat_rate']
-			                   = $this->taxes->get_rates( $product['data']->get_tax_class() );
-			$line['qty']       = $product['quantity'];
-			$line['price']     = $product['data']->get_price();
-			$line['unitprice'] = $product['data']->get_price();
-			$line['total_net']
-			                   = $product['data']->get_price_excluding_tax( $line['qty'] );
-			$line['total']
-			                   = $product['data']->get_price_including_tax( $line['qty'] );
-			$line['total_vat']
-			                   = $line['total'] - $line['total_net'];
-			$order['lines'][]  = $line;
+
+			$rates = $this->taxes->get_rates( $woocommerce_product->get_tax_class() );
+			// We get the first one
+			$line->vat_rate = array_values($rates)[0]['rate'];
+
+			$line->qty       = $product['quantity'];
+			$line->price     = $woocommerce_product->get_price();
+			$line->unitprice = $woocommerce_product->get_price();
+			$line->total_net
+			                   = $woocommerce_product->get_price_excluding_tax( $line->qty );
+			$line->total
+			                   = $woocommerce_product->get_price_including_tax( $line->qty );
+			$line->total_vat
+			                   = $line->total - $line->total_net;
+			$order->lines[]  = $line;
 		}
 
 		$soap_client->createOrder( $this->Doliwoo->ws_auth, $order );
@@ -144,10 +157,8 @@ class Dolibarr {
 	 * @return mixed $result  array with the request results if it succeeds, null if there's an error
 	 */
 	public function dolibarr_thirdparty_exists( $user_id ) {
-
 		$this->Doliwoo = new Doliwoo();
 		$this->Doliwoo->get_settings();
-
 		$dolibarr_ws_url = $this->Doliwoo->settings->webservs_url
 		                   . 'server_thirdparty.php?wsdl';
 
@@ -180,16 +191,20 @@ class Dolibarr {
 	 * @return mixed $result    the SOAP response
 	 */
 	public function dolibarr_create_thirdparty( $user_id ) {
-
 		$this->Doliwoo = new Doliwoo();
 		$this->Doliwoo->get_settings();
 
 		$dolibarr_ws_url = $this->Doliwoo->settings->webservs_url
 		                   . 'server_thirdparty.php?wsdl';
 		// Set the WebService URL
-		$soap_client = new SoapClient( $dolibarr_ws_url );
+		$soap_client = new SoapClient(
+			null,
+			array(
+				'location' => $dolibarr_ws_url,
+				'uri'      => "http://www.dolibar.org/ns/")
+		);
 
-		$ref        = get_user_meta( $user_id, 'billing_company',
+		$ref = get_user_meta( $user_id, 'billing_company',
 			true );
 		$individual = 0;
 		if ( '' == $ref ) {
@@ -197,30 +212,30 @@ class Dolibarr {
 				'billing_last_name', true );
 			$individual = 1;
 		}
-		// TODO : stdClass Object with an id =''
-		$new_thirdparty = array(
-			'ref'           => $ref,
-			//'ref_ext'=>'WS0001',
-			'status'        => '1',
-			'client'        => '1',
-			'supplier'      => '0',
-			'address'       => get_user_meta( $user_id,
-				'billing_address', true ),
-			'zip'           => get_user_meta( $user_id,
-				'billing_postcode', true ),
-			'town'          => get_user_meta( $user_id,
-				'billing_city', true ),
-			'country_code'  => get_user_meta( $user_id,
-				'billing_country', true ),
-			'supplier_code' => '0',
-			'phone'         => get_user_meta( $user_id,
-				'billing_phone', true ),
-			'email'         => get_user_meta( $user_id,
-				'billing_email', true ),
-			'individual'    => $individual,
-			'firstname'     => get_user_meta( $user_id,
-				'billing_first_name', true )
-		);
+
+		$new_thirdparty = new DolibarrThirdparty();
+
+		$new_thirdparty->ref = $ref;
+		$new_thirdparty->status ='1';
+		$new_thirdparty->client = '1';
+		$new_thirdparty->supplier = '0';
+
+		$new_thirdparty->address = get_user_meta( $user_id,
+			'billing_address', true );
+		$new_thirdparty->zip = get_user_meta( $user_id,
+			'billing_postcode', true );
+		$new_thirdparty->town = get_user_meta( $user_id,
+			'billing_city', true );
+		$new_thirdparty->country_code = get_user_meta( $user_id,
+			'billing_country', true );
+		$new_thirdparty->supplier_code = '0';
+		$new_thirdparty->phone = get_user_meta( $user_id,
+			'billing_phone', true );
+		$new_thirdparty->email = get_user_meta( $user_id,
+			'billing_email', true );
+		$new_thirdparty->individual = $individual;
+		$new_thirdparty->firstname = get_user_meta( $user_id,
+			'billing_first_name', true );
 
 		$result = $soap_client->createThirdParty( $this->Doliwoo->ws_auth,
 			$new_thirdparty );
