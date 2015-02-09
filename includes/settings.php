@@ -40,7 +40,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 			// Load the settings
 			$this->init_form_fields();
 			$this->init_settings();
-			//$this->validate_url_webservs();
+			$this->validate_url_webservs();
 
 			// Define user set variables
 			$this->webservs_url = trailingslashit($this->get_option( 'webservs_url' ));
