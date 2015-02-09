@@ -44,7 +44,7 @@ class DolibarrOrderLine {
 	public $product_id;
 
 	/**
-	 * @var int
+	 * @var float
 	 */
 	public $vat_rate;
 
@@ -74,7 +74,7 @@ class DolibarrOrderLine {
 	public $total;
 
 	/**
-	 * @var int
+	 * @var float
 	 */
 	public $total_vat;
 
@@ -137,7 +137,7 @@ class DolibarrThirdparty {
 	public $email;
 
 	/**
-	 * @var string
+	 * @var int
 	 */
 	public $individual;
 
