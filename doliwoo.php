@@ -46,7 +46,7 @@ load_plugin_textdomain( 'doliwoo',
 
 // Check required extensions
 if ( false === extension_loaded( 'soap' )
-     && false === extension_loaded( 'openssl' )
+	 && false === extension_loaded( 'openssl' )
 ) {
 	echo __( 'You must enable extensions SOAP and OpenSSL' );
 	exit;
@@ -61,7 +61,7 @@ if ( false === extension_loaded( 'openssl' )  ) {
 }
 
 // Make sure the settings class is available
-	if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
+if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 
 	// If WooCommerce is active
 	if ( in_array( 'woocommerce/woocommerce.php',
@@ -75,29 +75,19 @@ if ( false === extension_loaded( 'openssl' )  ) {
 			 */
 			class Doliwoo {
 
-				/**
-				 * @var WC_Integration_Doliwoo_Settings() Doliwoo Settings
-				 */
+				/** @var WC_Integration_Doliwoo_Settings() Doliwoo Settings */
 				public $settings;
 
-				/**
-				 * @var array SOAP authentication parameters
-				 */
+				/** @var array SOAP authentication parameters */
 				public $ws_auth = array();
 
-				/**
-				 * @var WC_Tax_Doliwoo() WooCommerce taxes informations
-				 */
+				/** @var WC_Tax_Doliwoo() WooCommerce taxes informations */
 				public $taxes;
 
-				/**
-				 * @var Woocomerce_Parameters() custom parameters
-				 */
+				/** @var Woocomerce_Parameters() custom parameters */
 				public $woocommerce_parameters;
 
-				/**
-				 * @var Dolibarr() external requests
-				 */
+				/** @var Dolibarr() external requests */
 				public $dolibarr;
 
 				/**
@@ -151,6 +141,8 @@ if ( false === extension_loaded( 'openssl' )  ) {
 
 				/**
 				 * Initialize the plugin
+				 *
+				 * @return void
 				 */
 				public function init() {
 
@@ -184,6 +176,7 @@ if ( false === extension_loaded( 'openssl' )  ) {
 				 * Schedules the daily import of Dolibarr products
 				 *
 				 * @access public
+				 *
 				 * @return void
 				 */
 				public function schedule_import_products() {
@@ -195,6 +188,8 @@ if ( false === extension_loaded( 'openssl' )  ) {
 
 				/**
 				 * Extract settings from WooCommerce integration settings
+				 *
+				 * @return void
 				 */
 				public function get_settings() {
 					// Load settings
@@ -209,7 +204,6 @@ if ( false === extension_loaded( 'openssl' )  ) {
 				}
 			}
 		}
-
 	} else {
 		// WooCommerce is not available
 		echo __( 'This extension needs WooCommerce' );

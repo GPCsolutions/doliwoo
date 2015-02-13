@@ -18,9 +18,12 @@
  */
 
 /**
- * Class Woocomerce_Parameters
+ * Parameters management
  */
 
+/**
+ * Class Woocomerce_Parameters
+ */
 Class Woocomerce_Parameters {
 
 	/**
@@ -42,28 +45,30 @@ Class Woocomerce_Parameters {
 		}
 	}
 
-		/**
-		 *
-		* Get Dolibarr ID for the edit user pages
-		*
-		* @return array fields to display
-		*/
+	/**
+	 *
+	 * Get Dolibarr ID for the edit user pages
+	 *
+	 * @return array fields to display
+	 */
 	public function get_customer_meta_fields() {
 		if ( ! current_user_can( 'manage_woocommerce' ) ) {
 			return null;
 		}
-		$show_fields
-		= apply_filters( 'customer_meta_fields', array(
-		'dolibarr' => array(
-			'title'  => __( 'Dolibarr', 'doliwoo' ),
-			'fields' => array(
-				'dolibarr_id' => array(
-					'label'       => __( 'Dolibarr User ID', 'doliwoo' ),
-					'description' => 'The boss'
+		$show_fields = apply_filters(
+			'customer_meta_fields',
+			array(
+				'dolibarr' => array(
+					'title'  => __( 'Dolibarr', 'doliwoo' ),
+					'fields' => array(
+						'dolibarr_id' => array(
+							'label'       => __( 'Dolibarr User ID', 'doliwoo' ),
+							'description' => 'The boss'
+						)
+					)
 				)
 			)
-		),
-	) );
+		);
 	return $show_fields;
 	}
 
@@ -74,7 +79,7 @@ Class Woocomerce_Parameters {
 	 *
 	 * @return void
 	 */
-	public function customer_meta_fields( $user ) {
+	public function customer_meta_fields( WP_User $user ) {
 		// Only allow WooCommerce managers
 		if ( ! current_user_can( 'manage_woocommerce' ) ) {
 			return;

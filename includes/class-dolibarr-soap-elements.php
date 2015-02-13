@@ -16,6 +16,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * SOAP reprentations hinting classes
+ */
+
+/**
+ * Class DolibarrOrder
+ *
+ * SOAP orders representation
+ */
 class DolibarrOrder {
 	/** @var int */
 	public $thirdparty_id;
@@ -27,6 +36,11 @@ class DolibarrOrder {
 	public $lines;
 }
 
+/**
+ * Class DolibarrOrderLine
+ *
+ * SOAP order lines representation
+ */
 class DolibarrOrderLine {
 	/** @var int */
 	public $type;
@@ -59,6 +73,11 @@ class DolibarrOrderLine {
 	public $total_vat;
 }
 
+/**
+ * Class DolibarrThirdparty
+ *
+ * SOAP third parties representation
+ */
 class DolibarrThirdparty {
 	/** @var string */
 	public $ref;

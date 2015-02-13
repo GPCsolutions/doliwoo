@@ -48,6 +48,8 @@ class WC_Tax_Doliwoo extends WC_Tax {
 	 *
 	 * @param int $tax_rate_id Element to update
 	 * @param array $tax_rate Rate description
+	 *
+	 * @return void
 	 */
 	public function update_tax( $tax_rate_id, $tax_rate ) {
 		global $wpdb;
@@ -82,11 +84,14 @@ class WC_Tax_Doliwoo extends WC_Tax {
 
 	/**
 	 * Create tax classes for Dolibarr tax rates
+     *
+     * @return void
 	 */
 	public function create_custom_tax_classes() {
 		// FIXME: only if classes does not yes exist
 		$tax_name = __( 'VAT', 'doliwoo' );
-		//first, create the rates
+
+		// First, create the rates
 		$data = array(
 			array(
 				'tax_rate_country'  => 'FR',
@@ -129,9 +134,6 @@ class WC_Tax_Doliwoo extends WC_Tax {
 				'tax_rate_class'    => 'zero'
 			)
 		);
-
-
-
 
 		foreach ( $data as $entry ) {
 				$this->insert_tax( $entry );

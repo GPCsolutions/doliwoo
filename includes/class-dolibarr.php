@@ -17,25 +17,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * Dolibarr interactions
+ */
 
 /**
  * Class Dolibarr
  */
 class Dolibarr {
-
-	/**
-	 * @var WC_Logger() Logging
-	 */
+	/** @var WC_Logger() Logging */
 	public $logger;
 
-	/**
-	 * @var Doliwoo()
-	 */
+	/** @var Doliwoo() */
 	public $Doliwoo;
 
-	/**
-	 * @var WC_Tax_Doliwoo() WooCommerce taxes informations
-	 */
+	/** @var WC_Tax_Doliwoo() WooCommerce taxes informations */
 	public $taxes;
 
 	/**
@@ -370,13 +366,13 @@ class Dolibarr {
 	/**
 	 * Webservice calls to get the product's images
 	 *
-	 * @param stdClass $dolibarr_product SOAP product object
-	 * @param int      $post_id          WooCommerce product ID
+	 * @param stdClass  $dolibarr_product SOAP product object
+	 * @param int       $post_id          WooCommerce product ID
 	 *
 	 * @return int[] Attachment IDs
 	 */
 	public function get_product_image(
-		$dolibarr_product, $post_id
+		stdClass $dolibarr_product, $post_id
 	) {
 		$this->Doliwoo = new Doliwoo();
 		$this->Doliwoo->get_settings();
