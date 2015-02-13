@@ -18,12 +18,15 @@
  */
 
 
-include 'class-dolibarr-soap-elements.php';
-
 /**
  * Class Dolibarr
  */
 class Dolibarr {
+
+	/**
+	 * @var WC_Logger() Logging
+	 */
+	public $logger;
 
 	/**
 	 * @var Doliwoo()
@@ -34,6 +37,20 @@ class Dolibarr {
 	 * @var WC_Tax_Doliwoo() WooCommerce taxes informations
 	 */
 	public $taxes;
+
+	/**
+	 * Init parameters
+	 */
+	public function __construct() {
+		require_once 'class-dolibarr-soap-elements.php';
+	}
+
+	/**
+	 * Called when woocommerce is ready
+	 */
+	public function set_woocommerce() {
+		$this->logger  = new WC_Logger();
+	}
 
 	/**
 	 * Hooks on process_checkout()
@@ -254,10 +271,16 @@ class Dolibarr {
 		$this->Doliwoo = new Doliwoo();
 		$this->Doliwoo->get_settings();
 		// Set the WebService URL
-		$soap_client = new SoapClient(
-			$this->Doliwoo->settings->webservs_url
-			. 'server_productorservice.php?wsdl'
-		);
+		try {
+			$soap_client = new SoapClient(
+				$this->Doliwoo->settings->webservs_url
+				. 'server_productorservice.php?wsdl'
+			);
+		}catch (SoapFault $exception){
+			$this->logger->add('doliwoo',$exception->getMessage());
+			// Do nothing.
+			return;
+		}
 		// Get all products that are meant to be displayed on the website
 		$result
 			= $soap_client->getProductsForCategory( $this->Doliwoo->ws_auth,
@@ -387,8 +410,7 @@ class Dolibarr {
 				// handle errors nicely ( logging )
 				if ( true === is_wp_error( $res ) ) {
 					$message = $res->get_error_message();
-					$logger  = new WC_Logger();
-					$logger->add( 'doliwoo', $message );
+					$this->logger->add( 'doliwoo', $message );
 				} else {
 					$attach_ids[] = $res;
 				}
