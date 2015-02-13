@@ -36,7 +36,6 @@ class WC_Tax_Doliwoo extends WC_Tax {
 	 * @return int
 	 */
 	public function insert_tax( $tax_rate ) {
-		//TODO : Insert just one time a rate , difficult
 		global $wpdb;
 
 		$wpdb->insert( $wpdb->prefix . 'woocommerce_tax_rates', $tax_rate );
@@ -70,8 +69,8 @@ class WC_Tax_Doliwoo extends WC_Tax {
 	 * @return string   the tax class corresponding to the input VAT rate
 	 */
 	public function get_tax_class( $tax_rate ) {
-		// Add missing standard rate
 		$nametaxclasses = $this->get_tax_classes();
+		// Add missing standard rate
 		$nametaxclasses[] = '';
 		foreach($nametaxclasses as $unetaxclass) {
 			$lestaxes = $this->get_rates($unetaxclass);
@@ -130,9 +129,14 @@ class WC_Tax_Doliwoo extends WC_Tax {
 				'tax_rate_class'    => 'zero'
 			)
 		);
+
+
+
+
 		foreach ( $data as $entry ) {
-			$this->insert_tax( $entry );
+				$this->insert_tax( $entry );
 		}
+
 		// Now take care of classes
 		update_option( 'woocommerce_tax_classes',
 			"Reduced\nSuper-reduced\nMinimum\nZero" );

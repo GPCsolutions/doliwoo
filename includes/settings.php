@@ -33,7 +33,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 		 * Init and hook in the integration.
 		 */
 		public function __construct() {
-			$this->id                 = 'doliwoo-settings';
+			$this->id                 = 'doliwoo';
 			$this->method_title       = __( 'Doliwoo Settings', 'doliwoo' );
 			$this->method_description = __( 'Dolibarr webservices access', 'doliwoo' );
 
@@ -42,7 +42,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 			$this->init_settings();
 
 			// Define user set variables
-			$this->webservs_url = trailingslashit($this->get_option( 'webservs_url' ));
+			$this->webservs_url = $this->get_option( 'webservs_url' );
 
 			$this->delay_update = $this->get_option('delay_update');
 
@@ -150,9 +150,22 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 		 * @return string The form value
 		 */
 		public function validate_webservs_url_field( $key ) {
-			$value = $_POST['woocommerce_doliwoo-settings_webservs_url'];
+			$value = $_POST['woocommerce_doliwoo_webservs_url'];
+
+			// FIXME: move to a sanitization method
+			// Make sure we have the trailing slash
+			$value = trailingslashit($value);
+
+			// Make sure we use HTTPS
 			if ( ( substr( $value, 0, 8 ) ) !== 'https://' ) {
-				$this->errors[] = $key;
+				$this->errors[] = 'The protocol to use is https://';
+			}
+
+			// Check that the server is available
+			try {
+				new SoapClient($value . 'server_other.php?wsdl');
+			} catch ( SoapFault $exc ) {
+				$this->errors[] = 'The webservice is not available. Please check the URL.';
 			}
 
 			return $value;
@@ -167,14 +180,11 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 			foreach ( $this->errors as $key => $value ) {
 				?>
 				<div class="error">
-					<p>
-						<?php
-						if ( 'webservs_url' === $value ) {
-							_e( 'The protocol to use is https:// ',
-								'doliwoo' );
-						}
-						?>
-					</p>
+					<p><b>
+					<?php
+						_e( $value, 'doliwoo' );
+					?>
+					</b></p>
 				</div>
 			<?php
 			}

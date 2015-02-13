@@ -61,7 +61,7 @@ if ( false === extension_loaded( 'openssl' )  ) {
 }
 
 // Make sure the settings class is available
-if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
+	if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 
 	// If WooCommerce is active
 	if ( in_array( 'woocommerce/woocommerce.php',
@@ -104,14 +104,17 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				 * Constructor
 				 */
 				public function __construct() {
-					include_once 'includes/class-doliwoo-parameters.php';
-					include_once 'includes/class-dolibarr.php';
+					require_once 'includes/class-doliwoo-parameters.php';
+					require_once 'includes/class-dolibarr.php';
 
 					$this->woocommerce_parameters = new Woocomerce_Parameters();
 					$this->dolibarr = new Dolibarr();
 
 					// Initialize plugin settings
 					add_action( 'plugins_loaded', array( $this, 'init' ) );
+
+					add_action('woocommerce_loaded',
+						array( &$this->dolibarr, 'set_woocommerce'));
 
 					// Create custom tax classes and VAT rates on plugin settings saved
 					add_action( 'woocommerce_settings_saved',
@@ -195,8 +198,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				 */
 				public function get_settings() {
 					// Load settings
-					$this->settings = WC()->integrations->get_integrations()['doliwoo-settings'];
-					trailingslashit($this->settings->webservs_url);
+					$this->settings = WC()->integrations->get_integrations()['doliwoo'];
 					$this->ws_auth = array(
 						'dolibarrkey'       => $this->settings->dolibarr_key,
 						'sourceapplication' => $this->settings->sourceapplication,
