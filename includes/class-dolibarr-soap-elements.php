@@ -28,7 +28,7 @@
 class DolibarrOrder {
 	/** @var int */
 	public $thirdparty_id;
-	/** @var ? */
+	/** @var string ISO 8601 */
 	public $date;
 	/** @var int */
 	public $status;

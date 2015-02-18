@@ -25,13 +25,13 @@
  * Class Dolibarr
  */
 class Dolibarr {
-	/** @var WC_Logger() Logging */
+	/** @var WC_Logger Logging */
 	public $logger;
 
-	/** @var Doliwoo() */
+	/** @var Doliwoo */
 	public $Doliwoo;
 
-	/** @var WC_Tax_Doliwoo() WooCommerce taxes informations */
+	/** @var WC_Tax_Doliwoo WooCommerce taxes informations */
 	public $taxes;
 
 	/**
