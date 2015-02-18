@@ -53,7 +53,6 @@ class Dolibarr {
 	 *
 	 * While the order is processed, use the data to create a Dolibarr order via webservice
 	 *
-	 * @access public
 	 * @return void
 	 */
 	public function dolibarr_create_order() {
@@ -111,7 +110,7 @@ class Dolibarr {
 	 *
 	 * @return void
 	 */
-	public function dolibarr_create_thirdparty_if_not_exists(
+	private function dolibarr_create_thirdparty_if_not_exists(
 		$user_id
 	) {
 		$result = $this->dolibarr_thirdparty_exists( $user_id );
@@ -141,7 +140,7 @@ class Dolibarr {
 	 *
 	 * @return mixed $result  array with the request results if it succeeds, null if there's an error
 	 */
-	public function dolibarr_thirdparty_exists( $user_id ) {
+	private function dolibarr_thirdparty_exists( $user_id ) {
 		$this->Doliwoo = new Doliwoo();
 		$this->Doliwoo->get_settings();
 		$dolibarr_ws_url = $this->Doliwoo->settings->webservs_url
@@ -270,7 +269,6 @@ class Dolibarr {
 	/**
 	 * Pull products data from Dolibarr via webservice and save it in Wordpress
 	 *
-	 * @access public
 	 * @return void
 	 */
 	public function dolibarr_import_products() {
@@ -348,13 +346,11 @@ class Dolibarr {
 	/**
 	 * Checks for the existence of a product in Wordpress database
 	 *
-	 * @access public
-	 *
 	 * @param  int $dolibarr_id ID of a product in Dolibarr
 	 *
 	 * @return bool $exists
 	 */
-	public function dolibarr_product_exists( $dolibarr_id ) {
+	private function dolibarr_product_exists( $dolibarr_id ) {
 		$args  = array(
 			'post_type'  => 'product',
 			'meta_key'   => 'dolibarr_id',
@@ -393,7 +389,7 @@ class Dolibarr {
 	 *
 	 * @return int[] Attachment IDs
 	 */
-	public function get_product_image(
+	private function get_product_image(
 		stdClass $dolibarr_product, $post_id
 	) {
 		$this->Doliwoo = new Doliwoo();
