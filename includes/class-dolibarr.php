@@ -151,7 +151,7 @@ class Dolibarr {
 			) {
 				update_user_meta( $user_id, 'dolibarr_id',
 					$result['thirdparty']->id );
-			} elseif ( is_null( $result['thirdparty'] ) ) {
+			} elseif ( null === $result['thirdparty'] ) {
 				$res
 					= $this->dolibarr_create_thirdparty( $user_id );
 				if ( 'OK' == $res['result']->result_code ) {
