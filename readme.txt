@@ -20,16 +20,16 @@ It leverages Dolibarr webservices feature to exchange data.
 = Features =
 
 **Dolibarr to WooCommerce**
-* Periodic sync of product informations including image
-* Link to existing thirdparties
+* Periodic sync of products informations including images and stock informations
+* Link customers to existing thirdparties
 
 **WooCommerce to Dolibarr**
 * Create thirdparties
-* Create client orders
+* Create customer orders
 
 **Known missing (TODO)**
 * International VAT rates management
-* Product's stock informations sync
+* Products stock informations resync on orders
 * Invoicing
 * Payments
 * Multiple languages products management
@@ -67,12 +67,13 @@ Only French equivalence table is shipped at the moment.
 
 = Is this plugin stable and useable in a production environment? =
 
-NO! This is alpha code. This project started as an internal proof of concept and is not mature yet.
+NO! This is beta code. This project started as an internal proof of concept and has just been reviewed.
+But you're very welcome to test it on a pre-production environment.
 
 = OK, so how can I make it happen then? =
 
 You can help by testing, providing detailed bug reports, documentation or even code.
-Or you can buy paid support and/or development services from [GPC.solutions](https://gpcsolutions.fr).
+Alternatively, you can buy paid support and/or development services from us: [GPC.solutions](https://gpcsolutions.fr).
 
 = Why do I need to use HTTPS with a good known SSL certificate? =
 
@@ -80,7 +81,7 @@ Otherwise SOAP requests will fail.
 
 This is a security feature to make sure your important data is properly encrypted in transit between WooCommerce and Dolibarr.
 
-You may allow insecure requests by tweaking the source code if you know what you're doing.
+You may allow insecure requests by tweaking the source code if you know what you're doing but we don't recommend that.
 
 == Screenshots ==
 
@@ -95,4 +96,5 @@ You may allow insecure requests by tweaking the source code if you know what you
 == Upgrade Notice ==
 
 = 0.0.1 =
+
 TODO: Unreleased
