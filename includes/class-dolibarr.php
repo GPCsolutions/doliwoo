@@ -275,6 +275,7 @@ class Dolibarr {
 		$this->taxes   = new WC_Tax_Doliwoo();
 		$this->Doliwoo = new Doliwoo();
 		$this->Doliwoo->get_settings();
+
 		// Set the WebService URL
 		try {
 			$soap_client = new SoapClient(
@@ -287,6 +288,7 @@ class Dolibarr {
 			// Do nothing.
 			return;
 		}
+
 		// Get all products that are meant to be displayed on the website
 		$result
 			= $soap_client->getProductsForCategory( $this->Doliwoo->ws_auth,
@@ -308,6 +310,7 @@ class Dolibarr {
 				}
 
 				if ( 0 < $post_id ) {
+					// Post metas management
 					add_post_meta( $post_id, 'dolibarr_id',
 						$dolibarr_product->id, true );
 					add_post_meta( $post_id, 'dolibarr_type', $dolibarr_product->type,
@@ -322,6 +325,8 @@ class Dolibarr {
 						'visible' );
 					update_post_meta( $post_id, '_tax_class',
 						$this->taxes->get_tax_class( $dolibarr_product->vat_rate ) );
+
+					// Stock management
 					if ( get_option( 'woocommerce_manage_stock' )
 					     == 'yes'
 					) {
@@ -333,10 +338,12 @@ class Dolibarr {
 						}
 					}
 
+					// Product images management
 					if ( $dolibarr_product->images ) {
 						$this->import_product_images( $dolibarr_product, $post_id );
 					}
 
+					// Cleanup
 					wc_delete_product_transients( $post_id );
 				}
 			}
