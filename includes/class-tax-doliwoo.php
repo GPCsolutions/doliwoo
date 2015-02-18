@@ -49,12 +49,12 @@ class WC_Tax_Doliwoo extends WC_Tax {
 	 * @param int $tax_rate_id Element to update
 	 * @param array $tax_rate Rate description
 	 *
-	 * @return void
+	 * @return false|int
 	 */
 	public function update_tax( $tax_rate_id, $tax_rate ) {
 		global $wpdb;
 
-		$wpdb->update(
+		return $wpdb->update(
 			$wpdb->prefix . "woocommerce_tax_rates",
 			$tax_rate,
 			array(
@@ -84,63 +84,107 @@ class WC_Tax_Doliwoo extends WC_Tax {
 
 	/**
 	 * Create tax classes for Dolibarr tax rates
-     *
-     * @return void
+	 *
+	 * @return void
 	 */
 	public function create_custom_tax_classes() {
-		// FIXME: only if classes does not yes exist
+		global $wpdb;
 		$tax_name = __( 'VAT', 'doliwoo' );
 
 		// First, create the rates
-		$data = array(
+		$declared_rates = array(
 			array(
 				'tax_rate_country'  => 'FR',
 				'tax_rate'          => '20',
 				'tax_rate_name'     => $tax_name,
-				'tax_rate_priority' => 1,
-				'tax_rate_order'    => 0,
+				'tax_rate_priority' => '1',
+				'tax_rate_order'    => '0',
 				'tax_rate_class'    => ''
 			),
 			array(
 				'tax_rate_country'  => 'FR',
 				'tax_rate'          => '10',
 				'tax_rate_name'     => $tax_name,
-				'tax_rate_priority' => 1,
-				'tax_rate_order'    => 0,
+				'tax_rate_priority' => '1',
+				'tax_rate_order'    => '0',
 				'tax_rate_class'    => 'reduced'
 			),
 			array(
 				'tax_rate_country'  => 'FR',
 				'tax_rate'          => '5',
 				'tax_rate_name'     => $tax_name,
-				'tax_rate_priority' => 1,
-				'tax_rate_order'    => 0,
+				'tax_rate_priority' => '1',
+				'tax_rate_order'    => '0',
 				'tax_rate_class'    => 'super-reduced'
 			),
 			array(
 				'tax_rate_country'  => 'FR',
 				'tax_rate'          => '2.1',
 				'tax_rate_name'     => $tax_name,
-				'tax_rate_priority' => 1,
-				'tax_rate_order'    => 0,
+				'tax_rate_priority' => '1',
+				'tax_rate_order'    => '0',
 				'tax_rate_class'    => 'minimum'
 			),
 			array(
 				'tax_rate_country'  => 'FR',
 				'tax_rate'          => '0',
 				'tax_rate_name'     => $tax_name,
-				'tax_rate_priority' => 1,
-				'tax_rate_order'    => 0,
+				'tax_rate_priority' => '1',
+				'tax_rate_order'    => '0',
 				'tax_rate_class'    => 'zero'
 			)
 		);
 
-		foreach ( $data as $entry ) {
-				$this->insert_tax( $entry );
+		$db_taxes = $wpdb->get_results(
+			"SELECT tax_rate_id
+ , tax_rate_country
+ , tax_rate, tax_rate_name
+ , tax_rate_priority
+ , tax_rate_order
+ , tax_rate_class
+ FROM " . $wpdb->prefix . "woocommerce_tax_rates;",
+			ARRAY_A );
+
+		// Struture database results
+		$database_rates = array();
+		foreach ( $db_taxes as $tax ) {
+			$tax_id                    = $tax['tax_rate_id'];
+			$database_rates[ $tax_id ] = $tax;
+			unset( $database_rates[ $tax_id ]['tax_rate_id'] );
 		}
 
-		// Now take care of classes
-		update_option( 'woocommerce_tax_classes',
-			"Reduced\nSuper-reduced\nMinimum\nZero" );
+		// Insert missing classes
+		$declared_classes = array_column( $declared_rates, 'tax_rate_class' );
+		$database_classes = array_column( $database_rates, 'tax_rate_class' );
+		foreach ( $declared_classes as $key => $class ) {
+			if ( ! in_array( $class, $database_classes ) ) {
+				$to_create = $declared_rates[ $key ];
+				$this->insert_tax( $to_create );
+			}
+		}
+
+		// Update existing tax classes if declared rates have changed
+		foreach ( $declared_rates as $declared_rate ) {
+			foreach ( $database_rates as $tax_rate_id => $database_rate ) {
+				if ( $declared_rate['tax_rate_class']
+				     == $database_rate['tax_rate_class']
+				) {
+					// _assoc is important. It allows strict checking to take 0 into account!
+					if ( array_diff_assoc( $declared_rate, $database_rate ) ) {
+						( $this->update_tax(
+							$tax_rate_id,
+							$declared_rate ) );
+					}
+				}
+			}
+		}
+
+		// Now declare the classes
+		$declared_classes = array_map( 'ucfirst', $declared_classes );
+		$classes_names    = implode( "\n", $declared_classes );
+		update_option(
+			'woocommerce_tax_classes',
+			$classes_names
+		);
 	}
 }
