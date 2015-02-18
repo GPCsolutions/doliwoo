@@ -336,17 +336,7 @@ class Dolibarr {
 					}
 
 					if ( $dolibarr_product->images ) {
-						$image_attachment_ids = $this->get_product_image( $dolibarr_product,
-							$post_id );
-
-						// Fill the image gallery
-						update_post_meta( $post_id,
-							'_product_image_gallery',
-							implode( ',', $image_attachment_ids ) );
-
-						// Use the first image as the product thumbnail
-						update_post_meta( $post_id, '_thumbnail_id',
-							$image_attachment_ids[0] );
+						$this->import_product_images( $dolibarr_product, $post_id );
 					}
 
 					wc_delete_product_transients( $post_id );
@@ -373,6 +363,26 @@ class Dolibarr {
 		$query = new WP_Query( $args );
 
 		return $query->have_posts();
+	}
+
+	/**
+	 * Import Dolibarr product images
+	 *
+	 * @param StdClass $dolibarr_product The Dolibarr product
+	 * @param int $post_id The WooCommerce product
+	 */
+	private function import_product_images( $dolibarr_product, $post_id ) {
+		$image_attachment_ids = $this->get_product_image( $dolibarr_product,
+			$post_id );
+
+		// Fill the image gallery
+		update_post_meta( $post_id,
+			'_product_image_gallery',
+			implode( ',', $image_attachment_ids ) );
+
+		// Use the first image as the product thumbnail
+		update_post_meta( $post_id, '_thumbnail_id',
+			$image_attachment_ids[0] );
 	}
 
 	/**
