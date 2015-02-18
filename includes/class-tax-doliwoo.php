@@ -66,20 +66,26 @@ class WC_Tax_Doliwoo extends WC_Tax {
 	/**
 	 * Get the tax class associated with a VAT rate
 	 *
-	 * @param float $tax_rate a product VAT rate
+	 * @param float $tax_rate A product VAT rate
 	 *
-	 * @return string   the tax class corresponding to the input VAT rate
+	 * @return string The first tax class corresponding to the input VAT rate
 	 */
 	public function get_tax_class( $tax_rate ) {
-		$nametaxclasses = $this->get_tax_classes();
+		$tax_classes = $this->get_tax_classes();
+
 		// Add missing standard rate
-		$nametaxclasses[] = '';
-		foreach($nametaxclasses as $unetaxclass) {
-			$lestaxes = $this->get_rates($unetaxclass);
-			if (array_values($lestaxes)[0]['rate'] == $tax_rate) {
-				return $unetaxclass;
+		$tax_classes[] = '';
+
+		foreach($tax_classes as $class) {
+			$rates = $this->get_rates($class);
+			if (array_values($rates)[0]['rate'] == $tax_rate) {
+				// Use the first class found
+				return $class;
 			}
 		}
+
+		// No class found, use the standard rate
+		return '';
 	}
 
 	/**

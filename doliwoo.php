@@ -146,12 +146,12 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				 */
 				public function init() {
 
-					include_once 'includes/class-tax-doliwoo.php';
+					require_once 'includes/class-tax-doliwoo.php';
 
 					// Checks if WooCommerce is installed.
 					if ( class_exists( 'WC_Integration' ) ) {
 						// Include our integration class.
-						include_once 'includes/settings.php';
+						require_once 'includes/settings.php';
 						// Register the integration.
 						add_filter( 'woocommerce_integrations',
 							array( $this, 'add_integration' ) );
