@@ -28,11 +28,11 @@ It leverages Dolibarr webservices feature to exchange data.
 * Create client orders
 
 **Known missing (TODO)**
-* VAT rates management
-* Product's stock informations
+* International VAT rates management
+* Product's stock informations sync
 * Invoicing
 * Payments
-* Multiple languages management
+* Multiple languages products management
 
 **Known issues**
 WooCommerce VAT management vastly differs from Dolibarr and we need equivalence tables.
