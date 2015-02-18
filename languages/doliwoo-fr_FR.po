@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: DoliWoo\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/doliwoo\n"
 "POT-Creation-Date: 2015-02-18 16:23:59+00:00\n"
-"PO-Revision-Date: 2015-02-18 16:32+0000\n"
+"PO-Revision-Date: 2015-02-18 18:45+0100\n"
 "Last-Translator: Raphaël Doursenaud <rdoursenaud@gpcsolutions.fr>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/doliwoo/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -15,6 +15,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 1.7.4\n"
 
 #: doliwoo.php:51
 msgid "This plugin needs SOAP and OpenSSL PHP extensions."
@@ -36,8 +37,7 @@ msgstr "Cette extension nécessite WooCommerce"
 msgid "Dolibarr"
 msgstr "Dolibarr"
 
-#: includes/class-doliwoo-parameters.php:65
-#: includes/class-doliwoo-parameters.php:128
+#: includes/class-doliwoo-parameters.php:65 includes/class-doliwoo-parameters.php:128
 msgid "Dolibarr User ID"
 msgstr "Identifiant Utilisateur Dolibarr"
 
@@ -66,9 +66,7 @@ msgid "URL"
 msgstr "URL"
 
 #: includes/settings.php:83
-msgid ""
-"Enter Dolibarr webservices root URL (i.e. "
-"https://mydolibarr.com/webservices)"
+msgid "Enter Dolibarr webservices root URL (i.e. https://mydolibarr.com/webservices)"
 msgstr "Entrez l'URL racine des webservices de Dolibarr (i.e. https://mydolibarr.com/webservices)"
 
 #: includes/settings.php:90
@@ -116,9 +114,7 @@ msgid "Entity"
 msgstr "Entité"
 
 #: includes/settings.php:122
-msgid ""
-"If you're using multicompany, the ID of the entity you want to integrate. "
-"Leave to 1 otherwise."
+msgid "If you're using multicompany, the ID of the entity you want to integrate. Leave to 1 otherwise."
 msgstr "Si vous utilisez multi-société, l'ID de l'entité que vous souhaitez intégrer. Sinon laissez à 1."
 
 #: includes/settings.php:128
@@ -126,9 +122,7 @@ msgid "Product category"
 msgstr "Catégorie du Produit"
 
 #: includes/settings.php:129
-msgid ""
-"The ID of the product category you want to automatically import products "
-"from."
+msgid "The ID of the product category you want to automatically import products from."
 msgstr "L'ID de la catégorie de produits que vous souhaitez importer automatiquement."
 
 #: includes/settings.php:135
