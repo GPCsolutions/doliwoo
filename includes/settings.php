@@ -44,7 +44,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 			// Define user set variables
 			$this->webservs_url = $this->get_option( 'webservs_url' );
 
-			$this->delay_update = $this->get_option('delay_update');
+			$this->delay_update = $this->get_option( 'delay_update' );
 
 			$this->dolibarr_key = $this->get_option( 'dolibarr_key' );
 			$this->sourceapplication
@@ -86,15 +86,15 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 					'desc_tip'    => false,
 					'default'     => ''
 				),
-				'delay_update' => array(
-					'title'             => __('Delay','doliwoo' ),
-					'description'       => __('Choice the time of the automatically update' ),
-					'type'              => 'select',
-					'desc_tip'          => false,
-					'options'           => array(
-						'hourly'  => __('Once Hourly'),
-						'twicedaily'  => __('Twice Daily'),
-						'daily'  => __('Once Daily'),
+				'delay_update'         => array(
+					'title'       => __( 'Delay', 'doliwoo' ),
+					'description' => __( 'Choice the time of the automatically update' ),
+					'type'        => 'select',
+					'desc_tip'    => false,
+					'options'     => array(
+						'hourly'     => __( 'Once Hourly' ),
+						'twicedaily' => __( 'Twice Daily' ),
+						'daily'      => __( 'Once Daily' ),
 					),
 				),
 				'dolibarr_key'         => array(
@@ -154,7 +154,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 
 			// FIXME: move to a sanitization method
 			// Make sure we have the trailing slash
-			$value = trailingslashit($value);
+			$value = trailingslashit( $value );
 
 			// Make sure we use HTTPS
 			if ( ( substr( $value, 0, 8 ) ) !== 'https://' ) {
@@ -163,7 +163,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 
 			// Check that the server is available
 			try {
-				new SoapClient($value . 'server_other.php?wsdl');
+				new SoapClient( $value . 'server_other.php?wsdl' );
 			} catch ( SoapFault $exc ) {
 				$this->errors[] = 'The webservice is not available. Please check the URL.';
 			}
@@ -181,10 +181,10 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				?>
 				<div class="error">
 					<p><b>
-					<?php
-						_e( $value, 'doliwoo' );
-					?>
-					</b></p>
+							<?php
+							_e( $value, 'doliwoo' );
+							?>
+						</b></p>
 				</div>
 			<?php
 			}

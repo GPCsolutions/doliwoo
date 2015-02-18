@@ -69,7 +69,8 @@ Class Woocomerce_Parameters {
 				)
 			)
 		);
-	return $show_fields;
+
+		return $show_fields;
 	}
 
 	/**

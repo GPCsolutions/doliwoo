@@ -29,41 +29,6 @@
 class WC_Tax_Doliwoo extends WC_Tax {
 
 	/**
-	 * Save tax rates
-	 *
-	 * @param array $tax_rate Rate description
-	 *
-	 * @return int
-	 */
-	public function insert_tax( $tax_rate ) {
-		global $wpdb;
-
-		$wpdb->insert( $wpdb->prefix . 'woocommerce_tax_rates', $tax_rate );
-
-		return $wpdb->insert_id;
-	}
-
-	/**
-	 * Update tax rates
-	 *
-	 * @param int $tax_rate_id Element to update
-	 * @param array $tax_rate Rate description
-	 *
-	 * @return false|int
-	 */
-	public function update_tax( $tax_rate_id, $tax_rate ) {
-		global $wpdb;
-
-		return $wpdb->update(
-			$wpdb->prefix . "woocommerce_tax_rates",
-			$tax_rate,
-			array(
-				'tax_rate_id' => $tax_rate_id
-			)
-		);
-	}
-
-	/**
 	 * Get the tax class associated with a VAT rate
 	 *
 	 * @param float $tax_rate A product VAT rate
@@ -76,9 +41,9 @@ class WC_Tax_Doliwoo extends WC_Tax {
 		// Add missing standard rate
 		$tax_classes[] = '';
 
-		foreach($tax_classes as $class) {
-			$rates = $this->get_rates($class);
-			if (array_values($rates)[0]['rate'] == $tax_rate) {
+		foreach ( $tax_classes as $class ) {
+			$rates = $this->get_rates( $class );
+			if ( array_values( $rates )[0]['rate'] == $tax_rate ) {
 				// Use the first class found
 				return $class;
 			}
@@ -191,6 +156,41 @@ class WC_Tax_Doliwoo extends WC_Tax {
 		update_option(
 			'woocommerce_tax_classes',
 			$classes_names
+		);
+	}
+
+	/**
+	 * Save tax rates
+	 *
+	 * @param array $tax_rate Rate description
+	 *
+	 * @return int
+	 */
+	public function insert_tax( $tax_rate ) {
+		global $wpdb;
+
+		$wpdb->insert( $wpdb->prefix . 'woocommerce_tax_rates', $tax_rate );
+
+		return $wpdb->insert_id;
+	}
+
+	/**
+	 * Update tax rates
+	 *
+	 * @param int $tax_rate_id Element to update
+	 * @param array $tax_rate Rate description
+	 *
+	 * @return false|int
+	 */
+	public function update_tax( $tax_rate_id, $tax_rate ) {
+		global $wpdb;
+
+		return $wpdb->update(
+			$wpdb->prefix . "woocommerce_tax_rates",
+			$tax_rate,
+			array(
+				'tax_rate_id' => $tax_rate_id
+			)
 		);
 	}
 }

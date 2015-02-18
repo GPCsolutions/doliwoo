@@ -45,7 +45,7 @@ class Dolibarr {
 	 * Called when woocommerce is ready
 	 */
 	public function set_woocommerce() {
-		$this->logger  = new WC_Logger();
+		$this->logger = new WC_Logger();
 	}
 
 	/**
@@ -59,7 +59,7 @@ class Dolibarr {
 	public function dolibarr_create_order() {
 		$this->taxes = new WC_Tax_Doliwoo();
 
-		$this->Doliwoo  = new Doliwoo();
+		$this->Doliwoo = new Doliwoo();
 		$this->Doliwoo->get_settings();
 
 		$dolibarr_ws_url = $this->Doliwoo->settings->webservs_url . 'server_order.php?wsdl';
@@ -69,9 +69,10 @@ class Dolibarr {
 			null,
 			array(
 				'location' => $dolibarr_ws_url,
-				'uri'      => "http://www.dolibar.org/ns/")
+				'uri'      => "http://www.dolibar.org/ns/"
+			)
 		);
-		$order = new DolibarrOrder();
+		$order       = new DolibarrOrder();
 
 		// Fill this array with all data required to create an order in Dolibarr
 		$user_id = get_current_user_id();
@@ -95,9 +96,9 @@ class Dolibarr {
 			$order->thirdparty_id = get_user_meta( $user_id,
 				'dolibarr_id', true );
 		}
-		$order->date = date( 'Ymd' );
+		$order->date   = date( 'Ymd' );
 		$order->status = 1;
-		$order->lines = array();
+		$order->lines  = array();
 
 		foreach ( WC()->cart->cart_contents as $product ) {
 			/** @var WC_Product $woocommerce_product */
@@ -105,27 +106,27 @@ class Dolibarr {
 
 			$line = new DolibarrOrderLine();
 			$line->type
-			                   = get_post_meta( $product['product_id'],
+			      = get_post_meta( $product['product_id'],
 				'dolibarr_type', 1 );
 			$line->desc
-			                   = $woocommerce_product->post->post_content;
+			      = $woocommerce_product->post->post_content;
 			$line->product_id
-			                   = get_post_meta( $product['product_id'],
+			      = get_post_meta( $product['product_id'],
 				'dolibarr_id', 1 );
 
 			$rates = $this->taxes->get_rates( $woocommerce_product->get_tax_class() );
 			// We get the first one
-			$line->vat_rate = array_values($rates)[0]['rate'];
+			$line->vat_rate = array_values( $rates )[0]['rate'];
 
 			$line->qty       = $product['quantity'];
 			$line->price     = $woocommerce_product->get_price();
 			$line->unitprice = $woocommerce_product->get_price();
 			$line->total_net
-			                   = $woocommerce_product->get_price_excluding_tax( $line->qty );
+			                 = $woocommerce_product->get_price_excluding_tax( $line->qty );
 			$line->total
-			                   = $woocommerce_product->get_price_including_tax( $line->qty );
+			                 = $woocommerce_product->get_price_including_tax( $line->qty );
 			$line->total_vat
-			                   = $line->total - $line->total_net;
+			                 = $line->total - $line->total_net;
 			$order->lines[]  = $line;
 		}
 
@@ -214,10 +215,11 @@ class Dolibarr {
 			null,
 			array(
 				'location' => $dolibarr_ws_url,
-				'uri'      => "http://www.dolibar.org/ns/")
+				'uri'      => "http://www.dolibar.org/ns/"
+			)
 		);
 
-		$ref = get_user_meta( $user_id, 'billing_company',
+		$ref        = get_user_meta( $user_id, 'billing_company',
 			true );
 		$individual = 0;
 		if ( '' == $ref ) {
@@ -228,30 +230,29 @@ class Dolibarr {
 
 		$new_thirdparty = new DolibarrThirdparty();
 
-		$new_thirdparty->ref = $ref;
-		$new_thirdparty->status ='1';
-		$new_thirdparty->client = '1';
+		$new_thirdparty->ref      = $ref;
+		$new_thirdparty->status   = '1';
+		$new_thirdparty->client   = '1';
 		$new_thirdparty->supplier = '0';
 
-		$new_thirdparty->address = get_user_meta( $user_id,
-			'billing_address', true );
-		$new_thirdparty->zip = get_user_meta( $user_id,
-			'billing_postcode', true );
-		$new_thirdparty->town = get_user_meta( $user_id,
-			'billing_city', true );
-		$new_thirdparty->country_code = get_user_meta( $user_id,
-			'billing_country', true );
+		$new_thirdparty->address       = get_user_meta(
+			$user_id, 'billing_address', true );
+		$new_thirdparty->zip           = get_user_meta(
+			$user_id, 'billing_postcode', true );
+		$new_thirdparty->town          = get_user_meta(
+			$user_id, 'billing_city', true );
+		$new_thirdparty->country_code  = get_user_meta(
+			$user_id, 'billing_country', true );
 		$new_thirdparty->supplier_code = '0';
-		$new_thirdparty->phone = get_user_meta( $user_id,
-			'billing_phone', true );
-		$new_thirdparty->email = get_user_meta( $user_id,
-			'billing_email', true );
-		$new_thirdparty->individual = $individual;
-		$new_thirdparty->firstname = get_user_meta( $user_id,
-			'billing_first_name', true );
+		$new_thirdparty->phone         = get_user_meta(
+			$user_id, 'billing_phone', true );
+		$new_thirdparty->email         = get_user_meta(
+			$user_id, 'billing_email', true );
+		$new_thirdparty->individual    = $individual;
+		$new_thirdparty->firstname     = get_user_meta(
+			$user_id, 'billing_first_name', true );
 
-		$result = $soap_client->createThirdParty( $this->Doliwoo->ws_auth,
-			$new_thirdparty );
+		$result = $soap_client->createThirdParty( $this->Doliwoo->ws_auth, $new_thirdparty );
 
 		return $result;
 	}
@@ -263,7 +264,7 @@ class Dolibarr {
 	 * @return void
 	 */
 	public function dolibarr_import_products() {
-		$this->taxes = new WC_Tax_Doliwoo();
+		$this->taxes   = new WC_Tax_Doliwoo();
 		$this->Doliwoo = new Doliwoo();
 		$this->Doliwoo->get_settings();
 		// Set the WebService URL
@@ -272,8 +273,9 @@ class Dolibarr {
 				$this->Doliwoo->settings->webservs_url
 				. 'server_productorservice.php?wsdl'
 			);
-		}catch (SoapFault $exception){
-			$this->logger->add('doliwoo',$exception->getMessage());
+		} catch ( SoapFault $exception ) {
+			$this->logger->add( 'doliwoo', $exception->getMessage() );
+
 			// Do nothing.
 			return;
 		}
@@ -323,7 +325,7 @@ class Dolibarr {
 						}
 					}
 
-					if ($dolibarr_product->images) {
+					if ( $dolibarr_product->images ) {
 						$image_attachment_ids = $this->get_product_image( $dolibarr_product,
 							$post_id );
 
@@ -366,8 +368,8 @@ class Dolibarr {
 	/**
 	 * Webservice calls to get the product's images
 	 *
-	 * @param stdClass  $dolibarr_product SOAP product object
-	 * @param int       $post_id          WooCommerce product ID
+	 * @param stdClass $dolibarr_product SOAP product object
+	 * @param int $post_id WooCommerce product ID
 	 *
 	 * @return int[] Attachment IDs
 	 */

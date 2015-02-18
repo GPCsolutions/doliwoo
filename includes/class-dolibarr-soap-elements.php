@@ -92,7 +92,7 @@ class DolibarrThirdparty {
 	public $supplier;
 
 	/** @var string */
-	public $address ;
+	public $address;
 
 	/** @var string */
 	public $zip;

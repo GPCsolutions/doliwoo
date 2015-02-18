@@ -46,16 +46,16 @@ load_plugin_textdomain( 'doliwoo',
 
 // Check required extensions
 if ( false === extension_loaded( 'soap' )
-	 && false === extension_loaded( 'openssl' )
+     && false === extension_loaded( 'openssl' )
 ) {
 	echo __( 'You must enable extensions SOAP and OpenSSL' );
 	exit;
 }
-if ( false === extension_loaded( 'soap' )  ) {
+if ( false === extension_loaded( 'soap' ) ) {
 	echo __( 'You must enable extension SOAP' );
 	exit;
 }
-if ( false === extension_loaded( 'openssl' )  ) {
+if ( false === extension_loaded( 'openssl' ) ) {
 	echo __( 'You must enable extension OpenSSL' );
 	exit;
 }
@@ -98,13 +98,13 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 					require_once 'includes/class-dolibarr.php';
 
 					$this->woocommerce_parameters = new Woocomerce_Parameters();
-					$this->dolibarr = new Dolibarr();
+					$this->dolibarr               = new Dolibarr();
 
 					// Initialize plugin settings
 					add_action( 'plugins_loaded', array( $this, 'init' ) );
 
-					add_action('woocommerce_loaded',
-						array( &$this->dolibarr, 'set_woocommerce'));
+					add_action( 'woocommerce_loaded',
+						array( &$this->dolibarr, 'set_woocommerce' ) );
 
 					// Create custom tax classes and VAT rates on plugin settings saved
 					add_action( 'woocommerce_settings_saved',
@@ -194,7 +194,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				public function get_settings() {
 					// Load settings
 					$this->settings = WC()->integrations->get_integrations()['doliwoo'];
-					$this->ws_auth = array(
+					$this->ws_auth  = array(
 						'dolibarrkey'       => $this->settings->dolibarr_key,
 						'sourceapplication' => $this->settings->sourceapplication,
 						'login'             => $this->settings->dolibarr_login,
