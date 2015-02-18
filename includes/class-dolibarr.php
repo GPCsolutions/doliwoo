@@ -98,37 +98,8 @@ class Dolibarr {
 		}
 		$order->date   = date( 'Ymd' );
 		$order->status = 1;
-		$order->lines  = array();
 
-		foreach ( WC()->cart->cart_contents as $product ) {
-			/** @var WC_Product $woocommerce_product */
-			$woocommerce_product = $product['data'];
-
-			$line = new DolibarrOrderLine();
-			$line->type
-			      = get_post_meta( $product['product_id'],
-				'dolibarr_type', 1 );
-			$line->desc
-			      = $woocommerce_product->post->post_content;
-			$line->product_id
-			      = get_post_meta( $product['product_id'],
-				'dolibarr_id', 1 );
-
-			$rates = $this->taxes->get_rates( $woocommerce_product->get_tax_class() );
-			// We get the first one
-			$line->vat_rate = array_values( $rates )[0]['rate'];
-
-			$line->qty       = $product['quantity'];
-			$line->price     = $woocommerce_product->get_price();
-			$line->unitprice = $woocommerce_product->get_price();
-			$line->total_net
-			                 = $woocommerce_product->get_price_excluding_tax( $line->qty );
-			$line->total
-			                 = $woocommerce_product->get_price_including_tax( $line->qty );
-			$line->total_vat
-			                 = $line->total - $line->total_net;
-			$order->lines[]  = $line;
-		}
+		$this->create_order_lines( $order );
 
 		$soap_client->createOrder( $this->Doliwoo->ws_auth, $order );
 	}
@@ -255,6 +226,45 @@ class Dolibarr {
 		$result = $soap_client->createThirdParty( $this->Doliwoo->ws_auth, $new_thirdparty );
 
 		return $result;
+	}
+
+	/**
+	 * Create order lines
+	 *
+	 * @param DolibarrOrder $order The order to add lines to
+	 */
+	private function create_order_lines( $order ) {
+		$order->lines = array();
+
+		foreach ( WC()->cart->cart_contents as $product ) {
+			/** @var WC_Product $woocommerce_product */
+			$woocommerce_product = $product['data'];
+
+			$line = new DolibarrOrderLine();
+			$line->type
+			      = get_post_meta( $product['product_id'],
+				'dolibarr_type', 1 );
+			$line->desc
+			      = $woocommerce_product->post->post_content;
+			$line->product_id
+			      = get_post_meta( $product['product_id'],
+				'dolibarr_id', 1 );
+
+			$rates = $this->taxes->get_rates( $woocommerce_product->get_tax_class() );
+			// We get the first one
+			$line->vat_rate = array_values( $rates )[0]['rate'];
+
+			$line->qty       = $product['quantity'];
+			$line->price     = $woocommerce_product->get_price();
+			$line->unitprice = $woocommerce_product->get_price();
+			$line->total_net
+			                 = $woocommerce_product->get_price_excluding_tax( $line->qty );
+			$line->total
+			                 = $woocommerce_product->get_price_including_tax( $line->qty );
+			$line->total_vat
+			                 = $line->total - $line->total_net;
+			$order->lines[]  = $line;
+		}
 	}
 
 	/**
