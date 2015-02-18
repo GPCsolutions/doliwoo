@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="DoliWoo : Dolibarr WooCommerce integration">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>DoliWoo</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/GPCsolutions/doliwoo">View on GitHub</a>
+
+          <h1 id="project_title">DoliWoo</h1>
+          <h2 id="project_tagline">Dolibarr WooCommerce integration</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/GPCsolutions/doliwoo/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/GPCsolutions/doliwoo/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="doliwoo" class="anchor" href="#doliwoo" aria-hidden="true"><span class="octicon octicon-link"></span></a>Doliwoo</h1>
+
+<p>Contributors: GPC.solutions</p>
+
+<p>Donate Link: TODO (<a href="https://gpcsolutions.fr/donate">https://gpcsolutions.fr/donate</a>)</p>
+
+<p>Tags: dolibarr, woocommerce, ecommerce, erp, integration</p>
+
+<p>Author URI: <a href="https://gpcsolutions.fr">https://gpcsolutions.fr</a></p>
+
+<p>Plugin URI: <a href="http://doliwoo.github.io">http://doliwoo.github.io</a></p>
+
+<p>Requires at least: 3.7.1</p>
+
+<p>Tested up to: 3.7.1</p>
+
+<p>Stable tag: master</p>
+
+<p>License: GPLv3</p>
+
+<p>License URI: <a href="http://www.gnu.org/licenses/gpl-3.0.html">http://www.gnu.org/licenses/gpl-3.0.html</a></p>
+
+<p>Integrate Dolibarr with a WooCommerce shop.</p>
+
+<h2>
+<a id="description" class="anchor" href="#description" aria-hidden="true"><span class="octicon octicon-link"></span></a>Description</h2>
+
+<p>Doliwoo allows integration of Dolibarr into WooCommerce.</p>
+
+<p>It leverages Dolibarr webservices feature to exchange data.</p>
+
+<h3>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h3>
+
+<p><strong>Dolibarr to WooCommerce</strong></p>
+
+<ul>
+<li>Periodic sync of product informations including image</li>
+<li>Link to existing thirdparties</li>
+</ul>
+
+<p><strong>WooCommerce to Dolibarr</strong></p>
+
+<ul>
+<li>Create thirdparties</li>
+<li>Create client orders</li>
+</ul>
+
+<p><strong>Known missing (TODO)</strong></p>
+
+<ul>
+<li>International VAT rates management</li>
+<li>Product's stock informations sync</li>
+<li>Invoicing</li>
+<li>Payments</li>
+<li>Multiple languages products management</li>
+</ul>
+
+<p><strong>Known issues</strong>
+WooCommerce VAT management vastly differs from Dolibarr and we need equivalence tables.
+Only French equivalence table is shipped at the moment.</p>
+
+<h3>
+<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Requirements</h3>
+
+<p><strong>PHP extensions</strong></p>
+
+<ul>
+<li>SOAP</li>
+<li>OpenSSL</li>
+</ul>
+
+<p><strong>WordPress plugins</strong></p>
+
+<ul>
+<li>Woocommerce &gt;= 2.0.0</li>
+</ul>
+
+<p><strong>Dolibarr</strong></p>
+
+<ul>
+<li>HTTPS access with a valid certificate</li>
+<li>Dolibarr &gt;= 3.4.0</li>
+<li>Modules:
+
+<ul>
+<li>Webservices</li>
+<li>Thirdparties</li>
+<li>Products</li>
+<li>Categories (Products)</li>
+<li>Orders</li>
+</ul>
+</li>
+</ul>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<ul>
+<li>Make sure the WooCommerce plugin is installed into your WordPress</li>
+<li>Extract the zip file to the 'wp-content/plugins/' directory of your WordPress installation</li>
+<li>Activate the plugin from 'Plugins' WordPress settings page</li>
+<li>Go to 'WooCommerce' 'Settings' under the 'Integration' tab and configure the 'Doliwoo' section</li>
+</ul>
+
+<h2>
+<a id="frequently-asked-questions" class="anchor" href="#frequently-asked-questions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Frequently Asked Questions</h2>
+
+<h3>
+<a id="is-this-plugin-stable-and-useable-in-a-production-environment" class="anchor" href="#is-this-plugin-stable-and-useable-in-a-production-environment" aria-hidden="true"><span class="octicon octicon-link"></span></a>Is this plugin stable and useable in a production environment?</h3>
+
+<p>NO! This is alpha code. This project started as an internal proof of concept and is not mature yet.</p>
+
+<h3>
+<a id="ok-so-how-can-i-make-it-happen-then" class="anchor" href="#ok-so-how-can-i-make-it-happen-then" aria-hidden="true"><span class="octicon octicon-link"></span></a>OK, so how can I make it happen then?</h3>
+
+<p>You can help by testing, providing detailed bug reports, documentation or even code.
+Or you can buy paid support and/or development services from <a href="https://gpcsolutions.fr">GPC.solutions</a>.</p>
+
+<h3>
+<a id="why-do-i-need-to-use-https-with-a-good-known-ssl-certificate" class="anchor" href="#why-do-i-need-to-use-https-with-a-good-known-ssl-certificate" aria-hidden="true"><span class="octicon octicon-link"></span></a>Why do I need to use HTTPS with a good known SSL certificate?</h3>
+
+<p>Otherwise SOAP requests will fail.</p>
+
+<p>This is a security feature to make sure your important data is properly encrypted in transit between WooCommerce and Dolibarr.</p>
+
+<p>You may allow insecure requests by tweaking the source code if you know what you're doing.</p>
+
+<h2>
+<a id="screenshots" class="anchor" href="#screenshots" aria-hidden="true"><span class="octicon octicon-link"></span></a>Screenshots</h2>
+
+<ol>
+<li>FIXME: Placeholder</li>
+</ol>
+
+<h2>
+<a id="changelog" class="anchor" href="#changelog" aria-hidden="true"><span class="octicon octicon-link"></span></a>Changelog</h2>
+
+<h3>
+<a id="001" class="anchor" href="#001" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.0.1</h3>
+
+<ul>
+<li>TODO: Unreleased</li>
+</ul>
+
+<h2>
+<a id="upgrade-notice" class="anchor" href="#upgrade-notice" aria-hidden="true"><span class="octicon octicon-link"></span></a>Upgrade Notice</h2>
+
+<h3>
+<a id="001-1" class="anchor" href="#001-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.0.1</h3>
+
+<p>TODO: Unreleased</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">DoliWoo maintained by <a href="https://github.com/GPCsolutions">GPCsolutions</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-19236379-9");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+
+  </body>
+</html>
