@@ -34,7 +34,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 		 */
 		public function __construct() {
 			$this->id                 = 'doliwoo';
-			$this->method_title       = __( 'Doliwoo Settings', 'doliwoo' );
+			$this->method_title       = __( 'DoliWoo Settings', 'doliwoo' );
 			$this->method_description = __( 'Dolibarr webservices access', 'doliwoo' );
 
 			// Load the settings
@@ -88,7 +88,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				),
 				'delay_update'         => array(
 					'title'       => __( 'Delay', 'doliwoo' ),
-					'description' => __( 'Choice the time of the automatically update' ),
+					'description' => __( 'Choose the automatic update frequency' ),
 					'type'        => 'select',
 					'desc_tip'    => false,
 					'options'     => array(
@@ -119,7 +119,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				),
 				'dolibarr_entity'      => array(
 					'title'       => __( 'Entity', 'doliwoo' ),
-					'description' => __( 'If you\'re using ulticompany: the ID of the entity you want to integrate. Leave to 1 otherwise.', 'doliwoo' ),
+					'description' => __( 'If you\'re using multicompany, the ID of the entity you want to integrate. Leave to 1 otherwise.', 'doliwoo' ),
 					'type'        => 'text',
 					'desc_tip'    => false,
 					'default'     => 1
@@ -153,7 +153,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 
 			// Make sure we use HTTPS
 			if ( ( substr( $value, 0, 8 ) ) !== 'https://' ) {
-				$this->errors[] = 'The protocol to use is https://';
+				$this->errors[] = __('The protocol to use is https://');
 			}
 
 			// Make sure we have the trailing slash
@@ -163,7 +163,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 			try {
 				new SoapClient( $value . 'server_other.php?wsdl' );
 			} catch ( SoapFault $exc ) {
-				$this->errors[] = 'The webservice is not available. Please check the URL.';
+				$this->errors[] = __('The webservice is not available. Please check the URL.');
 			}
 
 			return $value;
@@ -180,7 +180,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				<div class="error">
 					<p><b>
 							<?php
-							_e( $value, 'doliwoo' );
+							$value;
 							?>
 						</b></p>
 				</div>

@@ -48,15 +48,15 @@ load_plugin_textdomain( 'doliwoo',
 if ( false === extension_loaded( 'soap' )
      && false === extension_loaded( 'openssl' )
 ) {
-	echo __( 'You must enable extensions SOAP and OpenSSL' );
+	echo __( 'This plugin needs SOAP and OpenSSL PHP extensions.' );
 	exit;
 }
 if ( false === extension_loaded( 'soap' ) ) {
-	echo __( 'You must enable extension SOAP' );
+	echo __( 'This plugin needs SOAP PHP extension.' );
 	exit;
 }
 if ( false === extension_loaded( 'openssl' ) ) {
-	echo __( 'You must enable extension OpenSSL' );
+	echo __( 'This plugin needs OpenSSL PHP extension.' );
 	exit;
 }
 
