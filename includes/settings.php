@@ -117,7 +117,6 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 					'desc_tip' => false,
 					'default'  => ''
 				),
-				// TODO: do a 2 step configuration procedure and try to get these parameters in a human readable form from the SOAP webservice
 				'dolibarr_entity'      => array(
 					'title'       => __( 'Entity', 'doliwoo' ),
 					'description' => __( 'If you\'re using ulticompany: the ID of the entity you want to integrate. Leave to 1 otherwise.', 'doliwoo' ),
