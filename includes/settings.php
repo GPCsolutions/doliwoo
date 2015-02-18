@@ -151,14 +151,13 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 		public function validate_webservs_url_field( $key ) {
 			$value = $_POST['woocommerce_doliwoo_webservs_url'];
 
-			// FIXME: move to a sanitization method
-			// Make sure we have the trailing slash
-			$value = trailingslashit( $value );
-
 			// Make sure we use HTTPS
 			if ( ( substr( $value, 0, 8 ) ) !== 'https://' ) {
 				$this->errors[] = 'The protocol to use is https://';
 			}
+
+			// Make sure we have the trailing slash
+			$value = trailingslashit( $value );
 
 			// Check that the server is available
 			try {
