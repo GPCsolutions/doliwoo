@@ -415,18 +415,4 @@ class Dolibarr {
 
 		return $attach_ids;
 	}
-
-	/**
-	 * Creates the missing thirdparties in Dolibarr via webservice using WooCommerce user data
-	 *
-	 * @fixme: use for future batch creation feature
-	 *
-	 * @return void
-	 */
-	public function dolibarr_create_multiple_thirdparties() {
-		$users = get_users( 'blog_id=' . $GLOBALS['blog_id'] );
-		foreach ( $users as $user ) {
-			$this->dolibarr_create_thirdparty_if_not_exists( $user->data->ID );
-		}
-	}
 }
