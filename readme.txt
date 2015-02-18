@@ -3,7 +3,7 @@ Contributors: GPC.solutions
 Donate Link: TODO (https://gpcsolutions.fr/donate)
 Tags: dolibarr, woocommerce, ecommerce, erp, integration
 Author URI: https://gpcsolutions.fr
-Plugin URI: TODO (https://gpcsolutions.fr/doliwoo)
+Plugin URI: https://gpcsolutions.github.io/doliwoo
 Requires at least: 3.7.1
 Tested up to: 3.7.1
 Stable tag: master
