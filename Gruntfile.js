@@ -104,18 +104,39 @@ module.exports = function (grunt) {
                     'README.md': 'readme.txt'
                 }
             }
+        },
+        checkwpversion: {
+            check: { //Check plug-in version and stable tag match
+                version1: 'plugin',
+                version2: 'readme',
+                compare: '>='
+            },
+            check2: { //Check plug-in version and package.json match
+                version1: 'plugin',
+                version2: '<%= pkg.version %>',
+                compare: '=='
+            }
         }
     });
 
     grunt.registerTask('default', [
-        'makepot',
+        'potupdate',
+        'checkwpversion',
         'wp_readme_to_markdown'
     ]);
 
-    grunt.registerTask('i18n', [
+    grunt.registerTask('potupdate', [
         'makepot',
         'exec:txpush',
+    ]);
+
+    grunt.registerTask('poupdate', [
         'exec:txpull',
+    ]);
+
+    grunt.registerTask('i18n', [
+        'potupdate',
+        'poupdate',
         'po2mo'
     ]);
 
