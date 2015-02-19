@@ -45,10 +45,9 @@ module.exports = function (grunt) {
             }
         },
         phpdocumentor: {
-            dist: {
-                options: {
-                    ignore: 'node_modules'
-                }
+            main: {
+                // TODO: ignore dev, node_modules, release and vendor directories.
+                // Needs https://github.com/gomoob/grunt-phpdocumentor/pull/10 merged
             }
         },
         clean: {
@@ -59,17 +58,23 @@ module.exports = function (grunt) {
             main: {
                 src: [
                     '**',
-                    '!node_modules/**',
-                    '!release/**',
-                    '!.git/**',
-                    '!Gruntfile.js',
-                    '!package.json',
-                    '!.gitignore',
-                    '!.gitmodules',
-                    '!README.md',
+                    '!assets/**',
+                    '!composer.json',
+                    '!composer.lock',
                     '!CONTRIBUTING.md',
                     '!docs/**',
-                    '!assets/**'
+                    '!.git/**',
+                    '!.gitignore',
+                    '!.gitmodules',
+                    '!Gruntfile.js',
+                    '!node_modules/**',
+                    '!package.json',
+                    '!README.md',
+                    '!release/**',
+                    '!.sensiolabs.yml',
+                    '!.travis.yml',
+                    '!.tx',
+                    '!vendor'
                 ],
                 dest: 'release/<%= pkg.version %>/'
             },
@@ -116,10 +121,28 @@ module.exports = function (grunt) {
                 version2: '<%= pkg.version %>',
                 compare: '=='
             }
+        },
+        "sync-json": {
+            options: {
+                indent: 2,
+                include: [
+                    'version',
+                    'description',
+                    'keywords',
+                    'homepage',
+                    'license',
+                ]
+            },
+            composer: {
+                files: {
+                    'composer.json': 'package.json'
+                }
+            }
         }
     });
 
     grunt.registerTask('default', [
+        'sync-json',
         'potupdate',
         'test',
         'wp_readme_to_markdown'
@@ -145,7 +168,7 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('docs', [
-        'phpdocumentor:dist'
+        'phpdocumentor'
     ]);
 
     grunt.registerTask('release', [

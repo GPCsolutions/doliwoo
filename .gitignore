@@ -44,3 +44,6 @@ docs/
 
 ### Compiled translations
 *.mo
+
+### CI target
+dev/

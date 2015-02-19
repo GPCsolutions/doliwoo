@@ -1,0 +1,47 @@
+{
+  "name": "gpcsolutions/doliwoo",
+  "description": "Integrate Dolibarr with a WooCommerce shop.",
+  "version": "0.0.2-alpha",
+  "type": "wordpress-plugin",
+  "keywords": [
+    "wordpress",
+    "dolibarr",
+    "woocommerce",
+    "ecommerce",
+    "erp",
+    "integration"
+  ],
+  "homepage": "https://gpcsolutions.github.io/doliwoo",
+  "license": "GPL-3.0+",
+  "authors": [
+    {
+      "name": "GPC.solutions",
+      "email": "contact@gpcsolutions.fr",
+      "homepage": "https://gpcsolutions.fr"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/GPCsolutions/doliwoo/issues",
+    "wiki": "https://github.com/GPCsolutions/doliwoo/wiki",
+    "source": "https://github.com/GPCsolutions/doliwoo"
+  },
+  "require": {
+    "composer/installers": ">=1.0.6",
+    "php": ">=5.3.0",
+    "ext-openssl": "*",
+    "wpackagist-plugin/woocommerce": ">=2.0.0"
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "http://wpackagist.org"
+    }
+  ],
+  "extra": {
+    "installer-paths": {
+      "dev/wordpress/wp-content/plugins/{$name}": [
+        "wpackagist-plugin/woocommerce"
+      ]
+    }
+  }
+}
