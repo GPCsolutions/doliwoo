@@ -1,6 +1,5 @@
 === DoliWoo ===
 Contributors: GPC.solutions
-Donate Link: TODO (https://gpcsolutions.fr/donate)
 Tags: dolibarr, woocommerce, ecommerce, erp, integration
 Author URI: https://gpcsolutions.fr
 Plugin URI: https://gpcsolutions.github.io/doliwoo
