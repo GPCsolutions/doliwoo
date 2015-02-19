@@ -91,10 +91,14 @@ You may allow insecure requests by tweaking the source code if you know what you
 
 = 0.0.1 =
 
-* TODO: Unreleased
+* First beta release
+* Periodically sync products from a Dolibarr category
+* Use a generic thirdparty for sales without user creation
+* Create or reuse a thirdparty for sales with a logged in user
+* Create an order into Dolibarr for each sale
 
 == Upgrade Notice ==
 
 = 0.0.1 =
 
-TODO: Unreleased
+N.A.
