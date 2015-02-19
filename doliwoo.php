@@ -193,7 +193,8 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				 */
 				public function get_settings() {
 					// Load settings
-					$this->settings = WC()->integrations->get_integrations()['doliwoo'];
+					$integrations = WC()->integrations->get_integrations();
+					$this->settings = $integrations['doliwoo'];
 					$this->ws_auth  = array(
 						'dolibarrkey'       => $this->settings->dolibarr_key,
 						'sourceapplication' => $this->settings->sourceapplication,
