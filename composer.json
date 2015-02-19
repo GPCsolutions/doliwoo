@@ -40,8 +40,7 @@
   ],
   "extra": {
     "installer-paths": {
-      "dev/wordpress": ["johnpbloch/wordpress"],
-      "dev/wordpress/wp-content/plugins/{$name}": [
+      "wordpress/wp-content/plugins/{$name}": [
         "wpackagist-plugin/woocommerce"
       ]
     }

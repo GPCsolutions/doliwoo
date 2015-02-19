@@ -46,4 +46,4 @@ docs/
 *.mo
 
 ### CI target
-dev/
+wordpress/

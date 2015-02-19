@@ -15,13 +15,13 @@ module.exports = function (grunt) {
                     '*.php',
                     '**/*.php',
                     '!node_modules/**/*.php',
-                    '!dev/**/*.php',
+                    '!wordpress/**/*.php',
                     '!vendor/**/*.php'
                 ], // Standard file match
                 files: '<%= paths.php.files_std %>', // Dynamic file match
                 exclude: [
                     'assets/.*',
-                    'dev/.*',
+                    'wordpress/.*',
                     'composer.json',
                     'composer.lock',
                     'CONTRIBUTING.md',
@@ -79,7 +79,7 @@ module.exports = function (grunt) {
                 src: [
                     '**',
                     '!assets/**',
-                    '!dev/**',
+                    '!wordpress/**',
                     '!composer.json',
                     '!composer.lock',
                     '!CONTRIBUTING.md',
