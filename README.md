@@ -19,14 +19,17 @@ It leverages Dolibarr webservices feature to exchange data.
 ### Features ###
 
 **Dolibarr to WooCommerce**
+
 * Periodic sync of products informations including images and stock informations
 * Link customers to existing thirdparties
 
 **WooCommerce to Dolibarr**
+
 * Create thirdparties
 * Create customer orders
 
 **Known missing (TODO)**
+
 * International VAT rates management
 * Products stock informations resync on orders
 * Invoicing
@@ -34,7 +37,8 @@ It leverages Dolibarr webservices feature to exchange data.
 * Multiple languages products management
 
 **Known issues**
-WooCommerce VAT management vastly differs from Dolibarr and we need equivalence tables.
+
+WooCommerce VAT management vastly differs from Dolibarr and we need equivalence tables.  
 Only French equivalence table is shipped at the moment.
 
 ### Requirements ###
@@ -67,21 +71,19 @@ Only French equivalence table is shipped at the moment.
 
 ### Is this plugin stable and useable in a production environment? ###
 
-NO! This is beta code. This project started as an internal proof of concept and has just been reviewed.
+NO! This is beta code. This project started as an internal proof of concept and has just been reviewed.  
 But you're very welcome to test it on a pre-production environment.
 
 ### OK, so how can I make it happen then? ###
 
-You can help by testing, providing detailed bug reports, documentation or even code.
+You can help by testing, providing detailed bug reports, documentation or even code.  
 **Alternatively, you can buy paid support and/or development services from us:** [GPC.solutions](https://gpcsolutions.fr).  
 
 ### Why do I need to use HTTPS with a good known SSL certificate? ###
 
-Otherwise SOAP requests will fail.
-
-This is a security feature to make sure your important data is properly encrypted in transit between WooCommerce and Dolibarr.
-
-You may allow insecure requests by tweaking the source code if you know what you're doing but we don't recommend that.
+Otherwise SOAP requests will fail.  
+This is a security feature to make sure your important data is properly encrypted in transit between WooCommerce and Dolibarr.  
+You may allow insecure requests by tweaking the source code if you know what you're doing but we don't recommend that.  
 
 ## Screenshots ##
 
