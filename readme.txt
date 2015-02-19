@@ -1,4 +1,4 @@
-=== Doliwoo ===
+=== DoliWoo ===
 Contributors: GPC.solutions
 Donate Link: TODO (https://gpcsolutions.fr/donate)
 Tags: dolibarr, woocommerce, ecommerce, erp, integration
