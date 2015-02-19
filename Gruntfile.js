@@ -97,12 +97,19 @@ module.exports = function (grunt) {
             txpull: {
                 cmd: 'tx pull -a'
             }
+        },
+        wp_readme_to_markdown: {
+            main: {
+                files: {
+                    'README.md': 'readme.txt'
+                }
+            }
         }
     });
 
     grunt.registerTask('default', [
         'makepot',
-        'copy:dist'
+        'wp_readme_to_markdown'
     ]);
 
     grunt.registerTask('i18n', [
