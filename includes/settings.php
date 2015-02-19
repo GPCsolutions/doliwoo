@@ -29,6 +29,33 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 	 * Doliwoo settings WooCommerce integration
 	 */
 	class WC_Integration_Doliwoo_Settings extends WC_Integration {
+		/** @var string The Dolibarr webservice URL */
+		public $webservs_url;
+
+		/** @var string WordPress pseudo cron update delay */
+		public $delay_update;
+
+		/** @var string The Dolibarr webservice key */
+		public $dolibarr_key;
+
+		/** @var string The application name declared when using the Dolibarr webservice */
+		public $sourceapplication;
+
+		/** @var string Username to connect to Dolibarr webservice */
+		public $dolibarr_login;
+
+		/** @var string Password to connect to Dolibarr webservice */
+		public $dolibarr_password;
+
+		/** @var string Dolibarr entity we want webservice responses from */
+		public $dolibarr_entity;
+
+		/** @var string ID of the Dolibarr category we sync products from */
+		public $dolibarr_category_id;
+
+		/** @var string ID of the Dolibarr thirdparty to use when we make a sale without a user logged in */
+		public $dolibarr_generic_id;
+
 		/**
 		 * Init and hook in the integration.
 		 */
