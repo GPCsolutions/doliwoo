@@ -1,10 +1,10 @@
 # Copyright (C) 2015 DoliWoo
-# This file is distributed under the same license as the Doliwoo package.
+# This file is distributed under the same license as the DoliWoo package.
 msgid ""
 msgstr ""
 "Project-Id-Version: DoliWoo 0.0.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/doliwoo\n"
-"POT-Creation-Date: 2015-02-18 16:23:59+00:00\n"
+"POT-Creation-Date: 2015-02-19 10:47:26+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -143,11 +143,11 @@ msgid "The webservice is not available. Please check the URL."
 msgstr ""
 
 #. Plugin Name of the plugin/theme
-msgid "Doliwoo"
+msgid "DoliWoo"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
-msgid "TODO (https://gpcsolutions.fr/doliwoo)"
+msgid "http://gpcsolutions.github.io/doliwoo"
 msgstr ""
 
 #. Description of the plugin/theme
