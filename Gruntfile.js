@@ -121,8 +121,12 @@ module.exports = function (grunt) {
 
     grunt.registerTask('default', [
         'potupdate',
-        'checkwpversion',
+        'test',
         'wp_readme_to_markdown'
+    ]);
+
+    grunt.registerTask('test', [
+        'checkwpversion',
     ]);
 
     grunt.registerTask('potupdate', [
