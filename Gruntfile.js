@@ -162,14 +162,14 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('default', [
-        'phplint',
-        'sync-json',
-        'potupdate',
         'test',
+        'potupdate',
+        'sync-json',
         'wp_readme_to_markdown'
     ]);
 
     grunt.registerTask('test', [
+        'phplint',
         'checkwpversion'
     ]);
 
