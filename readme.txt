@@ -1,13 +1,13 @@
 === DoliWoo ===
-Contributors: GPC.solutions
-Tags: dolibarr, woocommerce, ecommerce, erp, integration
-Author URI: https://gpcsolutions.fr
-Plugin URI: https://gpcsolutions.github.io/doliwoo
-Requires at least: 3.7.1
-Tested up to: 3.7.1
-Stable tag: master
-License: GPLv3
-License URI: http://www.gnu.org/licenses/gpl-3.0.html
+Contributors:       GPC.solutions
+Tags:               dolibarr, woocommerce, ecommerce, erp, integration
+Author URI:         https://gpcsolutions.fr
+Plugin URI:         https://gpcsolutions.github.io/doliwoo
+Requires at least:  3.7.1
+Tested up to:       3.7.1
+Stable tag:         master
+License:            GPL-3.0+
+License URI:        http://www.gnu.org/licenses/gpl-3.0.html
 
 Integrate Dolibarr with a WooCommerce shop.
 
@@ -57,10 +57,11 @@ Only French equivalence table is shipped at the moment.
     * Orders
 
 == Installation ==
-* Make sure the WooCommerce plugin is installed into your WordPress
-* Extract the zip file to the 'wp-content/plugins/' directory of your WordPress installation
-* Activate the plugin from 'Plugins' WordPress settings page
-* Go to 'WooCommerce' 'Settings' under the 'Integration' tab and configure the 'Doliwoo' section
+
+1. Make sure the WooCommerce plugin is installed into your WordPress
+2. Extract the zip file to the 'wp-content/plugins/' directory of your WordPress installation
+3. Activate the plugin from 'Plugins' WordPress settings page
+4. Go to 'WooCommerce' 'Settings' under the 'Integration' tab and configure the 'Doliwoo' section
 
 == Frequently Asked Questions ==
 
