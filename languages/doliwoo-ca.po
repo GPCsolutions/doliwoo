@@ -5,120 +5,124 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: DoliWoo\n"
-"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/doliwoo\n"
-"POT-Creation-Date: 2015-02-18 16:23:59+00:00\n"
+"Report-Msgid-Bugs-To: https://github.com/GPCsolutions/doliwoo/issues\n"
+"POT-Creation-Date: 2015-02-19 16:10:52+00:00\n"
 "PO-Revision-Date: 2015-02-19 11:44+0100\n"
 "Last-Translator: Bàrbara Partegàs <barbararof@gmail.com>\n"
 "Language-Team: Bàrbara Partegàs <barbararof@gmail.com>\n"
+"Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.7.4\n"
-"Language: ca\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#: doliwoo.php:51
+#: doliwoo.php:51 release/0.0.2-alpha/doliwoo.php:51
 msgid "This plugin needs SOAP and OpenSSL PHP extensions."
 msgstr "Aquest plugin necessita extensions SOAP i OpenSSL PHP."
 
-#: doliwoo.php:55
+#: doliwoo.php:55 release/0.0.2-alpha/doliwoo.php:55
 msgid "This plugin needs SOAP PHP extension."
 msgstr "Aquest plugin necessita l'extensió SOAP PHP."
 
-#: doliwoo.php:59
+#: doliwoo.php:59 release/0.0.2-alpha/doliwoo.php:59
 msgid "This plugin needs OpenSSL PHP extension."
 msgstr "Aquest plugin necessita l'extensió OpenSSL PHP."
 
-#: doliwoo.php:209
+#: doliwoo.php:209 release/0.0.2-alpha/doliwoo.php:209
 msgid "This extension needs WooCommerce"
 msgstr "Aquesta extensió necessita WooCommerce"
 
 #: includes/class-doliwoo-parameters.php:62
+#: release/0.0.2-alpha/includes/class-doliwoo-parameters.php:62
 msgid "Dolibarr"
 msgstr "Dolibarr"
 
 #: includes/class-doliwoo-parameters.php:65
 #: includes/class-doliwoo-parameters.php:128
+#: release/0.0.2-alpha/includes/class-doliwoo-parameters.php:65
+#: release/0.0.2-alpha/includes/class-doliwoo-parameters.php:128
 msgid "Dolibarr User ID"
 msgstr "ID de l'usuari Dolibarr"
 
 #: includes/class-tax-doliwoo.php:63
+#: release/0.0.2-alpha/includes/class-tax-doliwoo.php:63
 msgid "VAT"
 msgstr "IVA"
 
-#: includes/settings.php:37
+#: includes/settings.php:37 release/0.0.2-alpha/includes/settings.php:37
 msgid "DoliWoo Settings"
 msgstr "Paràmetres de DoliWoo"
 
-#: includes/settings.php:38
+#: includes/settings.php:38 release/0.0.2-alpha/includes/settings.php:38
 msgid "Dolibarr webservices access"
 msgstr "Accés webservice de Dolibarr"
 
-#: includes/settings.php:75
+#: includes/settings.php:75 release/0.0.2-alpha/includes/settings.php:75
 msgid "Source application"
 msgstr "Aplicació font"
 
-#: includes/settings.php:76
+#: includes/settings.php:76 release/0.0.2-alpha/includes/settings.php:76
 msgid "How this application will identify itself to the webservice."
 msgstr "Com s'identificarà aquesta aplicació al webservice."
 
-#: includes/settings.php:82
+#: includes/settings.php:82 release/0.0.2-alpha/includes/settings.php:82
 msgid "URL"
 msgstr "URL"
 
-#: includes/settings.php:83
+#: includes/settings.php:83 release/0.0.2-alpha/includes/settings.php:83
 msgid ""
 "Enter Dolibarr webservices root URL (i.e. https://mydolibarr.com/webservices)"
 msgstr ""
 "Entra la URL arrel del webservice de Dolibarr (i.e. https://mydolibarr.com/"
 "webservices)"
 
-#: includes/settings.php:90
+#: includes/settings.php:90 release/0.0.2-alpha/includes/settings.php:90
 msgid "Delay"
 msgstr "Retard"
 
-#: includes/settings.php:91
+#: includes/settings.php:91 release/0.0.2-alpha/includes/settings.php:91
 msgid "Choose the automatic update frequency"
 msgstr "Escull la freqüència de l'actualització automàtica"
 
-#: includes/settings.php:95
+#: includes/settings.php:95 release/0.0.2-alpha/includes/settings.php:95
 msgid "Once Hourly"
 msgstr "Un cop cada hora"
 
-#: includes/settings.php:96
+#: includes/settings.php:96 release/0.0.2-alpha/includes/settings.php:96
 msgid "Twice Daily"
 msgstr "Dos cops al dia"
 
-#: includes/settings.php:97
+#: includes/settings.php:97 release/0.0.2-alpha/includes/settings.php:97
 msgid "Once Daily"
 msgstr "Un cop al dia"
 
-#: includes/settings.php:101
+#: includes/settings.php:101 release/0.0.2-alpha/includes/settings.php:101
 msgid "Key"
 msgstr "Clau"
 
-#: includes/settings.php:102
+#: includes/settings.php:102 release/0.0.2-alpha/includes/settings.php:102
 msgid "Enter your Dolibarr webservices key"
 msgstr "Entra la teva clau del webservice de Dolibarr"
 
-#: includes/settings.php:108
+#: includes/settings.php:108 release/0.0.2-alpha/includes/settings.php:108
 msgid "User login"
 msgstr "Usuari d'inici de sessió"
 
-#: includes/settings.php:109
+#: includes/settings.php:109 release/0.0.2-alpha/includes/settings.php:109
 msgid "Dolibarr actions will be done as this user"
 msgstr "Les accions de Dolibarr es duran a terme amb aquest usuari"
 
-#: includes/settings.php:115
+#: includes/settings.php:115 release/0.0.2-alpha/includes/settings.php:115
 msgid "User password"
 msgstr "Paraula de pas de l'usuari"
 
-#: includes/settings.php:121
+#: includes/settings.php:121 release/0.0.2-alpha/includes/settings.php:121
 msgid "Entity"
 msgstr "Entitat (empresa)"
 
-#: includes/settings.php:122
+#: includes/settings.php:122 release/0.0.2-alpha/includes/settings.php:122
 msgid ""
 "If you're using multicompany, the ID of the entity you want to integrate. "
 "Leave to 1 otherwise."
@@ -126,11 +130,11 @@ msgstr ""
 "Si utilitzes multiempresa, l'ID de l'entitat (empresa) que vols integrar. "
 "Déixa-ho amb 1 si no és així."
 
-#: includes/settings.php:128
+#: includes/settings.php:128 release/0.0.2-alpha/includes/settings.php:128
 msgid "Product category"
 msgstr "Categoria del producte"
 
-#: includes/settings.php:129
+#: includes/settings.php:129 release/0.0.2-alpha/includes/settings.php:129
 msgid ""
 "The ID of the product category you want to automatically import products "
 "from."
@@ -138,29 +142,31 @@ msgstr ""
 "La ID de la categoria de producte de la que vols importar productes "
 "automàticament."
 
-#: includes/settings.php:135
+#: includes/settings.php:135 release/0.0.2-alpha/includes/settings.php:135
 msgid "Generic thirdparty"
 msgstr "Tercer per defecte"
 
-#: includes/settings.php:136
+#: includes/settings.php:136 release/0.0.2-alpha/includes/settings.php:136
 msgid "The ID of the thirdparty that'll be used for anonymous orders."
 msgstr ""
 "La ID del tercer per defecte que serà utilitzat en les comandes anònimes."
 
-#: includes/settings.php:156
+#: includes/settings.php:156 release/0.0.2-alpha/includes/settings.php:156
 msgid "The protocol to use is https://"
 msgstr "El protocol per utilitzar és https://"
 
-#: includes/settings.php:166
+#: includes/settings.php:166 release/0.0.2-alpha/includes/settings.php:166
 msgid "The webservice is not available. Please check the URL."
 msgstr "El servei webservice no està disponible. Siusplau, comprova la URL."
 
 #. Plugin Name of the plugin/theme
-msgid "Doliwoo"
+#, fuzzy
+msgid "DoliWoo"
 msgstr "Doliwoo"
 
 #. Plugin URI of the plugin/theme
-msgid "TODO (https://gpcsolutions.fr/doliwoo)"
+#, fuzzy
+msgid "http://gpcsolutions.github.io/doliwoo"
 msgstr "TODO (https://gpcsolutions.fr/doliwoo)"
 
 #. Description of the plugin/theme
