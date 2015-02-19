@@ -11,8 +11,33 @@ module.exports = function (grunt) {
         paths: {
             // PHP assets
             php: {
-                files_std: ['*.php', '**/*.php', '!node_modules/**/*.php'], // Standard file match
-                files: '<%= paths.php.files_std %>' // Dynamic file match
+                files_std: [
+                    '*.php',
+                    '**/*.php',
+                    '!node_modules/**/*.php',
+                    '!dev/**/*.php',
+                    '!vendor/**/*.php'
+                ], // Standard file match
+                files: '<%= paths.php.files_std %>', // Dynamic file match
+                exclude: [
+                    'assets/.*',
+                    'dev/.*',
+                    'composer.json',
+                    'composer.lock',
+                    'CONTRIBUTING.md',
+                    '.git/.*',
+                    '.gitignore',
+                    '.gitmodules',
+                    'Gruntfile.js',
+                    'node_modules/.*',
+                    'package.json',
+                    'README.md',
+                    'release/.*',
+                    '.sensiolabs.yml',
+                    '.travis.yml',
+                    '.tx',
+                    'vendor/.*'
+                ] // PHP regex match
             }
         },
         phplint: {
@@ -29,6 +54,7 @@ module.exports = function (grunt) {
             target: {
                 options: {
                     mainFile: 'doliwoo.php',
+                    exclude: '<%= paths.php.exclude %>',
                     type: 'wp-plugin',
                     potHeaders: {
                         poedit: true,
@@ -44,12 +70,6 @@ module.exports = function (grunt) {
                 expand: true
             }
         },
-        phpdocumentor: {
-            main: {
-                // TODO: ignore dev, node_modules, release and vendor directories.
-                // Needs https://github.com/gomoob/grunt-phpdocumentor/pull/10 merged
-            }
-        },
         clean: {
             main: ['release/<%= pkg.version %>']
         },
@@ -59,10 +79,10 @@ module.exports = function (grunt) {
                 src: [
                     '**',
                     '!assets/**',
+                    '!dev/**',
                     '!composer.json',
                     '!composer.lock',
                     '!CONTRIBUTING.md',
-                    '!docs/**',
                     '!.git/**',
                     '!.gitignore',
                     '!.gitmodules',
@@ -74,7 +94,7 @@ module.exports = function (grunt) {
                     '!.sensiolabs.yml',
                     '!.travis.yml',
                     '!.tx',
-                    '!vendor'
+                    '!vendor/**'
                 ],
                 dest: 'release/<%= pkg.version %>/'
             },
@@ -130,7 +150,7 @@ module.exports = function (grunt) {
                     'description',
                     'keywords',
                     'homepage',
-                    'license',
+                    'license'
                 ]
             },
             composer: {
@@ -142,6 +162,7 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('default', [
+        'phplint',
         'sync-json',
         'potupdate',
         'test',
@@ -149,16 +170,16 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('test', [
-        'checkwpversion',
+        'checkwpversion'
     ]);
 
     grunt.registerTask('potupdate', [
         'makepot',
-        'exec:txpush',
+        'exec:txpush'
     ]);
 
     grunt.registerTask('poupdate', [
-        'exec:txpull',
+        'exec:txpull'
     ]);
 
     grunt.registerTask('i18n', [
@@ -167,14 +188,9 @@ module.exports = function (grunt) {
         'po2mo'
     ]);
 
-    grunt.registerTask('docs', [
-        'phpdocumentor'
-    ]);
-
     grunt.registerTask('release', [
         'default',
         'i18n',
-        'docs',
         'clean',
         'copy',
         'compress'
