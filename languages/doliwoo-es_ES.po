@@ -1,0 +1,169 @@
+# Copyright (C) 2015 DoliWoo
+# This file is distributed under the same license as the Doliwoo package.
+msgid ""
+msgstr ""
+"Project-Id-Version: DoliWoo 0.0.1\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/doliwoo\n"
+"POT-Creation-Date: 2015-02-18 16:23:59+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2015-02-19 11:44+0100\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Last-Translator: Raphaël Doursenaud <rdoursenaud@gpcsolutions.fr>\n"
+"Language-Team: Bàrbara Partegàs <barbararof@gmail.com>\n"
+"Language: es_ES\n"
+"X-Generator: Poedit 1.7.4\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: doliwoo.php:51
+msgid "This plugin needs SOAP and OpenSSL PHP extensions."
+msgstr "Este plugin necesita extensiones PHP OpenSSL y SOAP."
+
+#: doliwoo.php:55
+msgid "This plugin needs SOAP PHP extension."
+msgstr "Este plugin necesita extensión SOAP PHP."
+
+#: doliwoo.php:59
+msgid "This plugin needs OpenSSL PHP extension."
+msgstr "Este plugin necesita extensión OpenSSL PHP."
+
+#: doliwoo.php:209
+msgid "This extension needs WooCommerce"
+msgstr "Esta extensión necesita WooCommerce"
+
+#: includes/class-doliwoo-parameters.php:62
+msgid "Dolibarr"
+msgstr "Dolibarr"
+
+#: includes/class-doliwoo-parameters.php:65
+#: includes/class-doliwoo-parameters.php:128
+msgid "Dolibarr User ID"
+msgstr "ID de usuario Dolibarr"
+
+#: includes/class-tax-doliwoo.php:63
+msgid "VAT"
+msgstr "IVA"
+
+#: includes/settings.php:37
+msgid "DoliWoo Settings"
+msgstr "Configuración de DoliWoo"
+
+#: includes/settings.php:38
+msgid "Dolibarr webservices access"
+msgstr "Acceso a webservices Dolibarr"
+
+#: includes/settings.php:75
+msgid "Source application"
+msgstr "Aplicación fuente"
+
+#: includes/settings.php:76
+msgid "How this application will identify itself to the webservice."
+msgstr "Cómo se identificará esta aplicación al webservice."
+
+#: includes/settings.php:82
+msgid "URL"
+msgstr "URL"
+
+#: includes/settings.php:83
+msgid ""
+"Enter Dolibarr webservices root URL (i.e. https://mydolibarr.com/webservices)"
+msgstr ""
+"Entra la URL raíz del webservice de Dolibarr  (ej.: https://mydolibarr.com/"
+"webservices)"
+
+#: includes/settings.php:90
+msgid "Delay"
+msgstr "Retraso"
+
+#: includes/settings.php:91
+msgid "Choose the automatic update frequency"
+msgstr "Escoje la frecuencia de actualización automática"
+
+#: includes/settings.php:95
+msgid "Once Hourly"
+msgstr "Una vez cada hora"
+
+#: includes/settings.php:96
+msgid "Twice Daily"
+msgstr "Dos veces al día"
+
+#: includes/settings.php:97
+msgid "Once Daily"
+msgstr "Una vez al día"
+
+#: includes/settings.php:101
+msgid "Key"
+msgstr "Llave"
+
+#: includes/settings.php:102
+msgid "Enter your Dolibarr webservices key"
+msgstr "Entra la llave del webservice de Dolibarr"
+
+#: includes/settings.php:108
+msgid "User login"
+msgstr "Inicio de sesión de usuario"
+
+#: includes/settings.php:109
+msgid "Dolibarr actions will be done as this user"
+msgstr "Las acciones de Dolibarr ser harán con este usuario"
+
+#: includes/settings.php:115
+msgid "User password"
+msgstr "Contraseña de usuario"
+
+#: includes/settings.php:121
+msgid "Entity"
+msgstr "Entidad (empresa)"
+
+#: includes/settings.php:122
+msgid ""
+"If you're using multicompany, the ID of the entity you want to integrate. "
+"Leave to 1 otherwise."
+msgstr ""
+"Si estás usando multiempresa, el ID de la entidad que quieres integrar. "
+"Déjalo en 1 si no es así."
+
+#: includes/settings.php:128
+msgid "Product category"
+msgstr "Categoría de producto"
+
+#: includes/settings.php:129
+msgid ""
+"The ID of the product category you want to automatically import products "
+"from."
+msgstr ""
+"El ID de la categoría de producto de la que quieres importar productos."
+
+#: includes/settings.php:135
+msgid "Generic thirdparty"
+msgstr "Tercero por defecto"
+
+#: includes/settings.php:136
+msgid "The ID of the thirdparty that'll be used for anonymous orders."
+msgstr "El ID del tercero que será usado para los pedidos anónimos."
+
+#: includes/settings.php:156
+msgid "The protocol to use is https://"
+msgstr "El protocolo a usar es https://"
+
+#: includes/settings.php:166
+msgid "The webservice is not available. Please check the URL."
+msgstr ""
+"El servicio webservice no está disponible. Por favor, comprueba la URL."
+
+#. Plugin Name of the plugin/theme
+msgid "Doliwoo"
+msgstr "DoliWoo"
+
+#. Plugin URI of the plugin/theme
+msgid "TODO (https://gpcsolutions.fr/doliwoo)"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Dolibarr WooCommerce integration"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "GPC.solutions"
+msgstr "GPC.solutions"
