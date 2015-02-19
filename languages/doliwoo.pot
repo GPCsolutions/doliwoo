@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DoliWoo 0.0.2-alpha\n"
 "Report-Msgid-Bugs-To: https://github.com/GPCsolutions/doliwoo/issues\n"
-"POT-Creation-Date: 2015-02-19 18:38:04+00:00\n"
+"POT-Creation-Date: 2015-02-19 22:22:12+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,138 +24,134 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: doliwoo.php:51 release/0.0.2-alpha/doliwoo.php:51
+#: doliwoo.php:51
 msgid "This plugin needs SOAP and OpenSSL PHP extensions."
 msgstr ""
 
-#: doliwoo.php:55 release/0.0.2-alpha/doliwoo.php:55
+#: doliwoo.php:55
 msgid "This plugin needs SOAP PHP extension."
 msgstr ""
 
-#: doliwoo.php:59 release/0.0.2-alpha/doliwoo.php:59
+#: doliwoo.php:59
 msgid "This plugin needs OpenSSL PHP extension."
 msgstr ""
 
-#: doliwoo.php:209 release/0.0.2-alpha/doliwoo.php:209
+#: doliwoo.php:209
 msgid "This extension needs WooCommerce"
 msgstr ""
 
 #: includes/class-doliwoo-parameters.php:62
-#: release/0.0.2-alpha/includes/class-doliwoo-parameters.php:62
 msgid "Dolibarr"
 msgstr ""
 
 #: includes/class-doliwoo-parameters.php:65
 #: includes/class-doliwoo-parameters.php:128
-#: release/0.0.2-alpha/includes/class-doliwoo-parameters.php:65
-#: release/0.0.2-alpha/includes/class-doliwoo-parameters.php:128
 msgid "Dolibarr User ID"
 msgstr ""
 
 #: includes/class-tax-doliwoo.php:63
-#: release/0.0.2-alpha/includes/class-tax-doliwoo.php:63
 msgid "VAT"
 msgstr ""
 
-#: includes/settings.php:37 release/0.0.2-alpha/includes/settings.php:37
+#: includes/settings.php:64
 msgid "DoliWoo Settings"
 msgstr ""
 
-#: includes/settings.php:38 release/0.0.2-alpha/includes/settings.php:38
+#: includes/settings.php:65
 msgid "Dolibarr webservices access"
 msgstr ""
 
-#: includes/settings.php:75 release/0.0.2-alpha/includes/settings.php:75
+#: includes/settings.php:102
 msgid "Source application"
 msgstr ""
 
-#: includes/settings.php:76 release/0.0.2-alpha/includes/settings.php:76
+#: includes/settings.php:103
 msgid "How this application will identify itself to the webservice."
 msgstr ""
 
-#: includes/settings.php:82 release/0.0.2-alpha/includes/settings.php:82
+#: includes/settings.php:109
 msgid "URL"
 msgstr ""
 
-#: includes/settings.php:83 release/0.0.2-alpha/includes/settings.php:83
+#: includes/settings.php:110
 msgid ""
 "Enter Dolibarr webservices root URL (i.e. "
 "https://mydolibarr.com/webservices)"
 msgstr ""
 
-#: includes/settings.php:90 release/0.0.2-alpha/includes/settings.php:90
+#: includes/settings.php:117
 msgid "Delay"
 msgstr ""
 
-#: includes/settings.php:91 release/0.0.2-alpha/includes/settings.php:91
+#: includes/settings.php:118
 msgid "Choose the automatic update frequency"
 msgstr ""
 
-#: includes/settings.php:95 release/0.0.2-alpha/includes/settings.php:95
+#: includes/settings.php:122
 msgid "Once Hourly"
 msgstr ""
 
-#: includes/settings.php:96 release/0.0.2-alpha/includes/settings.php:96
+#: includes/settings.php:123
 msgid "Twice Daily"
 msgstr ""
 
-#: includes/settings.php:97 release/0.0.2-alpha/includes/settings.php:97
+#: includes/settings.php:124
 msgid "Once Daily"
 msgstr ""
 
-#: includes/settings.php:101 release/0.0.2-alpha/includes/settings.php:101
+#: includes/settings.php:128
 msgid "Key"
 msgstr ""
 
-#: includes/settings.php:102 release/0.0.2-alpha/includes/settings.php:102
+#: includes/settings.php:129
 msgid "Enter your Dolibarr webservices key"
 msgstr ""
 
-#: includes/settings.php:108 release/0.0.2-alpha/includes/settings.php:108
+#: includes/settings.php:135
 msgid "User login"
 msgstr ""
 
-#: includes/settings.php:109 release/0.0.2-alpha/includes/settings.php:109
+#: includes/settings.php:136
 msgid "Dolibarr actions will be done as this user"
 msgstr ""
 
-#: includes/settings.php:115 release/0.0.2-alpha/includes/settings.php:115
+#: includes/settings.php:142
 msgid "User password"
 msgstr ""
 
-#: includes/settings.php:121 release/0.0.2-alpha/includes/settings.php:121
+#: includes/settings.php:148
 msgid "Entity"
 msgstr ""
 
-#: includes/settings.php:122 release/0.0.2-alpha/includes/settings.php:122
+#: includes/settings.php:149
 msgid ""
 "If you're using multicompany, the ID of the entity you want to integrate. "
 "Leave to 1 otherwise."
 msgstr ""
 
-#: includes/settings.php:128 release/0.0.2-alpha/includes/settings.php:128
+#: includes/settings.php:155
 msgid "Product category"
 msgstr ""
 
-#: includes/settings.php:129 release/0.0.2-alpha/includes/settings.php:129
+#: includes/settings.php:156
 msgid ""
 "The ID of the product category you want to automatically import products "
 "from."
 msgstr ""
 
-#: includes/settings.php:135 release/0.0.2-alpha/includes/settings.php:135
+#: includes/settings.php:162
 msgid "Generic thirdparty"
 msgstr ""
 
-#: includes/settings.php:136 release/0.0.2-alpha/includes/settings.php:136
+#: includes/settings.php:163
 msgid "The ID of the thirdparty that'll be used for anonymous orders."
 msgstr ""
 
-#: includes/settings.php:156 release/0.0.2-alpha/includes/settings.php:156
+#: includes/settings.php:183
 msgid "The protocol to use is https://"
 msgstr ""
 
-#: includes/settings.php:166 release/0.0.2-alpha/includes/settings.php:166
+#: includes/settings.php:193
 msgid "The webservice is not available. Please check the URL."
 msgstr ""
 
