@@ -254,14 +254,11 @@ class Dolibarr {
 			$line->vat_rate = array_values( $rates )[0]['rate'];
 
 			$line->qty       = $product['quantity'];
-			$line->price     = $woocommerce_product->get_price();
-			$line->unitprice = $woocommerce_product->get_price();
-			$line->total_net
-			                 = $woocommerce_product->get_price_excluding_tax( $line->qty );
-			$line->total
-			                 = $woocommerce_product->get_price_including_tax( $line->qty );
-			$line->total_vat
-			                 = $line->total - $line->total_net;
+			$line->price     = floatval( $woocommerce_product->get_price() );
+			$line->unitprice = floatval( $woocommerce_product->get_price() );
+			$line->total_net = floatval( $woocommerce_product->get_price_excluding_tax( $line->qty ) );
+			$line->total     = floatval( $woocommerce_product->get_price_including_tax( $line->qty ) );
+			$line->total_vat = $line->total - $line->total_net;
 			$order->lines[]  = $line;
 		}
 	}
