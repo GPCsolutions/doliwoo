@@ -43,7 +43,8 @@ class WC_Tax_Doliwoo extends WC_Tax {
 
 		foreach ( $tax_classes as $class ) {
 			$rates = $this->get_rates( $class );
-			if ( array_values( $rates )[0]['rate'] == $tax_rate ) {
+			$rates_values = array_values( $rates );
+			if ( $rates_values[0]['rate'] == $tax_rate ) {
 				// Use the first class found
 				return $class;
 			}
