@@ -250,8 +250,9 @@ class Dolibarr {
 				'dolibarr_id', 1 );
 
 			$rates = $this->taxes->get_rates( $woocommerce_product->get_tax_class() );
+			$rates = array_values( $rates );
 			// We get the first one
-			$line->vat_rate = array_values( $rates )[0]['rate'];
+			$line->vat_rate = $rates[0]['rate'];
 
 			$line->qty       = $product['quantity'];
 			$line->price     = floatval( $woocommerce_product->get_price() );
