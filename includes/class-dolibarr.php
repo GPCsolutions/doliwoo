@@ -138,7 +138,7 @@ class Dolibarr {
 	 *
 	 * @param int $user_id wordpress ID of an user
 	 *
-	 * @return mixed $result  array with the request results if it succeeds, null if there's an error
+	 * @return int $result  array with the request results if it succeeds, null if there's an error
 	 */
 	private function dolibarr_thirdparty_exists( $user_id ) {
 		$this->Doliwoo = new Doliwoo();
@@ -172,7 +172,7 @@ class Dolibarr {
 	 *
 	 * @param int $user_id a Wordpress user id
 	 *
-	 * @return mixed $result    the SOAP response
+	 * @return int $result    the SOAP response
 	 */
 	public function dolibarr_create_thirdparty( $user_id ) {
 		$this->Doliwoo = new Doliwoo();
