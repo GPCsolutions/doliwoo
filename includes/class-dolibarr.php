@@ -83,7 +83,7 @@ class Dolibarr {
 				true );
 		}
 		if ( '' != $thirdparty_id ) {
-			$order->thirdparty_id = $thirdparty_id;
+			$order->thirdparty_id = intval( $thirdparty_id );
 		} else {
 			if ( get_user_meta( $user_id, 'billing_company', true )
 			     == ''
@@ -92,8 +92,7 @@ class Dolibarr {
 					$_POST['billing_company'] );
 			}
 			$this->dolibarr_create_thirdparty_if_not_exists( $user_id );
-			$order->thirdparty_id = get_user_meta( $user_id,
-				'dolibarr_id', true );
+			$order->thirdparty_id = intval( get_user_meta( $user_id, 'dolibarr_id', true ) );
 		}
 		$order->date   = date( 'Ymd' );
 		$order->status = 1;
@@ -200,7 +199,7 @@ class Dolibarr {
 
 		$new_thirdparty = new DolibarrThirdparty();
 
-		$new_thirdparty->ref      = $ref;
+		$new_thirdparty->ref      = intval( $ref );
 		$new_thirdparty->status   = '1';
 		$new_thirdparty->client   = '1';
 		$new_thirdparty->supplier = '0';
