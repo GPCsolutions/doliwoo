@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DoliWoo 0.0.1\n"
 "Report-Msgid-Bugs-To: https://github.com/GPCsolutions/doliwoo/issues\n"
-"POT-Creation-Date: 2015-02-19 22:22:12+00:00\n"
+"POT-Creation-Date: 2015-02-24 17:21:51+00:00\n"
 "PO-Revision-Date: 2015-02-19 11:44+0100\n"
 "Last-Translator: Raphaël Doursenaud <rdoursenaud@gpcsolutions.fr>\n"
 "Language-Team: Bàrbara Partegàs <barbararof@gmail.com>\n"
@@ -28,7 +28,7 @@ msgstr "Este plugin necesita extensión SOAP PHP."
 msgid "This plugin needs OpenSSL PHP extension."
 msgstr "Este plugin necesita extensión OpenSSL PHP."
 
-#: doliwoo.php:209
+#: doliwoo.php:210
 msgid "This extension needs WooCommerce"
 msgstr "Esta extensión necesita WooCommerce"
 
@@ -41,7 +41,7 @@ msgstr "Dolibarr"
 msgid "Dolibarr User ID"
 msgstr "ID de usuario Dolibarr"
 
-#: includes/class-tax-doliwoo.php:63
+#: includes/class-tax-doliwoo.php:64
 msgid "VAT"
 msgstr "IVA"
 
