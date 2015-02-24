@@ -68,8 +68,7 @@ module.exports = function (grunt) {
                     potHeaders: {
                         poedit: true,
                         'report-msgid-bugs-to': 'https://github.com/GPCsolutions/doliwoo/issues'
-                    },
-                    updatePoFiles: true
+                    }
                 }
             }
         },
