@@ -1,5 +1,5 @@
-# Copyright (C) 2015 Doliwoo
-# This file is distributed under the same license as the Doliwoo package.
+# Copyright (C) 2015 GPC.solutions
+# This file is distributed under the GPL-3.0+.
 # Translators:
 # Raphaël Doursenaud <rdoursenaud@gpcsolutions.fr>, 2015
 msgid ""
@@ -7,29 +7,34 @@ msgstr ""
 "Project-Id-Version: DoliWoo\n"
 "Report-Msgid-Bugs-To: https://github.com/GPCsolutions/doliwoo/issues\n"
 "POT-Creation-Date: 2015-02-24 19:47:16+00:00\n"
-"PO-Revision-Date: 2015-02-18 18:45+0100\n"
+"PO-Revision-Date: 2015-02-24 19:50+0000\n"
 "Last-Translator: Raphaël Doursenaud <rdoursenaud@gpcsolutions.fr>\n"
-"Language-Team: French (France) (http://www.transifex.com/projects/p/doliwoo/"
-"language/fr_FR/)\n"
-"Language: fr_FR\n"
+"Language-Team: French (France) (http://www.transifex.com/projects/p/doliwoo/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.7.4\n"
+"X-Generator: grunt-wp-i18n 0.5.0\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-Country: United States\n"
+"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Textdomain-Support: yes\n"
 
 #: includes/class-doliwoo-parameters.php:62
 msgid "Dolibarr"
 msgstr "Dolibarr"
 
 #: includes/class-doliwoo-parameters.php:65
-#, fuzzy
 msgid "User ID"
-msgstr "Identifiant Utilisateur Dolibarr"
+msgstr "Identifiant utilisateur"
 
 #: includes/class-doliwoo-parameters.php:66
 msgid "The Dolibarr ID for this user"
-msgstr ""
+msgstr "L'identifiant Dolibarr pour cet utilisateur"
 
 #: includes/class-doliwoo-parameters.php:134
 msgid "Dolibarr User ID"
@@ -61,10 +66,9 @@ msgstr "URL"
 
 #: includes/settings.php:112
 msgid ""
-"Enter Dolibarr webservices root URL (i.e. https://mydolibarr.com/webservices)"
-msgstr ""
-"Entrez l'URL racine des webservices de Dolibarr (i.e. https://mydolibarr.com/"
-"webservices)"
+"Enter Dolibarr webservices root URL (i.e. "
+"https://mydolibarr.com/webservices)"
+msgstr "Entrez l'URL racine des webservices de Dolibarr (i.e. https://mydolibarr.com/webservices)"
 
 #: includes/settings.php:121
 msgid "Delay"
@@ -114,9 +118,7 @@ msgstr "Entité"
 msgid ""
 "If you're using multicompany, the ID of the entity you want to integrate. "
 "Leave to 1 otherwise."
-msgstr ""
-"Si vous utilisez multi-société, l'ID de l'entité que vous souhaitez "
-"intégrer. Sinon laissez à 1."
+msgstr "Si vous utilisez multi-société, l'ID de l'entité que vous souhaitez intégrer. Sinon laissez à 1."
 
 #: includes/settings.php:160
 msgid "Product category"
@@ -126,8 +128,7 @@ msgstr "Catégorie du Produit"
 msgid ""
 "The ID of the product category you want to automatically import products "
 "from."
-msgstr ""
-"L'ID de la catégorie de produits que vous souhaitez importer automatiquement."
+msgstr "L'ID de la catégorie de produits que vous souhaitez importer automatiquement."
 
 #: includes/settings.php:167
 msgid "Generic thirdparty"
@@ -146,14 +147,12 @@ msgid "The webservice is not available. Please check the URL."
 msgstr "Le webservice n'est pas disponible. Merci de vérifier l'URL."
 
 #. Plugin Name of the plugin/theme
-#, fuzzy
 msgid "DoliWoo"
 msgstr "DoliWoo"
 
 #. Plugin URI of the plugin/theme
-#, fuzzy
 msgid "http://gpcsolutions.github.io/doliwoo"
-msgstr "https://gpcsolutions.fr/doliwoo"
+msgstr "http://gpcsolutions.github.io/doliwoo"
 
 #. Description of the plugin/theme
 msgid "Dolibarr WooCommerce integration"
@@ -162,15 +161,3 @@ msgstr "Intégration Dolibarr WooCommerc"
 #. Author of the plugin/theme
 msgid "GPC.solutions"
 msgstr "GPC.solutions"
-
-#~ msgid "This plugin needs SOAP and OpenSSL PHP extensions."
-#~ msgstr "Cette extension nécessite les extensions PHP SOAP et OpenSSL."
-
-#~ msgid "This plugin needs SOAP PHP extension."
-#~ msgstr "Cette extension nécessite l'extension PHP SOAP."
-
-#~ msgid "This plugin needs OpenSSL PHP extension."
-#~ msgstr "Cette extension nécessite l'extension PHP OpenSSL."
-
-#~ msgid "This extension needs WooCommerce"
-#~ msgstr "Cette extension nécessite WooCommerce"
