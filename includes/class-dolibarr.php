@@ -251,6 +251,8 @@ class Dolibarr {
 		$this->Doliwoo = new Doliwoo();
 		$this->Doliwoo->get_settings();
 
+		// FIXME: protect executions if settings are not yet completed
+
 		// Set the WebService URL
 		try {
 			$soap_client = new SoapClient(
@@ -400,7 +402,7 @@ class Dolibarr {
 				$res = media_handle_sideload( $file_array, $post_id );
 
 				// Handle errors nicely ( logging )
-				if ( true === is_wp_error( $res ) ) {
+				if ( is_wp_error( $res ) ) {
 					$message = $res->get_error_message();
 					$this->logger->add( 'doliwoo', $message );
 				} else {

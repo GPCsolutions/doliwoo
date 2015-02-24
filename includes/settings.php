@@ -127,6 +127,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 						'twicedaily' => __( 'Twice Daily' ),
 						'daily'      => __( 'Once Daily' ),
 					),
+					'default'     => 'daily',
 				),
 				'dolibarr_key'         => array(
 					'title'       => __( 'Key', 'doliwoo' ),

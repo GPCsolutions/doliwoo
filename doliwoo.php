@@ -105,6 +105,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 					// Initialize plugin settings
 					add_action( 'plugins_loaded', array( $this, 'init' ) );
 
+					// Setup logger
 					add_action( 'woocommerce_loaded', array( &$this->dolibarr, 'set_woocommerce' ) );
 
 					// Create custom tax classes and VAT rates on plugin settings saved
@@ -113,17 +114,19 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 					// Import Dolibarr products on plugin settings saved
 					add_action( 'woocommerce_settings_saved', array( &$this->dolibarr, 'dolibarr_import_products' ) );
 
-					// Hook on woocommerce_checkout_process to create a Dolibarr order using WooCommerce order data
+					// Reschedule products imporrt
+					add_action( 'woocommerce_settings_saved', array( $this, 'reschedule_import_products' ) );
+
+					// Create a Dolibarr order on each WooCommerce order
 					add_action(
 						'woocommerce_checkout_order_processed',
 						array( &$this->dolibarr, 'dolibarr_create_order' )
 					);
 
-					// Schedule the import of product data from Dolibarr
-					add_action( 'wp', array( &$this, 'schedule_import_products' ) );
+					// Add Dolibarr import products hook
 					add_action( 'import_products', array( &$this->dolibarr, 'dolibarr_import_products' ) );
 
-					// Dolibarr ID custom field
+					// Dolibarr ID User admin custom meta
 					add_filter( 'manage_users_columns', array( &$this->woocommerce_parameters, 'user_columns' ) );
 					add_action( 'show_user_profile', array( &$this->woocommerce_parameters, 'customer_meta_fields' ) );
 					add_action( 'edit_user_profile', array( &$this->woocommerce_parameters, 'customer_meta_fields' ) );
@@ -163,6 +166,26 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				}
 
 				/**
+				 * On plugin activation
+				 *
+				 * @return void
+				 */
+				public function activation() {
+					// Schedule product import with a sensible default
+					wp_schedule_event( time(), 'daily', 'import_products' );
+				}
+
+				/**
+				 * On plugin deactivation
+				 *
+				 * @return void
+				 */
+				public function deactivation() {
+					// Unschedule product import
+					wp_clear_scheduled_hook( 'import_products' );
+				}
+
+				/**
 				 * Add a new integration to WooCommerce
 				 *
 				 * @param array $integrations Existing integrations
@@ -176,17 +199,14 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				}
 
 				/**
-				 * Schedules the daily import of Dolibarr products
-				 *
-				 * @access public
+				 * Reschedules the automatic import of Dolibarr products
 				 *
 				 * @return void
 				 */
-				public function schedule_import_products() {
+				public function reschedule_import_products() {
 					$delay = $this->settings->delay_update;
-					if ( ! wp_next_scheduled( 'import_products' ) ) {
-						wp_schedule_event( time(), $delay, 'import_products' );
-					}
+					wp_clear_scheduled_hook( 'import_products' );
+					wp_schedule_event( time(), $delay, 'import_products' );
 				}
 
 				/**
