@@ -292,7 +292,15 @@ class Dolibarr {
 					$post_id = wp_insert_post( $post );
 				}
 
-				if ( 0 < $post_id ) {
+				// Error management (logging)
+				if (is_wp_error($post_id)) {
+					/** @var WP_Error $post_id */
+					$this->logger->add('doliwoo', $post_id->get_error_message());
+				}
+
+				if ( 0 < $post_id && ! is_wp_error($post_id)) {
+					/** @var int $post_id */
+
 					// Post metas management
 					add_post_meta( $post_id, 'dolibarr_id', $dolibarr_product->id, true );
 					add_post_meta( $post_id, 'dolibarr_type', $dolibarr_product->type, true );
