@@ -206,10 +206,10 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				?>
 				<div class="error">
 					<p><b>
-							<?php
-							$value;
-							?>
-						</b></p>
+						<?php
+						echo $value;
+						?>
+					</b></p>
 				</div>
 			<?php
 			}
