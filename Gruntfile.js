@@ -178,6 +178,7 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('test', [
+        'composer:update',
         'phpcs',
         'phplint',
         'checkwpversion'
