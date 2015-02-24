@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DoliWoo 0.0.2-alpha\n"
 "Report-Msgid-Bugs-To: https://github.com/GPCsolutions/doliwoo/issues\n"
-"POT-Creation-Date: 2015-02-24 18:33:51+00:00\n"
+"POT-Creation-Date: 2015-02-24 19:47:16+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -29,7 +29,14 @@ msgid "Dolibarr"
 msgstr ""
 
 #: includes/class-doliwoo-parameters.php:65
-#: includes/class-doliwoo-parameters.php:128
+msgid "User ID"
+msgstr ""
+
+#: includes/class-doliwoo-parameters.php:66
+msgid "The Dolibarr ID for this user"
+msgstr ""
+
+#: includes/class-doliwoo-parameters.php:134
 msgid "Dolibarr User ID"
 msgstr ""
 
@@ -83,59 +90,59 @@ msgstr ""
 msgid "Once Daily"
 msgstr ""
 
-#: includes/settings.php:132
+#: includes/settings.php:133
 msgid "Key"
 msgstr ""
 
-#: includes/settings.php:133
+#: includes/settings.php:134
 msgid "Enter your Dolibarr webservices key"
 msgstr ""
 
-#: includes/settings.php:139
+#: includes/settings.php:140
 msgid "User login"
 msgstr ""
 
-#: includes/settings.php:140
+#: includes/settings.php:141
 msgid "Dolibarr actions will be done as this user"
 msgstr ""
 
-#: includes/settings.php:146
+#: includes/settings.php:147
 msgid "User password"
 msgstr ""
 
-#: includes/settings.php:152
+#: includes/settings.php:153
 msgid "Entity"
 msgstr ""
 
-#: includes/settings.php:153
+#: includes/settings.php:154
 msgid ""
 "If you're using multicompany, the ID of the entity you want to integrate. "
 "Leave to 1 otherwise."
 msgstr ""
 
-#: includes/settings.php:159
+#: includes/settings.php:160
 msgid "Product category"
 msgstr ""
 
-#: includes/settings.php:160
+#: includes/settings.php:161
 msgid ""
 "The ID of the product category you want to automatically import products "
 "from."
 msgstr ""
 
-#: includes/settings.php:166
+#: includes/settings.php:167
 msgid "Generic thirdparty"
 msgstr ""
 
-#: includes/settings.php:167
+#: includes/settings.php:168
 msgid "The ID of the thirdparty that'll be used for anonymous orders."
 msgstr ""
 
-#: includes/settings.php:187
+#: includes/settings.php:188
 msgid "The protocol to use is https://"
 msgstr ""
 
-#: includes/settings.php:197
+#: includes/settings.php:198
 msgid "The webservice is not available. Please check the URL."
 msgstr ""
 
