@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DoliWoo 0.0.2-alpha\n"
 "Report-Msgid-Bugs-To: https://github.com/GPCsolutions/doliwoo/issues\n"
-"POT-Creation-Date: 2015-02-24 17:30:50+00:00\n"
+"POT-Creation-Date: 2015-02-24 18:33:51+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -23,22 +23,6 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
-
-#: doliwoo.php:51
-msgid "This plugin needs SOAP and OpenSSL PHP extensions."
-msgstr ""
-
-#: doliwoo.php:55
-msgid "This plugin needs SOAP PHP extension."
-msgstr ""
-
-#: doliwoo.php:59
-msgid "This plugin needs OpenSSL PHP extension."
-msgstr ""
-
-#: doliwoo.php:210
-msgid "This extension needs WooCommerce"
-msgstr ""
 
 #: includes/class-doliwoo-parameters.php:62
 msgid "Dolibarr"
@@ -61,97 +45,97 @@ msgstr ""
 msgid "Dolibarr webservices access"
 msgstr ""
 
-#: includes/settings.php:102
+#: includes/settings.php:104
 msgid "Source application"
 msgstr ""
 
-#: includes/settings.php:103
+#: includes/settings.php:105
 msgid "How this application will identify itself to the webservice."
 msgstr ""
 
-#: includes/settings.php:109
+#: includes/settings.php:111
 msgid "URL"
 msgstr ""
 
-#: includes/settings.php:110
+#: includes/settings.php:112
 msgid ""
 "Enter Dolibarr webservices root URL (i.e. "
 "https://mydolibarr.com/webservices)"
 msgstr ""
 
-#: includes/settings.php:117
+#: includes/settings.php:121
 msgid "Delay"
 msgstr ""
 
-#: includes/settings.php:118
+#: includes/settings.php:122
 msgid "Choose the automatic update frequency"
 msgstr ""
 
-#: includes/settings.php:122
+#: includes/settings.php:126
 msgid "Once Hourly"
 msgstr ""
 
-#: includes/settings.php:123
+#: includes/settings.php:127
 msgid "Twice Daily"
 msgstr ""
 
-#: includes/settings.php:124
+#: includes/settings.php:128
 msgid "Once Daily"
 msgstr ""
 
-#: includes/settings.php:128
+#: includes/settings.php:132
 msgid "Key"
 msgstr ""
 
-#: includes/settings.php:129
+#: includes/settings.php:133
 msgid "Enter your Dolibarr webservices key"
 msgstr ""
 
-#: includes/settings.php:135
+#: includes/settings.php:139
 msgid "User login"
 msgstr ""
 
-#: includes/settings.php:136
+#: includes/settings.php:140
 msgid "Dolibarr actions will be done as this user"
 msgstr ""
 
-#: includes/settings.php:142
+#: includes/settings.php:146
 msgid "User password"
 msgstr ""
 
-#: includes/settings.php:148
+#: includes/settings.php:152
 msgid "Entity"
 msgstr ""
 
-#: includes/settings.php:149
+#: includes/settings.php:153
 msgid ""
 "If you're using multicompany, the ID of the entity you want to integrate. "
 "Leave to 1 otherwise."
 msgstr ""
 
-#: includes/settings.php:155
+#: includes/settings.php:159
 msgid "Product category"
 msgstr ""
 
-#: includes/settings.php:156
+#: includes/settings.php:160
 msgid ""
 "The ID of the product category you want to automatically import products "
 "from."
 msgstr ""
 
-#: includes/settings.php:162
+#: includes/settings.php:166
 msgid "Generic thirdparty"
 msgstr ""
 
-#: includes/settings.php:163
+#: includes/settings.php:167
 msgid "The ID of the thirdparty that'll be used for anonymous orders."
 msgstr ""
 
-#: includes/settings.php:183
+#: includes/settings.php:187
 msgid "The protocol to use is https://"
 msgstr ""
 
-#: includes/settings.php:193
+#: includes/settings.php:197
 msgid "The webservice is not available. Please check the URL."
 msgstr ""
 

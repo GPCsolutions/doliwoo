@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DoliWoo\n"
 "Report-Msgid-Bugs-To: https://github.com/GPCsolutions/doliwoo/issues\n"
-"POT-Creation-Date: 2015-02-24 17:21:51+00:00\n"
+"POT-Creation-Date: 2015-02-24 18:33:51+00:00\n"
 "PO-Revision-Date: 2015-02-18 18:45+0100\n"
 "Last-Translator: Raphaël Doursenaud <rdoursenaud@gpcsolutions.fr>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/doliwoo/"
@@ -17,22 +17,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 1.7.4\n"
-
-#: doliwoo.php:51
-msgid "This plugin needs SOAP and OpenSSL PHP extensions."
-msgstr "Cette extension nécessite les extensions PHP SOAP et OpenSSL."
-
-#: doliwoo.php:55
-msgid "This plugin needs SOAP PHP extension."
-msgstr "Cette extension nécessite l'extension PHP SOAP."
-
-#: doliwoo.php:59
-msgid "This plugin needs OpenSSL PHP extension."
-msgstr "Cette extension nécessite l'extension PHP OpenSSL."
-
-#: doliwoo.php:210
-msgid "This extension needs WooCommerce"
-msgstr "Cette extension nécessite WooCommerce"
 
 #: includes/class-doliwoo-parameters.php:62
 msgid "Dolibarr"
@@ -55,70 +39,70 @@ msgstr "Réglages DoliWoo"
 msgid "Dolibarr webservices access"
 msgstr "Accès aux webservices Dolibarr"
 
-#: includes/settings.php:102
+#: includes/settings.php:104
 msgid "Source application"
 msgstr "Nom de l'application"
 
-#: includes/settings.php:103
+#: includes/settings.php:105
 msgid "How this application will identify itself to the webservice."
 msgstr "Comment cette application s'identifie auprès du webservice."
 
-#: includes/settings.php:109
+#: includes/settings.php:111
 msgid "URL"
 msgstr "URL"
 
-#: includes/settings.php:110
+#: includes/settings.php:112
 msgid ""
 "Enter Dolibarr webservices root URL (i.e. https://mydolibarr.com/webservices)"
 msgstr ""
 "Entrez l'URL racine des webservices de Dolibarr (i.e. https://mydolibarr.com/"
 "webservices)"
 
-#: includes/settings.php:117
+#: includes/settings.php:121
 msgid "Delay"
 msgstr "Délai"
 
-#: includes/settings.php:118
+#: includes/settings.php:122
 msgid "Choose the automatic update frequency"
 msgstr "Choisissez la fréquence de mise à jour automatique"
 
-#: includes/settings.php:122
+#: includes/settings.php:126
 msgid "Once Hourly"
 msgstr "Une fois par heure"
 
-#: includes/settings.php:123
+#: includes/settings.php:127
 msgid "Twice Daily"
 msgstr "Deux fois par jour"
 
-#: includes/settings.php:124
+#: includes/settings.php:128
 msgid "Once Daily"
 msgstr "Une fois par jour"
 
-#: includes/settings.php:128
+#: includes/settings.php:132
 msgid "Key"
 msgstr "Clé"
 
-#: includes/settings.php:129
+#: includes/settings.php:133
 msgid "Enter your Dolibarr webservices key"
 msgstr "Entrez votre clé du webservices de Dolibarr"
 
-#: includes/settings.php:135
+#: includes/settings.php:139
 msgid "User login"
 msgstr "Identifiant utilisateur"
 
-#: includes/settings.php:136
+#: includes/settings.php:140
 msgid "Dolibarr actions will be done as this user"
 msgstr "Les actions de Dolibarr seront attribuées à cet utilisateur"
 
-#: includes/settings.php:142
+#: includes/settings.php:146
 msgid "User password"
 msgstr "Mot de passe utilisateur"
 
-#: includes/settings.php:148
+#: includes/settings.php:152
 msgid "Entity"
 msgstr "Entité"
 
-#: includes/settings.php:149
+#: includes/settings.php:153
 msgid ""
 "If you're using multicompany, the ID of the entity you want to integrate. "
 "Leave to 1 otherwise."
@@ -126,30 +110,30 @@ msgstr ""
 "Si vous utilisez multi-société, l'ID de l'entité que vous souhaitez "
 "intégrer. Sinon laissez à 1."
 
-#: includes/settings.php:155
+#: includes/settings.php:159
 msgid "Product category"
 msgstr "Catégorie du Produit"
 
-#: includes/settings.php:156
+#: includes/settings.php:160
 msgid ""
 "The ID of the product category you want to automatically import products "
 "from."
 msgstr ""
 "L'ID de la catégorie de produits que vous souhaitez importer automatiquement."
 
-#: includes/settings.php:162
+#: includes/settings.php:166
 msgid "Generic thirdparty"
 msgstr "Tiers générique"
 
-#: includes/settings.php:163
+#: includes/settings.php:167
 msgid "The ID of the thirdparty that'll be used for anonymous orders."
 msgstr "L'Id du tiers qui va être utilisé pour les commandes anonymes"
 
-#: includes/settings.php:183
+#: includes/settings.php:187
 msgid "The protocol to use is https://"
 msgstr "Le protocole à utiliser est https://"
 
-#: includes/settings.php:193
+#: includes/settings.php:197
 msgid "The webservice is not available. Please check the URL."
 msgstr "Le webservice n'est pas disponible. Merci de vérifier l'URL."
 
@@ -170,3 +154,15 @@ msgstr "Intégration Dolibarr WooCommerc"
 #. Author of the plugin/theme
 msgid "GPC.solutions"
 msgstr "GPC.solutions"
+
+#~ msgid "This plugin needs SOAP and OpenSSL PHP extensions."
+#~ msgstr "Cette extension nécessite les extensions PHP SOAP et OpenSSL."
+
+#~ msgid "This plugin needs SOAP PHP extension."
+#~ msgstr "Cette extension nécessite l'extension PHP SOAP."
+
+#~ msgid "This plugin needs OpenSSL PHP extension."
+#~ msgstr "Cette extension nécessite l'extension PHP OpenSSL."
+
+#~ msgid "This extension needs WooCommerce"
+#~ msgstr "Cette extension nécessite WooCommerce"
