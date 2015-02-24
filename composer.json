@@ -32,6 +32,9 @@
     "johnpbloch/wordpress": ">=3.7.1",
     "wpackagist-plugin/woocommerce": ">=2.0.0"
   },
+  "require-dev": {
+    "wp-coding-standards/wpcs": "dev-master"
+  },
   "repositories": [
     {
       "type": "composer",
@@ -44,5 +47,13 @@
         "wpackagist-plugin/woocommerce"
       ]
     }
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "vendor/bin/phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs"
+    ],
+    "post-update-cmd": [
+      "vendor/bin/phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs"
+    ]
   }
 }

@@ -40,6 +40,15 @@ module.exports = function (grunt) {
                 ] // PHP regex match
             }
         },
+        phpcs: {
+            application: {
+                dir: '<%= paths.php.files %>'
+            },
+            options: {
+                bin: 'vendor/bin/phpcs',
+                standard: 'Wordpress'
+            }
+        },
         phplint: {
             options: {
                 phpArgs: {
@@ -169,6 +178,7 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('test', [
+        'phpcs',
         'phplint',
         'checkwpversion'
     ]);
