@@ -199,7 +199,7 @@ class Dolibarr {
 
 		$new_thirdparty = new DolibarrThirdparty();
 
-		$new_thirdparty->ref      = intval( $ref );
+		$new_thirdparty->ref      = $ref;
 		$new_thirdparty->status   = '1';
 		$new_thirdparty->client   = '1';
 		$new_thirdparty->supplier = '0';
@@ -238,20 +238,15 @@ class Dolibarr {
 			/** @var WC_Product $woocommerce_product */
 			$woocommerce_product = $product['data'];
 
-			$line = new DolibarrOrderLine();
-			$line->type
-			      = get_post_meta( $product['product_id'],
-				'dolibarr_type', 1 );
-			$line->desc
-			      = $woocommerce_product->post->post_content;
-			$line->product_id
-			      = get_post_meta( $product['product_id'],
-				'dolibarr_id', 1 );
+			$line             = new DolibarrOrderLine();
+			$line->type       = intval( get_post_meta( $product['product_id'], 'dolibarr_type', true ) );
+			$line->desc       = $woocommerce_product->post->post_content;
+			$line->product_id = intval( get_post_meta( $product['product_id'], 'dolibarr_id', true ) );
 
-			$rates = $this->taxes->get_rates( $woocommerce_product->get_tax_class() );
-			$rates = array_values( $rates );
+			$rates            = $this->taxes->get_rates( $woocommerce_product->get_tax_class() );
+			$rates            = array_values( $rates );
 			// We get the first one
-			$line->vat_rate = $rates[0]['rate'];
+			$line->vat_rate   = $rates[0]['rate'];
 
 			$line->qty       = $product['quantity'];
 			$line->price     = floatval( $woocommerce_product->get_price() );
