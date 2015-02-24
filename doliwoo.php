@@ -141,9 +141,13 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 					add_action(
 						'manage_users_custom_column',
 						array( &$this->woocommerce_parameters, 'user_column_values' ),
-						10,
-						3
+						10, // Prio
+						3 // Args count
 					);
+
+					// Schedule the import of product data from Dolibarr
+					register_activation_hook( __FILE__, 'activation' );
+					register_deactivation_hook( __FILE__, 'deactivation' );
 				}
 
 				/**

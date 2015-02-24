@@ -62,8 +62,8 @@ Class Woocomerce_Parameters {
 					'title'  => __( 'Dolibarr', 'doliwoo' ),
 					'fields' => array(
 						'dolibarr_id' => array(
-							'label'       => __( 'Dolibarr User ID', 'doliwoo' ),
-							'description' => 'The boss', // FIXME: WTF?
+							'label'       => __( 'User ID', 'doliwoo' ),
+							'description' => __( 'The Dolibarr ID for this user' ),
 						)
 					)
 				)
@@ -109,12 +109,18 @@ Class Woocomerce_Parameters {
 	/**
 	 * Define value for the Dolibarr ID column
 	 *
+	 * @param string $value The current value
+	 * @param string $column_name The curent custom column
 	 * @param mixed $user_id The ID of the user being displayed
 	 *
 	 * @return string Value for the column
 	 */
-	public function user_column_values( $user_id ) {
-		return get_user_meta( $user_id, 'dolibarr_id', true );
+	public function user_column_values( $value, $column_name, $user_id ) {
+		$user = get_userdata( $user_id );
+		if ( 'dolibarr_id' == $column_name ) {
+			return get_user_meta( $user->ID, 'dolibarr_id', true );
+		}
+		return $value;
 	}
 
 	/**
