@@ -79,17 +79,13 @@ class Dolibarr {
 			// default to the generic user
 			$thirdparty_id = $this->Doliwoo->settings->dolibarr_generic_id;
 		} else {
-			$thirdparty_id = get_user_meta( $user_id, 'dolibarr_id',
-				true );
+			$thirdparty_id = get_user_meta( $user_id, 'dolibarr_id', true );
 		}
 		if ( '' != $thirdparty_id ) {
 			$order->thirdparty_id = intval( $thirdparty_id );
 		} else {
-			if ( get_user_meta( $user_id, 'billing_company', true )
-			     == ''
-			) {
-				update_user_meta( $user_id, 'billing_company',
-					$_POST['billing_company'] );
+			if ( get_user_meta( $user_id, 'billing_company', true ) == '' ) {
+				update_user_meta( $user_id, 'billing_company', $_POST['billing_company'] );
 			}
 			$this->dolibarr_create_thirdparty_if_not_exists( $user_id );
 			$order->thirdparty_id = intval( get_user_meta( $user_id, 'dolibarr_id', true ) );
@@ -116,17 +112,14 @@ class Dolibarr {
 		if ( $result ) {
 			if (
 				$result['thirdparty']
-				&& get_user_meta( $user_id, 'dolibarr_id', true )
-				   != $result['thirdparty']->id
+				&& get_user_meta( $user_id, 'dolibarr_id', true ) != $result['thirdparty']->id
 			) {
-				update_user_meta( $user_id, 'dolibarr_id',
-					$result['thirdparty']->id );
+				update_user_meta( $user_id, 'dolibarr_id', $result['thirdparty']->id );
 			} elseif ( null === $result['thirdparty'] ) {
 				$res
 					= $this->dolibarr_create_thirdparty( $user_id );
 				if ( 'OK' == $res['result']->result_code ) {
-					update_user_meta( $user_id, 'dolibarr_id',
-						$res->id );
+					update_user_meta( $user_id, 'dolibarr_id', $res->id );
 				}
 			}
 		}
@@ -152,12 +145,13 @@ class Dolibarr {
 
 		// if the user has a Dolibarr ID, use it, else use his company name
 		if ( $dol_id ) {
-			$result = $soap_client->getThirdParty( $this->Doliwoo->ws_auth,
-				$dol_id );
+			$result = $soap_client->getThirdParty( $this->Doliwoo->ws_auth, $dol_id );
 		} else {
-			$result = $soap_client->getThirdParty( $this->Doliwoo->ws_auth,
-				'', get_user_meta( $user_id, 'billing_company',
-					true ) );
+			$result = $soap_client->getThirdParty(
+				$this->Doliwoo->ws_auth,
+				'',
+				get_user_meta( $user_id, 'billing_company', true )
+			);
 		}
 		if ( $result ) {
 			return $result;
@@ -177,8 +171,7 @@ class Dolibarr {
 		$this->Doliwoo = new Doliwoo();
 		$this->Doliwoo->get_settings();
 
-		$dolibarr_ws_url = $this->Doliwoo->settings->webservs_url
-		                   . 'server_thirdparty.php?wsdl';
+		$dolibarr_ws_url = $this->Doliwoo->settings->webservs_url . 'server_thirdparty.php?wsdl';
 		// Set the WebService URL
 		$soap_client = new SoapClient(
 			null,
@@ -188,12 +181,10 @@ class Dolibarr {
 			)
 		);
 
-		$ref        = get_user_meta( $user_id, 'billing_company',
-			true );
+		$ref        = get_user_meta( $user_id, 'billing_company', true );
 		$individual = 0;
 		if ( '' == $ref ) {
-			$ref        = get_user_meta( $user_id,
-				'billing_last_name', true );
+			$ref        = get_user_meta( $user_id, 'billing_last_name', true );
 			$individual = 1;
 		}
 
@@ -204,22 +195,15 @@ class Dolibarr {
 		$new_thirdparty->client   = '1';
 		$new_thirdparty->supplier = '0';
 
-		$new_thirdparty->address       = get_user_meta(
-			$user_id, 'billing_address', true );
-		$new_thirdparty->zip           = get_user_meta(
-			$user_id, 'billing_postcode', true );
-		$new_thirdparty->town          = get_user_meta(
-			$user_id, 'billing_city', true );
-		$new_thirdparty->country_code  = get_user_meta(
-			$user_id, 'billing_country', true );
+		$new_thirdparty->address       = get_user_meta( $user_id, 'billing_address', true );
+		$new_thirdparty->zip           = get_user_meta( $user_id, 'billing_postcode', true );
+		$new_thirdparty->town          = get_user_meta( $user_id, 'billing_city', true );
+		$new_thirdparty->country_code  = get_user_meta( $user_id, 'billing_country', true );
 		$new_thirdparty->supplier_code = '0';
-		$new_thirdparty->phone         = get_user_meta(
-			$user_id, 'billing_phone', true );
-		$new_thirdparty->email         = get_user_meta(
-			$user_id, 'billing_email', true );
+		$new_thirdparty->phone         = get_user_meta( $user_id, 'billing_phone', true );
+		$new_thirdparty->email         = get_user_meta( $user_id, 'billing_email', true );
 		$new_thirdparty->individual    = $individual;
-		$new_thirdparty->firstname     = get_user_meta(
-			$user_id, 'billing_first_name', true );
+		$new_thirdparty->firstname     = get_user_meta( $user_id, 'billing_first_name', true );
 
 		$result = $soap_client->createThirdParty( $this->Doliwoo->ws_auth, $new_thirdparty );
 
@@ -243,10 +227,10 @@ class Dolibarr {
 			$line->desc       = $woocommerce_product->post->post_content;
 			$line->product_id = intval( get_post_meta( $product['product_id'], 'dolibarr_id', true ) );
 
-			$rates            = $this->taxes->get_rates( $woocommerce_product->get_tax_class() );
-			$rates            = array_values( $rates );
+			$rates = $this->taxes->get_rates( $woocommerce_product->get_tax_class() );
+			$rates = array_values( $rates );
 			// We get the first one
-			$line->vat_rate   = $rates[0]['rate'];
+			$line->vat_rate = $rates[0]['rate'];
 
 			$line->qty       = $product['quantity'];
 			$line->price     = floatval( $woocommerce_product->get_price() );
@@ -271,8 +255,7 @@ class Dolibarr {
 		// Set the WebService URL
 		try {
 			$soap_client = new SoapClient(
-				$this->Doliwoo->settings->webservs_url
-				. 'server_productorservice.php?wsdl'
+				$this->Doliwoo->settings->webservs_url . 'server_productorservice.php?wsdl'
 			);
 		} catch ( SoapFault $exception ) {
 			$this->logger->add( 'doliwoo', $exception->getMessage() );
@@ -282,9 +265,10 @@ class Dolibarr {
 		}
 
 		// Get all products that are meant to be displayed on the website
-		$result
-			= $soap_client->getProductsForCategory( $this->Doliwoo->ws_auth,
-			$this->Doliwoo->settings->dolibarr_category_id );
+		$result = $soap_client->getProductsForCategory(
+			$this->Doliwoo->ws_auth,
+			$this->Doliwoo->settings->dolibarr_category_id
+		);
 
 		if ( $result['result']->result_code == 'OK' ) {
 			$dolibarr_products = $result['products'];
@@ -303,30 +287,23 @@ class Dolibarr {
 
 				if ( 0 < $post_id ) {
 					// Post metas management
-					add_post_meta( $post_id, 'dolibarr_id',
-						$dolibarr_product->id, true );
-					add_post_meta( $post_id, 'dolibarr_type', $dolibarr_product->type,
-						true );
-					update_post_meta( $post_id, '_regular_price',
-						$dolibarr_product->price_net );
-					update_post_meta( $post_id, '_sale_price',
-						$dolibarr_product->price_net );
-					update_post_meta( $post_id, '_price',
-						$dolibarr_product->price_net );
-					update_post_meta( $post_id, '_visibility',
-						'visible' );
-					update_post_meta( $post_id, '_tax_class',
-						$this->taxes->get_tax_class( $dolibarr_product->vat_rate ) );
+					add_post_meta( $post_id, 'dolibarr_id', $dolibarr_product->id, true );
+					add_post_meta( $post_id, 'dolibarr_type', $dolibarr_product->type, true );
+					update_post_meta( $post_id, '_regular_price', $dolibarr_product->price_net );
+					update_post_meta( $post_id, '_sale_price', $dolibarr_product->price_net );
+					update_post_meta( $post_id, '_price', $dolibarr_product->price_net );
+					update_post_meta( $post_id, '_visibility', 'visible' );
+					update_post_meta(
+						$post_id,
+						'_tax_class',
+						$this->taxes->get_tax_class( $dolibarr_product->vat_rate )
+					);
 
 					// Stock management
-					if ( get_option( 'woocommerce_manage_stock' )
-					     == 'yes'
-					) {
+					if ( get_option( 'woocommerce_manage_stock' ) == 'yes' ) {
 						if ( 0 < $dolibarr_product->stock_real ) {
-							update_post_meta( $post_id,
-								'_stock_status', 'instock' );
-							update_post_meta( $post_id, '_stock',
-								$dolibarr_product->stock_real );
+							update_post_meta( $post_id, '_stock_status', 'instock' );
+							update_post_meta( $post_id, '_stock', $dolibarr_product->stock_real );
 						}
 					}
 
@@ -367,17 +344,13 @@ class Dolibarr {
 	 * @param int $post_id The WooCommerce product
 	 */
 	private function import_product_images( $dolibarr_product, $post_id ) {
-		$image_attachment_ids = $this->get_product_image( $dolibarr_product,
-			$post_id );
+		$image_attachment_ids = $this->get_product_image( $dolibarr_product, $post_id );
 
 		// Fill the image gallery
-		update_post_meta( $post_id,
-			'_product_image_gallery',
-			implode( ',', $image_attachment_ids ) );
+		update_post_meta( $post_id, '_product_image_gallery', implode( ',', $image_attachment_ids ) );
 
 		// Use the first image as the product thumbnail
-		update_post_meta( $post_id, '_thumbnail_id',
-			$image_attachment_ids[0] );
+		update_post_meta( $post_id, '_thumbnail_id', $image_attachment_ids[0] );
 	}
 
 	/**
@@ -395,8 +368,7 @@ class Dolibarr {
 		$this->Doliwoo->get_settings();
 
 		$soap_client = new SoapClient(
-			$this->Doliwoo->settings->webservs_url
-			. 'server_other.php?wsdl'
+			$this->Doliwoo->settings->webservs_url . 'server_other.php?wsdl'
 		);
 
 		$file_array = array();
@@ -411,16 +383,16 @@ class Dolibarr {
 			);
 
 			if ( 'OK' == $result['result']->result_code ) {
-				$file_array['name'] = $images->photo;
-				$file_array['tmp_name']
-				                    =
-					sys_get_temp_dir() . DIRECTORY_SEPARATOR . $images->photo;
-				file_put_contents( $file_array['tmp_name'],
-					base64_decode( $result['document']->content ) );
+				$file_array['name']     = $images->photo;
+				$file_array['tmp_name'] = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $images->photo;
+				file_put_contents(
+					$file_array['tmp_name'],
+					base64_decode( $result['document']->content )
+				);
 
 				$res = media_handle_sideload( $file_array, $post_id );
 
-				// handle errors nicely ( logging )
+				// Handle errors nicely ( logging )
 				if ( true === is_wp_error( $res ) ) {
 					$message = $res->get_error_message();
 					$this->logger->add( 'doliwoo', $message );
