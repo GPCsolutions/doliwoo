@@ -181,29 +181,36 @@ class Dolibarr {
 			)
 		);
 
+		/** @var string $ref */
 		$ref        = get_user_meta( $user_id, 'billing_company', true );
 		$individual = 0;
 		if ( '' == $ref ) {
+			// We could not find a company, let's get an indivual
 			$ref        = get_user_meta( $user_id, 'billing_last_name', true );
 			$individual = 1;
 		}
 
 		$new_thirdparty = new DolibarrThirdparty();
 
-		$new_thirdparty->ref      = $ref;
-		$new_thirdparty->status   = '1';
-		$new_thirdparty->client   = '1';
-		$new_thirdparty->supplier = '0';
-
-		$new_thirdparty->address       = get_user_meta( $user_id, 'billing_address', true );
-		$new_thirdparty->zip           = get_user_meta( $user_id, 'billing_postcode', true );
-		$new_thirdparty->town          = get_user_meta( $user_id, 'billing_city', true );
-		$new_thirdparty->country_code  = get_user_meta( $user_id, 'billing_country', true );
-		$new_thirdparty->supplier_code = '0';
-		$new_thirdparty->phone         = get_user_meta( $user_id, 'billing_phone', true );
-		$new_thirdparty->email         = get_user_meta( $user_id, 'billing_email', true );
-		$new_thirdparty->individual    = $individual;
-		$new_thirdparty->firstname     = get_user_meta( $user_id, 'billing_first_name', true );
+		$new_thirdparty->ref        = $ref; // Company name or individual last name
+		$new_thirdparty->individual = $individual; // Individual
+		/** @var string firstname */
+		$new_thirdparty->firstname = get_user_meta( $user_id, 'billing_first_name', true );
+		$new_thirdparty->status    = '1'; // Active
+		$new_thirdparty->client    = '1'; // Is a client
+		$new_thirdparty->supplier  = '0'; // Is not a supplier
+		/** @var string address */
+		$new_thirdparty->address = get_user_meta( $user_id, 'billing_address', true );
+		/** @var string zip */
+		$new_thirdparty->zip = get_user_meta( $user_id, 'billing_postcode', true );
+		/** @var string town */
+		$new_thirdparty->town = get_user_meta( $user_id, 'billing_city', true );
+		/** @var string country_code */
+		$new_thirdparty->country_code = get_user_meta( $user_id, 'billing_country', true );
+		/** @var string phone */
+		$new_thirdparty->phone = get_user_meta( $user_id, 'billing_phone', true );
+		/** @var string email */
+		$new_thirdparty->email = get_user_meta( $user_id, 'billing_email', true );
 
 		$result = $soap_client->createThirdParty( $this->Doliwoo->ws_auth, $new_thirdparty );
 
