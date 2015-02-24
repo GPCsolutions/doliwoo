@@ -68,7 +68,7 @@ class Dolibarr {
 			null,
 			array(
 				'location' => $dolibarr_ws_url,
-				'uri'      => "http://www.dolibar.org/ns/"
+				'uri'      => 'http://www.dolibar.org/ns/',
 			)
 		);
 		$order       = new DolibarrOrder();
@@ -177,7 +177,7 @@ class Dolibarr {
 			null,
 			array(
 				'location' => $dolibarr_ws_url,
-				'uri'      => "http://www.dolibar.org/ns/"
+				'uri'      => 'http://www.dolibar.org/ns/',
 			)
 		);
 
@@ -269,7 +269,7 @@ class Dolibarr {
 			$this->Doliwoo->settings->dolibarr_category_id
 		);
 
-		if ( $result['result']->result_code == 'OK' ) {
+		if ( 'OK' == $result['result']->result_code ) {
 			$dolibarr_products = $result['products'];
 			foreach ( $dolibarr_products as $dolibarr_product ) {
 				if ( $this->dolibarr_product_exists( $dolibarr_product->id ) ) {
@@ -285,12 +285,12 @@ class Dolibarr {
 				}
 
 				// Error management (logging)
-				if (is_wp_error($post_id)) {
+				if ( is_wp_error( $post_id ) ) {
 					/** @var WP_Error $post_id */
-					$this->logger->add('doliwoo', $post_id->get_error_message());
+					$this->logger->add( 'doliwoo', $post_id->get_error_message() );
 				}
 
-				if ( 0 < $post_id && ! is_wp_error($post_id)) {
+				if ( 0 < $post_id && ! is_wp_error( $post_id ) ) {
 					/** @var int $post_id */
 
 					// Post metas management
@@ -307,7 +307,7 @@ class Dolibarr {
 					);
 
 					// Stock management
-					if ( get_option( 'woocommerce_manage_stock' ) == 'yes' ) {
+					if ( 'yes' == get_option( 'woocommerce_manage_stock' ) ) {
 						if ( 0 < $dolibarr_product->stock_real ) {
 							update_post_meta( $post_id, '_stock_status', 'instock' );
 							update_post_meta( $post_id, '_stock', $dolibarr_product->stock_real );
@@ -337,7 +337,7 @@ class Dolibarr {
 		$args  = array(
 			'post_type'  => 'product',
 			'meta_key'   => 'dolibarr_id',
-			'meta_value' => $dolibarr_id
+			'meta_value' => $dolibarr_id,
 		);
 		$query = new WP_Query( $args );
 

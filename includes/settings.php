@@ -87,8 +87,10 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 			                      = $this->get_option( 'dolibarr_generic_id' );
 
 			// Actions
-			add_action( 'woocommerce_update_options_integration_' . $this->id,
-				array( $this, 'process_admin_options' ) );
+			add_action(
+				'woocommerce_update_options_integration_' . $this->id,
+				array( $this, 'process_admin_options' )
+			);
 		}
 
 		/**
@@ -103,15 +105,17 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 					'description' => __( 'How this application will identify itself to the webservice.', 'doliwoo' ),
 					'type'        => 'text',
 					'desc_tip'    => false,
-					'default'     => 'WooCommerce'
+					'default'     => 'WooCommerce',
 				),
 				'webservs_url'         => array(
 					'title'       => __( 'URL', 'doliwoo' ),
-					'description' => __( 'Enter Dolibarr webservices root URL (i.e. https://mydolibarr.com/webservices)',
-						'doliwoo' ),
+					'description' => __(
+						'Enter Dolibarr webservices root URL (i.e. https://mydolibarr.com/webservices)',
+						'doliwoo'
+					),
 					'type'        => 'text',
 					'desc_tip'    => false,
-					'default'     => ''
+					'default'     => '',
 				),
 				'delay_update'         => array(
 					'title'       => __( 'Delay', 'doliwoo' ),
@@ -129,41 +133,41 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 					'description' => __( 'Enter your Dolibarr webservices key', 'doliwoo' ),
 					'type'        => 'text',
 					'desc_tip'    => false,
-					'default'     => ''
+					'default'     => '',
 				),
 				'dolibarr_login'       => array(
 					'title'       => __( 'User login', 'doliwoo' ),
 					'description' => __( 'Dolibarr actions will be done as this user', 'doliwoo' ),
 					'type'        => 'text',
 					'desc_tip'    => false,
-					'default'     => ''
+					'default'     => '',
 				),
 				'dolibarr_password'    => array(
 					'title'    => __( 'User password', 'doliwoo' ),
 					'type'     => 'password',
 					'desc_tip' => false,
-					'default'  => ''
+					'default'  => '',
 				),
 				'dolibarr_entity'      => array(
 					'title'       => __( 'Entity', 'doliwoo' ),
 					'description' => __( 'If you\'re using multicompany, the ID of the entity you want to integrate. Leave to 1 otherwise.', 'doliwoo' ),
 					'type'        => 'text',
 					'desc_tip'    => false,
-					'default'     => 1
+					'default'     => 1,
 				),
 				'dolibarr_category_id' => array(
 					'title'       => __( 'Product category', 'doliwoo' ),
 					'description' => __( 'The ID of the product category you want to automatically import products from.', 'doliwoo' ),
 					'type'        => 'text',
 					'desc_tip'    => false,
-					'default'     => ''
+					'default'     => '',
 				),
 				'dolibarr_generic_id'  => array(
 					'title'       => __( 'Generic thirdparty', 'doliwoo' ),
 					'description' => __( 'The ID of the thirdparty that\'ll be used for anonymous orders.', 'doliwoo' ),
 					'type'        => 'text',
 					'desc_tip'    => false,
-					'default'     => ''
+					'default'     => '',
 				),
 			);
 		}
@@ -179,8 +183,8 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 			$value = $_POST['woocommerce_doliwoo_webservs_url'];
 
 			// Make sure we use HTTPS
-			if ( ( substr( $value, 0, 8 ) ) !== 'https://' ) {
-				$this->errors[] = __('The protocol to use is https://');
+			if ( 'https://' !== ( substr( $value, 0, 8 ) ) ) {
+				$this->errors[] = __( 'The protocol to use is https://' );
 			}
 
 			// Make sure we have the trailing slash
@@ -190,7 +194,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 			try {
 				new SoapClient( $value . 'server_other.php?wsdl' );
 			} catch ( SoapFault $exc ) {
-				$this->errors[] = __('The webservice is not available. Please check the URL.');
+				$this->errors[] = __( 'The webservice is not available. Please check the URL.' );
 			}
 
 			return $value;
@@ -207,7 +211,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				<div class="error">
 					<p><b>
 						<?php
-						echo $value;
+						esc_html_e( $value );
 						?>
 					</b></p>
 				</div>

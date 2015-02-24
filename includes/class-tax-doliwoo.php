@@ -71,7 +71,7 @@ class WC_Tax_Doliwoo extends WC_Tax {
 				'tax_rate_name'     => $tax_name,
 				'tax_rate_priority' => '1',
 				'tax_rate_order'    => '0',
-				'tax_rate_class'    => ''
+				'tax_rate_class'    => '',
 			),
 			array(
 				'tax_rate_country'  => 'FR',
@@ -79,7 +79,7 @@ class WC_Tax_Doliwoo extends WC_Tax {
 				'tax_rate_name'     => $tax_name,
 				'tax_rate_priority' => '1',
 				'tax_rate_order'    => '0',
-				'tax_rate_class'    => 'reduced'
+				'tax_rate_class'    => 'reduced',
 			),
 			array(
 				'tax_rate_country'  => 'FR',
@@ -87,7 +87,7 @@ class WC_Tax_Doliwoo extends WC_Tax {
 				'tax_rate_name'     => $tax_name,
 				'tax_rate_priority' => '1',
 				'tax_rate_order'    => '0',
-				'tax_rate_class'    => 'super-reduced'
+				'tax_rate_class'    => 'super-reduced',
 			),
 			array(
 				'tax_rate_country'  => 'FR',
@@ -95,7 +95,7 @@ class WC_Tax_Doliwoo extends WC_Tax {
 				'tax_rate_name'     => $tax_name,
 				'tax_rate_priority' => '1',
 				'tax_rate_order'    => '0',
-				'tax_rate_class'    => 'minimum'
+				'tax_rate_class'    => 'minimum',
 			),
 			array(
 				'tax_rate_country'  => 'FR',
@@ -103,19 +103,20 @@ class WC_Tax_Doliwoo extends WC_Tax {
 				'tax_rate_name'     => $tax_name,
 				'tax_rate_priority' => '1',
 				'tax_rate_order'    => '0',
-				'tax_rate_class'    => 'zero'
-			)
+				'tax_rate_class'    => 'zero',
+			),
 		);
 
 		$db_taxes = $wpdb->get_results(
-			"SELECT tax_rate_id
- , tax_rate_country
- , tax_rate, tax_rate_name
- , tax_rate_priority
- , tax_rate_order
- , tax_rate_class
- FROM " . $wpdb->prefix . "woocommerce_tax_rates;",
-			ARRAY_A );
+			'SELECT tax_rate_id
+, tax_rate_country
+, tax_rate
+, tax_rate_name
+, tax_rate_priority
+, tax_rate_order
+, tax_rate_class FROM ' . $wpdb->prefix . 'woocommerce_tax_rates;',
+			ARRAY_A
+		);
 
 		// Struture database results
 		$database_rates = array();
@@ -143,9 +144,10 @@ class WC_Tax_Doliwoo extends WC_Tax {
 				) {
 					// _assoc is important. It allows strict checking to take 0 into account!
 					if ( array_diff_assoc( $declared_rate, $database_rate ) ) {
-						( $this->update_tax(
+						$this->update_tax(
 							$tax_rate_id,
-							$declared_rate ) );
+							$declared_rate
+						);
 					}
 				}
 			}
@@ -187,10 +189,10 @@ class WC_Tax_Doliwoo extends WC_Tax {
 		global $wpdb;
 
 		return $wpdb->update(
-			$wpdb->prefix . "woocommerce_tax_rates",
+			$wpdb->prefix . 'woocommerce_tax_rates',
 			$tax_rate,
 			array(
-				'tax_rate_id' => $tax_rate_id
+				'tax_rate_id' => $tax_rate_id,
 			)
 		);
 	}

@@ -38,8 +38,8 @@ Class Woocomerce_Parameters {
 		foreach ( $save_fields as $fieldset ) {
 			foreach ( $fieldset['fields'] as $key => $field ) {
 				if ( isset( $_POST[ $key ] ) ) {
-					update_user_meta( $user_id, $key,
-						wc_clean( $_POST[ $key ] ) );
+					update_user_meta( $user_id, $key, wc_clean( $_POST[ $key ] )
+					);
 				}
 			}
 		}
@@ -63,7 +63,7 @@ Class Woocomerce_Parameters {
 					'fields' => array(
 						'dolibarr_id' => array(
 							'label'       => __( 'Dolibarr User ID', 'doliwoo' ),
-							'description' => 'The boss'
+							'description' => 'The boss', // FIXME: WTF?
 						)
 					)
 				)

@@ -40,23 +40,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-load_plugin_textdomain( 'doliwoo',
+load_plugin_textdomain(
+	'doliwoo',
 	false,
-	dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+	dirname( plugin_basename( __FILE__ ) ) . '/languages/'
+);
 
 // Check required extensions
-if ( false === extension_loaded( 'soap' )
-     && false === extension_loaded( 'openssl' )
-) {
-	echo __( 'This plugin needs SOAP and OpenSSL PHP extensions.' );
+if ( false === extension_loaded( 'soap' ) && false === extension_loaded( 'openssl' ) ) {
+	esc_html_e( __( 'This plugin needs SOAP and OpenSSL PHP extensions.' ) );
 	exit;
 }
 if ( false === extension_loaded( 'soap' ) ) {
-	echo __( 'This plugin needs SOAP PHP extension.' );
+	esc_html_e( __( 'This plugin needs SOAP PHP extension.' ) );
 	exit;
 }
 if ( false === extension_loaded( 'openssl' ) ) {
-	echo __( 'This plugin needs OpenSSL PHP extension.' );
+	esc_html_e( __( 'This plugin needs OpenSSL PHP extension.' ) );
 	exit;
 }
 
@@ -64,8 +64,10 @@ if ( false === extension_loaded( 'openssl' ) ) {
 if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 
 	// If WooCommerce is active
-	if ( in_array( 'woocommerce/woocommerce.php',
-		apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+	if ( in_array(
+		'woocommerce/woocommerce.php',
+		apply_filters( 'active_plugins', get_option( 'active_plugins' ) )
+	) ) {
 		if ( ! class_exists( 'Doliwoo' ) ) {
 
 			/**
@@ -103,40 +105,42 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 					// Initialize plugin settings
 					add_action( 'plugins_loaded', array( $this, 'init' ) );
 
-					add_action( 'woocommerce_loaded',
-						array( &$this->dolibarr, 'set_woocommerce' ) );
+					add_action( 'woocommerce_loaded', array( &$this->dolibarr, 'set_woocommerce' ) );
 
 					// Create custom tax classes and VAT rates on plugin settings saved
-					add_action( 'woocommerce_settings_saved',
-						array( &$this->taxes, 'create_custom_tax_classes' ) );
+					add_action( 'woocommerce_settings_saved', array( &$this->taxes, 'create_custom_tax_classes' ) );
 
 					// Import Dolibarr products on plugin settings saved
-					add_action( 'woocommerce_settings_saved',
-						array( &$this->dolibarr, 'dolibarr_import_products' ) );
+					add_action( 'woocommerce_settings_saved', array( &$this->dolibarr, 'dolibarr_import_products' ) );
 
 					// Hook on woocommerce_checkout_process to create a Dolibarr order using WooCommerce order data
-					add_action( 'woocommerce_checkout_order_processed',
-						array( &$this->dolibarr, 'dolibarr_create_order' ) );
+					add_action(
+						'woocommerce_checkout_order_processed',
+						array( &$this->dolibarr, 'dolibarr_create_order' )
+					);
 
 					// Schedule the import of product data from Dolibarr
-					add_action( 'wp',
-						array( &$this, 'schedule_import_products' ) );
-					add_action( 'import_products',
-						array( &$this->dolibarr, 'dolibarr_import_products' ) );
+					add_action( 'wp', array( &$this, 'schedule_import_products' ) );
+					add_action( 'import_products', array( &$this->dolibarr, 'dolibarr_import_products' ) );
 
 					// Dolibarr ID custom field
-					add_filter( 'manage_users_columns',
-						array( &$this->woocommerce_parameters, 'user_columns' ) );
-					add_action( 'show_user_profile',
-						array( &$this->woocommerce_parameters, 'customer_meta_fields' ) );
-					add_action( 'edit_user_profile',
-						array( &$this->woocommerce_parameters, 'customer_meta_fields' ) );
-					add_action( 'personal_options_update',
-						array( &$this->woocommerce_parameters, 'save_customer_meta_fields' ) );
-					add_action( 'edit_user_profile_update',
-						array( &$this->woocommerce_parameters, 'save_customer_meta_fields' ) );
-					add_action( 'manage_users_custom_column',
-						array( &$this->woocommerce_parameters, 'user_column_values' ), 10, 3 );
+					add_filter( 'manage_users_columns', array( &$this->woocommerce_parameters, 'user_columns' ) );
+					add_action( 'show_user_profile', array( &$this->woocommerce_parameters, 'customer_meta_fields' ) );
+					add_action( 'edit_user_profile', array( &$this->woocommerce_parameters, 'customer_meta_fields' ) );
+					add_action(
+						'personal_options_update',
+						array( &$this->woocommerce_parameters, 'save_customer_meta_fields' )
+					);
+					add_action(
+						'edit_user_profile_update',
+						array( &$this->woocommerce_parameters, 'save_customer_meta_fields' )
+					);
+					add_action(
+						'manage_users_custom_column',
+						array( &$this->woocommerce_parameters, 'user_column_values' ),
+						10,
+						3
+					);
 				}
 
 				/**
@@ -153,8 +157,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 						// Include our integration class.
 						require_once 'includes/settings.php';
 						// Register the integration.
-						add_filter( 'woocommerce_integrations',
-							array( $this, 'add_integration' ) );
+						add_filter( 'woocommerce_integrations', array( $this, 'add_integration' ) );
 					}
 					$this->taxes = new WC_Tax_Doliwoo();
 				}
@@ -200,17 +203,17 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 						'sourceapplication' => $this->settings->sourceapplication,
 						'login'             => $this->settings->dolibarr_login,
 						'password'          => $this->settings->dolibarr_password,
-						'entity'            => $this->settings->dolibarr_entity
+						'entity'            => $this->settings->dolibarr_entity,
 					);
 				}
 			}
 		}
 	} else {
 		// WooCommerce is not available
-		echo __( 'This extension needs WooCommerce' );
+		esc_html_e( __( 'This extension needs WooCommerce' ) );
 		exit;
 	}
 
 	$Doliwoo = new Doliwoo();
 
-endif;
+	endif;
