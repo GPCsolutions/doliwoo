@@ -325,7 +325,6 @@ class Dolibarr {
 		return $query->post;
 	}
 
-
 	/**
 	 * Update the product attributes
 	 *

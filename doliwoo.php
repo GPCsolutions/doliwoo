@@ -5,6 +5,7 @@ Plugin URI: http://gpcsolutions.github.io/doliwoo
 Description: Dolibarr WooCommerce integration
 Version: 0.0.2-alpha
 Author: GPC.solutions
+Author URI: http://gpcsolutions.fr
 License: GPL-3.0+
 Text Domain: doliwoo
 Domain Path: /languages
