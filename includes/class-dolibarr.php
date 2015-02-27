@@ -360,11 +360,11 @@ class Dolibarr {
 	private function import_product_images( $dolibarr_product, $post_id ) {
 		$image_attachment_ids = $this->get_product_image( $dolibarr_product, $post_id );
 
+		// Use the first image as the product thumbnail
+		update_post_meta( $post_id, '_thumbnail_id', array_shift( $image_attachment_ids ) );
+
 		// Fill the image gallery
 		update_post_meta( $post_id, '_product_image_gallery', implode( ',', $image_attachment_ids ) );
-
-		// Use the first image as the product thumbnail
-		update_post_meta( $post_id, '_thumbnail_id', $image_attachment_ids[0] );
 	}
 
 	/**
