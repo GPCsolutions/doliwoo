@@ -26,12 +26,18 @@
  * SOAP orders representation
  */
 class DolibarrOrder {
+	/** @var string */
+	public $id;
+
 	/** @var int */
 	public $thirdparty_id;
+
 	/** @var string ISO 8601 */
 	public $date;
+
 	/** @var int */
 	public $status;
+
 	/** @var DolibarrOrderLine[] */
 	public $lines;
 }
@@ -80,6 +86,9 @@ class DolibarrOrderLine {
  */
 class DolibarrThirdparty {
 	/** @var string */
+	public $id;
+
+	/** @var string */
 	public $ref;
 
 	/** @var string */
@@ -117,4 +126,86 @@ class DolibarrThirdparty {
 
 	/** @var string */
 	public $firstname;
+}
+
+/**
+ * Class DolibarrProduct
+ *
+ * SOAP products representation
+ */
+class DolibarrProduct {
+	/** @var string */
+	public $id;
+
+	/** @var string */
+	public $ref;
+
+	/** @var string */
+	public $type;
+
+	/** @var string */
+	public $label;
+
+	/** @var string */
+	public $description;
+
+	/** @var string */
+	public $date_creation;
+
+	/** @var string */
+	public $date_modification;
+
+	/** @var string */
+	public $note;
+
+	/** @var string */
+	public $status_tobuy;
+
+	/** @var string */
+	public $status_tosell;
+
+	/** @var string */
+	public $barcode_type;
+
+	/** @var string */
+	public $country_id;
+
+	/** @var string */
+	public $country_code;
+
+	/** @var string */
+	public $price_net;
+
+	/** @var string */
+	public $price;
+
+	/** @var string */
+	public $price_min_net;
+
+	/** @var string */
+	public $price_min;
+
+	/** @var string */
+	public $price_base_type;
+
+	/** @var string */
+	public $vat_rate;
+
+	/** @var string */
+	public $vat_npr;
+
+	/** @var string */
+	public $localtax1_tx;
+
+	/** @var string */
+	public $localtax2_tx;
+
+	/** @var string */
+	public $stock_real;
+
+	/** @var string */
+	public $dir;
+
+	/** @var array */
+	public $images;
 }

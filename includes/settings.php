@@ -324,8 +324,8 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 		 * Check that the webservice works.
 		 * Tests endpoint, authentication and actual response
 		 *
-		 * @param $endpoint
-		 * @param $ws_auth
+		 * @param string $endpoint The webservice endpoint URL
+		 * @param string[] $ws_auth The webservice authentication array
 		 */
 		private function test_webservice( $endpoint, $ws_auth ) {
 			// Check that the server is available

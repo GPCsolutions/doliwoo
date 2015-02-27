@@ -263,8 +263,10 @@ class Dolibarr {
 			$this->settings->dolibarr_category_id
 		);
 
-		if ( 'OK' == $result['result']->result_code ) {
-			$dolibarr_products = $result['products'];
+		/** @var DolibarrProduct[] $dolibarr_products */
+		$dolibarr_products = $result['products'];
+
+		if ( 'OK' == $result['result']->result_code && $dolibarr_products ) {
 			foreach ( $dolibarr_products as $dolibarr_product ) {
 				if ( $this->dolibarr_product_exists( $dolibarr_product->id ) ) {
 					$post_id = 0;
@@ -290,6 +292,8 @@ class Dolibarr {
 					// Post metas management
 					add_post_meta( $post_id, 'dolibarr_id', $dolibarr_product->id, true );
 					add_post_meta( $post_id, 'dolibarr_type', $dolibarr_product->type, true );
+					update_post_meta( $post_id, '_sku', $dolibarr_product->ref );
+					update_post_meta( $post_id, '_purchase_note', $dolibarr_product->note );
 					update_post_meta( $post_id, '_regular_price', $dolibarr_product->price_net );
 					update_post_meta( $post_id, '_sale_price', $dolibarr_product->price_net );
 					update_post_meta( $post_id, '_price', $dolibarr_product->price_net );
@@ -299,12 +303,14 @@ class Dolibarr {
 						'_tax_class',
 						$this->taxes->get_tax_class( $dolibarr_product->vat_rate )
 					);
+					update_post_meta( $post_id, '_manage_stock', 'no' );
 
 					// Stock management
 					if ( 'yes' == get_option( 'woocommerce_manage_stock' ) ) {
 						if ( 0 < $dolibarr_product->stock_real ) {
 							update_post_meta( $post_id, '_stock_status', 'instock' );
 							update_post_meta( $post_id, '_stock', $dolibarr_product->stock_real );
+							update_post_meta( $post_id, '_manage_stock', 'yes' );
 						}
 					}
 
@@ -341,7 +347,7 @@ class Dolibarr {
 	/**
 	 * Import Dolibarr product images
 	 *
-	 * @param StdClass $dolibarr_product The Dolibarr product
+	 * @param DolibarrProduct $dolibarr_product The Dolibarr product
 	 * @param int $post_id The WooCommerce product
 	 */
 	private function import_product_images( $dolibarr_product, $post_id ) {
@@ -357,14 +363,12 @@ class Dolibarr {
 	/**
 	 * Webservice calls to get the product's images
 	 *
-	 * @param stdClass $dolibarr_product SOAP product object
+	 * @param DolibarrProduct $dolibarr_product SOAP product object
 	 * @param int $post_id WooCommerce product ID
 	 *
 	 * @return int[] Attachment IDs
 	 */
-	private function get_product_image(
-		stdClass $dolibarr_product, $post_id
-	) {
+	private function get_product_image( $dolibarr_product, $post_id ) {
 		$soap_client = new SoapClient(
 			$this->ws_endpoint . 'server_other.php?wsdl'
 		);
