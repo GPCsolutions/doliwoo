@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DoliWoo\n"
 "Report-Msgid-Bugs-To: https://github.com/GPCsolutions/doliwoo/issues\n"
-"POT-Creation-Date: 2015-02-24 19:47:16+00:00\n"
-"PO-Revision-Date: 2015-02-24 19:50+0000\n"
+"POT-Creation-Date: 2015-02-27 15:36:15+00:00\n"
+"PO-Revision-Date: 2015-02-27 15:35+0000\n"
 "Last-Translator: Raphaël Doursenaud <rdoursenaud@gpcsolutions.fr>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/doliwoo/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -44,105 +44,114 @@ msgstr "Identifiant Utilisateur Dolibarr"
 msgid "VAT"
 msgstr "TVA"
 
-#: includes/settings.php:64
+#: includes/settings.php:67
 msgid "DoliWoo Settings"
 msgstr "Réglages DoliWoo"
 
-#: includes/settings.php:65
+#: includes/settings.php:68
 msgid "Dolibarr webservices access"
 msgstr "Accès aux webservices Dolibarr"
 
-#: includes/settings.php:104
+#: includes/settings.php:117
 msgid "Source application"
 msgstr "Nom de l'application"
 
-#: includes/settings.php:105
+#: includes/settings.php:118
 msgid "How this application will identify itself to the webservice."
 msgstr "Comment cette application s'identifie auprès du webservice."
 
-#: includes/settings.php:111
+#: includes/settings.php:124
 msgid "URL"
 msgstr "URL"
 
-#: includes/settings.php:112
+#: includes/settings.php:125
 msgid ""
 "Enter Dolibarr webservices root URL (i.e. "
 "https://mydolibarr.com/webservices)"
 msgstr "Entrez l'URL racine des webservices de Dolibarr (i.e. https://mydolibarr.com/webservices)"
 
-#: includes/settings.php:121
+#: includes/settings.php:134
 msgid "Delay"
 msgstr "Délai"
 
-#: includes/settings.php:122
+#: includes/settings.php:135
 msgid "Choose the automatic update frequency"
 msgstr "Choisissez la fréquence de mise à jour automatique"
 
-#: includes/settings.php:126
+#: includes/settings.php:139
 msgid "Once Hourly"
 msgstr "Une fois par heure"
 
-#: includes/settings.php:127
+#: includes/settings.php:140
 msgid "Twice Daily"
 msgstr "Deux fois par jour"
 
-#: includes/settings.php:128
+#: includes/settings.php:141
 msgid "Once Daily"
 msgstr "Une fois par jour"
 
-#: includes/settings.php:133
+#: includes/settings.php:146
 msgid "Key"
 msgstr "Clé"
 
-#: includes/settings.php:134
+#: includes/settings.php:147
 msgid "Enter your Dolibarr webservices key"
 msgstr "Entrez votre clé du webservices de Dolibarr"
 
-#: includes/settings.php:140
+#: includes/settings.php:153
 msgid "User login"
 msgstr "Identifiant utilisateur"
 
-#: includes/settings.php:141
+#: includes/settings.php:154
 msgid "Dolibarr actions will be done as this user"
 msgstr "Les actions de Dolibarr seront attribuées à cet utilisateur"
 
-#: includes/settings.php:147
+#: includes/settings.php:160
 msgid "User password"
 msgstr "Mot de passe utilisateur"
 
-#: includes/settings.php:153
+#: includes/settings.php:166
 msgid "Entity"
 msgstr "Entité"
 
-#: includes/settings.php:154
+#: includes/settings.php:167
 msgid ""
 "If you're using multicompany, the ID of the entity you want to integrate. "
 "Leave to 1 otherwise."
 msgstr "Si vous utilisez multi-société, l'ID de l'entité que vous souhaitez intégrer. Sinon laissez à 1."
 
-#: includes/settings.php:160
-msgid "Product category"
-msgstr "Catégorie du Produit"
+#: includes/settings.php:173
+msgid "Products category"
+msgstr "Catégorie des produits"
 
-#: includes/settings.php:161
+#: includes/settings.php:174
 msgid ""
-"The ID of the product category you want to automatically import products "
+"The ID of the products category you want to automatically import products "
 "from."
-msgstr "L'ID de la catégorie de produits que vous souhaitez importer automatiquement."
+msgstr "L'ID de la catégorie des produits que vous souhaitez importer automatiquement."
 
-#: includes/settings.php:167
+#: includes/settings.php:180
 msgid "Generic thirdparty"
 msgstr "Tiers générique"
 
-#: includes/settings.php:168
+#: includes/settings.php:181
 msgid "The ID of the thirdparty that'll be used for anonymous orders."
 msgstr "L'Id du tiers qui va être utilisé pour les commandes anonymes"
 
+#: includes/settings.php:187
+msgid "Dolibarr version"
+msgstr "Version de Dolibarr"
+
 #: includes/settings.php:188
+msgid ""
+"If the webservice communication is OK, it displays your Dolibarr version"
+msgstr "Vérifie si la communication est établie au travers du webservice et récupère la version de Dolibarr"
+
+#: includes/settings.php:254
 msgid "The protocol to use is https://"
 msgstr "Le protocole à utiliser est https://"
 
-#: includes/settings.php:198
+#: includes/settings.php:264 includes/settings.php:328
 msgid "The webservice is not available. Please check the URL."
 msgstr "Le webservice n'est pas disponible. Merci de vérifier l'URL."
 

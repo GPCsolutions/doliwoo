@@ -170,8 +170,8 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 					'default'     => 1,
 				),
 				'dolibarr_category_id' => array(
-					'title'       => __( 'Product category', 'doliwoo' ),
-					'description' => __( 'The ID of the product category you want to automatically import products from.', 'doliwoo' ),
+					'title'       => __( 'Products category', 'doliwoo' ),
+					'description' => __( 'The ID of the products category you want to automatically import products from.', 'doliwoo' ),
 					'type'        => 'text',
 					'desc_tip'    => false,
 					'default'     => '',
