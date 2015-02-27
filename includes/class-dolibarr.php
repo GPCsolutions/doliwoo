@@ -268,8 +268,15 @@ class Dolibarr {
 
 		if ( 'OK' == $result['result']->result_code && $dolibarr_products ) {
 			foreach ( $dolibarr_products as $dolibarr_product ) {
-				if ( $this->dolibarr_product_exists( $dolibarr_product->id ) ) {
-					$post_id = 0;
+				$existing_product = $this->dolibarr_product_exists( $dolibarr_product->id );
+				if ( $existing_product ) {
+					// Update the product
+					$post = array(
+						'ID'           => $existing_product->ID,
+						'post_title'   => $dolibarr_product->label,
+						'post_content' => $dolibarr_product->description,
+					);
+					$post_id = wp_update_post( $post );
 				} else {
 					$post    = array(
 						'post_title'   => $dolibarr_product->label,
@@ -331,7 +338,7 @@ class Dolibarr {
 	 *
 	 * @param  int $dolibarr_id ID of a product in Dolibarr
 	 *
-	 * @return bool $exists
+	 * @return WP_POST
 	 */
 	private function dolibarr_product_exists( $dolibarr_id ) {
 		$args  = array(
@@ -341,7 +348,7 @@ class Dolibarr {
 		);
 		$query = new WP_Query( $args );
 
-		return $query->have_posts();
+		return $query->post;
 	}
 
 	/**
