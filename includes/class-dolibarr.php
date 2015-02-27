@@ -268,6 +268,11 @@ class Dolibarr {
 
 		if ( 'OK' == $result['result']->result_code && $dolibarr_products ) {
 			foreach ( $dolibarr_products as $dolibarr_product ) {
+				if ( 0 == $dolibarr_product->status_tosell ) {
+					// This product is not for sale, let's skip it.
+					continue;
+				}
+
 				$existing_product = $this->dolibarr_product_exists( $dolibarr_product->id );
 				if ( $existing_product ) {
 					// Update the product
@@ -278,6 +283,7 @@ class Dolibarr {
 					);
 					$post_id = wp_update_post( $post );
 				} else {
+					// Create a new product
 					$post    = array(
 						'post_title'   => $dolibarr_product->label,
 						'post_content' => $dolibarr_product->description,
@@ -293,42 +299,8 @@ class Dolibarr {
 					$this->logger->add( 'doliwoo', $post_id->get_error_message() );
 				}
 
-				if ( 0 < $post_id && ! is_wp_error( $post_id ) ) {
-					/** @var int $post_id */
+				$this->update_product_attributes( $dolibarr_product, $post_id );
 
-					// Post metas management
-					add_post_meta( $post_id, 'dolibarr_id', $dolibarr_product->id, true );
-					add_post_meta( $post_id, 'dolibarr_type', $dolibarr_product->type, true );
-					update_post_meta( $post_id, '_sku', $dolibarr_product->ref );
-					update_post_meta( $post_id, '_purchase_note', $dolibarr_product->note );
-					update_post_meta( $post_id, '_regular_price', $dolibarr_product->price_net );
-					update_post_meta( $post_id, '_sale_price', $dolibarr_product->price_net );
-					update_post_meta( $post_id, '_price', $dolibarr_product->price_net );
-					update_post_meta( $post_id, '_visibility', 'visible' );
-					update_post_meta(
-						$post_id,
-						'_tax_class',
-						$this->taxes->get_tax_class( $dolibarr_product->vat_rate )
-					);
-					update_post_meta( $post_id, '_manage_stock', 'no' );
-
-					// Stock management
-					if ( 'yes' == get_option( 'woocommerce_manage_stock' ) ) {
-						if ( 0 < $dolibarr_product->stock_real ) {
-							update_post_meta( $post_id, '_stock_status', 'instock' );
-							update_post_meta( $post_id, '_stock', $dolibarr_product->stock_real );
-							update_post_meta( $post_id, '_manage_stock', 'yes' );
-						}
-					}
-
-					// Product images management
-					if ( $dolibarr_product->images ) {
-						$this->import_product_images( $dolibarr_product, $post_id );
-					}
-
-					// Cleanup
-					wc_delete_product_transients( $post_id );
-				}
 			}
 		}
 	}
@@ -349,6 +321,52 @@ class Dolibarr {
 		$query = new WP_Query( $args );
 
 		return $query->post;
+	}
+
+
+	/**
+	 * Update the product attributes
+	 *
+	 * @param DolibarrProduct $dolibarr_product The dolibarr product
+	 * @param int $post_id The woocommerce product ID
+	 */
+	private function update_product_attributes( $dolibarr_product, $post_id ) {
+		if ( 0 < $post_id && ! is_wp_error( $post_id ) ) {
+			/** @var int $post_id */
+
+			// Post metas management
+			add_post_meta( $post_id, 'dolibarr_id', $dolibarr_product->id, true );
+			add_post_meta( $post_id, 'dolibarr_type', $dolibarr_product->type, true );
+			update_post_meta( $post_id, '_sku', $dolibarr_product->ref );
+			update_post_meta( $post_id, '_purchase_note', $dolibarr_product->note );
+			update_post_meta( $post_id, '_regular_price', $dolibarr_product->price_net );
+			update_post_meta( $post_id, '_sale_price', $dolibarr_product->price_net );
+			update_post_meta( $post_id, '_price', $dolibarr_product->price_net );
+			update_post_meta( $post_id, '_visibility', 'visible' );
+			update_post_meta(
+				$post_id,
+				'_tax_class',
+				$this->taxes->get_tax_class( $dolibarr_product->vat_rate )
+			);
+			update_post_meta( $post_id, '_manage_stock', 'no' );
+
+			// Stock management
+			if ( 'yes' == get_option( 'woocommerce_manage_stock' ) ) {
+				if ( 0 < $dolibarr_product->stock_real ) {
+					update_post_meta( $post_id, '_stock_status', 'instock' );
+					update_post_meta( $post_id, '_stock', $dolibarr_product->stock_real );
+					update_post_meta( $post_id, '_manage_stock', 'yes' );
+				}
+			}
+
+			// Product images management
+			if ( $dolibarr_product->images ) {
+				$this->import_product_images( $dolibarr_product, $post_id );
+			}
+
+			// Cleanup
+			wc_delete_product_transients( $post_id );
+		}
 	}
 
 	/**
