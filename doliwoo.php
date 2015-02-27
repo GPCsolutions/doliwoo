@@ -83,9 +83,6 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				/** @var array SOAP authentication parameters */
 				public $ws_auth = array();
 
-				/** @var WC_Tax_Doliwoo WooCommerce taxes informations */
-				public $taxes;
-
 				/** @var Woocomerce_Parameters custom parameters */
 				public $woocommerce_parameters;
 
@@ -105,11 +102,12 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 					// Initialize plugin settings
 					add_action( 'plugins_loaded', array( $this, 'init' ) );
 
-					// Setup logger
+					// Setup dolibarr environment
 					add_action( 'woocommerce_loaded', array( &$this->dolibarr, 'set_woocommerce' ) );
+					add_action( 'woocommerce_init', array( $this, 'set_settings' ) );
 
 					// Create custom tax classes and VAT rates on plugin settings saved
-					add_action( 'woocommerce_settings_saved', array( &$this->taxes, 'create_custom_tax_classes' ) );
+					add_action( 'woocommerce_settings_saved', array( &$this->dolibarr->taxes, 'create_custom_tax_classes' ) );
 
 					// Import Dolibarr products on plugin settings saved
 					add_action( 'woocommerce_settings_saved', array( &$this->dolibarr, 'dolibarr_import_products' ) );
@@ -166,7 +164,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 						// Register the integration.
 						add_filter( 'woocommerce_integrations', array( $this, 'add_integration' ) );
 					}
-					$this->taxes = new WC_Tax_Doliwoo();
+					$this->dolibarr->taxes = new WC_Tax_Doliwoo();
 				}
 
 				/**
@@ -214,21 +212,15 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				}
 
 				/**
-				 * Extract settings from WooCommerce integration settings
+				 * Set Dolibarr settings from WooCommerce integration settings
 				 *
 				 * @return void
 				 */
-				public function get_settings() {
+				public function set_settings() {
 					// Load settings
 					$integrations = WC()->integrations->get_integrations();
-					$this->settings = $integrations['doliwoo'];
-					$this->ws_auth  = array(
-						'dolibarrkey'       => $this->settings->dolibarr_key,
-						'sourceapplication' => $this->settings->sourceapplication,
-						'login'             => $this->settings->dolibarr_login,
-						'password'          => $this->settings->dolibarr_password,
-						'entity'            => $this->settings->dolibarr_entity,
-					);
+					$this->dolibarr->settings = $integrations['doliwoo'];
+					$this->dolibarr->update_settings();
 				}
 			}
 		}

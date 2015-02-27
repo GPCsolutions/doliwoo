@@ -30,7 +30,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 	 */
 	class WC_Integration_Doliwoo_Settings extends WC_Integration {
 		/** @var string The Dolibarr webservice URL */
-		public $webservs_url;
+		public $dolibarr_ws_endpoint;
 
 		/** @var string WordPress pseudo cron update delay */
 		public $delay_update;
@@ -72,7 +72,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 			$this->init_settings();
 
 			// Define user set variables
-			$this->webservs_url         = $this->get_option( 'webservs_url' );
+			$this->dolibarr_ws_endpoint = $this->get_option( 'dolibarr_ws_endpoint' );
 			$this->delay_update         = $this->get_option( 'delay_update' );
 			$this->dolibarr_key         = $this->get_option( 'dolibarr_key' );
 			$this->sourceapplication    = $this->get_option( 'sourceapplication' );
@@ -83,7 +83,6 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 			$this->dolibarr_generic_id  = $this->get_option( 'dolibarr_generic_id' );
 
 			// Get Webservice infos
-			$endpoint = $this->webservs_url;
 			$ws_auth  = array(
 				'dolibarrkey'       => $this->dolibarr_key,
 				'sourceapplication' => $this->sourceapplication,
@@ -91,7 +90,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				'password'          => $this->dolibarr_password,
 				'entity'            => $this->dolibarr_entity,
 			);
-			$this->test_webservice( $endpoint, $ws_auth );
+			$this->test_webservice( $this->dolibarr_ws_endpoint, $ws_auth );
 
 			// Actions
 			add_action(
@@ -120,7 +119,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 					'desc_tip'    => false,
 					'default'     => 'WooCommerce',
 				),
-				'webservs_url'         => array(
+				'dolibarr_ws_endpoint' => array(
 					'title'       => __( 'URL', 'doliwoo' ),
 					'description' => __(
 						'Enter Dolibarr webservices root URL (i.e. https://mydolibarr.com/webservices)',
@@ -183,10 +182,10 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 					'desc_tip'    => false,
 					'default'     => '',
 				),
-				'dolibarr_version' => array(
-					'title'        => __( 'Dolibarr version', 'doliwoo' ),
-					'description'  => __( 'If the webservice communication is OK, it displays your Dolibarr version' ),
-					'type'         => 'info',
+				'dolibarr_version'     => array(
+					'title'       => __( 'Dolibarr version', 'doliwoo' ),
+					'description' => __( 'If the webservice communication is OK, it displays your Dolibarr version' ),
+					'type'        => 'info',
 				),
 			);
 		}
@@ -246,7 +245,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 		 *
 		 * @return string The form value
 		 */
-		public function validate_webservs_url_field( $key ) {
+		public function validate_dolibarr_ws_endpoint_field( $key ) {
 			$value = $_POST[ $this->plugin_id . $this->id . '_' . $key ];
 
 			// Make sure we use HTTPS
@@ -277,9 +276,9 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 		 * @return array Sanitized settings
 		 */
 		public function sanitize_settings( $settings ) {
-			// TODO: Check Dolibarr version and compatibility
+			// Check Dolibarr version and compatibility
 
-			$endpoint = $settings['webservs_url'];
+			$endpoint = $settings['dolibarr_ws_endpoint'];
 			$ws_auth  = array(
 				'dolibarrkey'       => $settings['dolibarr_key'],
 				'sourceapplication' => $settings['sourceapplication'],
@@ -300,6 +299,11 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 		 * @return void
 		 */
 		public function display_errors( ) {
+			if( ! $this->errors ) {
+				// Nothing to do
+				return;
+			}
+
 			foreach ( $this->errors as $key => $value ) {
 				?>
 				<div class="error">
@@ -311,6 +315,9 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				</div>
 			<?php
 			}
+
+			// Errors have been displayed. Let's clear them to avoid weird corner case.
+			unset( $this->errors );
 		}
 
 		/**
