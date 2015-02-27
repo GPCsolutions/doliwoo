@@ -69,22 +69,15 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 			$this->init_settings();
 
 			// Define user set variables
-			$this->webservs_url = $this->get_option( 'webservs_url' );
-
-			$this->delay_update = $this->get_option( 'delay_update' );
-
-			$this->dolibarr_key = $this->get_option( 'dolibarr_key' );
-			$this->sourceapplication
-			                      = $this->get_option( 'sourceapplication' );
-			$this->dolibarr_login = $this->get_option( 'dolibarr_login' );
-			$this->dolibarr_password
-			                      = $this->get_option( 'dolibarr_password' );
-			$this->dolibarr_entity
-			                      = $this->get_option( 'dolibarr_entity' );
-			$this->dolibarr_category_id
-			                      = $this->get_option( 'dolibarr_category_id' );
-			$this->dolibarr_generic_id
-			                      = $this->get_option( 'dolibarr_generic_id' );
+			$this->webservs_url         = $this->get_option( 'webservs_url' );
+			$this->delay_update         = $this->get_option( 'delay_update' );
+			$this->dolibarr_key         = $this->get_option( 'dolibarr_key' );
+			$this->sourceapplication    = $this->get_option( 'sourceapplication' );
+			$this->dolibarr_login       = $this->get_option( 'dolibarr_login' );
+			$this->dolibarr_password    = $this->get_option( 'dolibarr_password' );
+			$this->dolibarr_entity      = $this->get_option( 'dolibarr_entity' );
+			$this->dolibarr_category_id = $this->get_option( 'dolibarr_category_id' );
+			$this->dolibarr_generic_id  = $this->get_option( 'dolibarr_generic_id' );
 
 			// Actions
 			add_action(
@@ -175,13 +168,14 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 
 		/**
 		 * Check if the fields URL Webservs is HTTPS
+		 * @see validate_settings_fields()
 		 *
 		 * @param string $key The form setting
 		 *
 		 * @return string The form value
 		 */
 		public function validate_webservs_url_field( $key ) {
-			$value = $_POST['woocommerce_doliwoo_webservs_url'];
+			$value = $_POST[ $this->plugin_id . $this->id . '_' . $key ];
 
 			// Make sure we use HTTPS
 			if ( 'https://' !== ( substr( $value, 0, 8 ) ) ) {
@@ -203,10 +197,11 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 
 		/**
 		 * Display HTTPS is needed
+		 * @see WC_Integration::display_errors()
 		 *
 		 * @return void
 		 */
-		public function display_errors() {
+		public function display_errors( ) {
 			foreach ( $this->errors as $key => $value ) {
 				?>
 				<div class="error">
