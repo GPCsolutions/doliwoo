@@ -299,7 +299,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 		 * @return void
 		 */
 		public function display_errors( ) {
-			if( ! $this->errors ) {
+			if( empty( $this->errors ) ) {
 				// Nothing to do
 				return;
 			}
