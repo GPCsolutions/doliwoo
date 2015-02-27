@@ -56,6 +56,9 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 		/** @var string ID of the Dolibarr thirdparty to use when we make a sale without a user logged in */
 		public $dolibarr_generic_id;
 
+		/** @var int[] The distant Dolibarr version */
+		private $dolibarr_version;
+
 		/**
 		 * Init and hook in the integration.
 		 */
@@ -79,10 +82,27 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 			$this->dolibarr_category_id = $this->get_option( 'dolibarr_category_id' );
 			$this->dolibarr_generic_id  = $this->get_option( 'dolibarr_generic_id' );
 
+			// Get Webservice infos
+			$endpoint = $this->webservs_url;
+			$ws_auth  = array(
+				'dolibarrkey'       => $this->dolibarr_key,
+				'sourceapplication' => $this->sourceapplication,
+				'login'             => $this->dolibarr_login,
+				'password'          => $this->dolibarr_password,
+				'entity'            => $this->dolibarr_entity,
+			);
+			$this->test_webservice( $endpoint, $ws_auth );
+
 			// Actions
 			add_action(
 				'woocommerce_update_options_integration_' . $this->id,
 				array( $this, 'process_admin_options' )
+			);
+
+			// Filters.
+			add_filter(
+				'woocommerce_settings_api_sanitized_fields_' . $this->id,
+				array( $this, 'sanitize_settings' )
 			);
 		}
 
@@ -163,7 +183,59 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 					'desc_tip'    => false,
 					'default'     => '',
 				),
+				'dolibarr_version' => array(
+					'title'        => __( 'Dolibarr version', 'doliwoo' ),
+					'description'  => __( 'If the webservice communication is OK, it displays your Dolibarr version' ),
+					'type'         => 'info',
+				),
 			);
+		}
+
+		/**
+		 * Display Dolibarr version and compatibility
+		 *
+		 * @param string $key Settings key
+		 * @param array $data Setting valupe
+		 *
+		 * @return string HTML to display
+		 */
+		protected function generate_info_html( $key, $data ) {
+			$field = $this->plugin_id . $this->id . '_' . $key;
+
+			$version_ok = false;
+			if (
+				// Is version > 3.4.0
+				4 <= $this->dolibarr_version[0]
+				|| ( 3 <= $this->dolibarr_version[0] && 4 <= $this->dolibarr_version[1] )
+			) {
+				$version_ok = true;
+			}
+
+			ob_start();
+			?>
+			<tr valign="top">
+				<th scope="row" class="titledesc">
+					<label for="<?php echo esc_attr( $field ); ?>"><?php echo wp_kses_post( $data['title'] ); ?></label>
+					<?php esc_html_e( $this->get_tooltip_html( $data ) ); ?>
+				</th>
+				<td class="forminp">
+					<?php
+					if ( $version_ok ){
+						// TODO: better use WooCommerce icons: https://github.com/woothemes/woocommerce-icons
+						esc_html_e( __( 'OK!' ) );
+					} else {
+						esc_html_e( __( 'Not compatible! Please use at least Dolibarr v3.4.0.' ) );
+					}
+					esc_html_e(
+						'&nbsp;(v'
+						. implode( '.', $this->dolibarr_version )
+						. ')'
+					);
+					?>
+				</td>
+			</tr>
+			<?php
+			return ob_get_clean();
 		}
 
 		/**
@@ -196,6 +268,32 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 		}
 
 		/**
+		 * Sanitize settings.
+		 * Executed after validations.
+		 * @see process_admin_options()
+		 *
+		 * @param array $settings Validated settings
+		 *
+		 * @return array Sanitized settings
+		 */
+		public function sanitize_settings( $settings ) {
+			// TODO: Check Dolibarr version and compatibility
+
+			$endpoint = $settings['webservs_url'];
+			$ws_auth  = array(
+				'dolibarrkey'       => $settings['dolibarr_key'],
+				'sourceapplication' => $settings['sourceapplication'],
+				'login'             => $settings['dolibarr_login'],
+				'password'          => $settings['dolibarr_password'],
+				'entity'            => $settings['dolibarr_entity'],
+			);
+
+			$this->test_webservice( $endpoint, $ws_auth );
+
+			return $settings;
+		}
+
+		/**
 		 * Display HTTPS is needed
 		 * @see WC_Integration::display_errors()
 		 *
@@ -213,6 +311,37 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				</div>
 			<?php
 			}
+		}
+
+		/**
+		 * Check that the webservice works.
+		 * Tests endpoint, authentication and actual response
+		 *
+		 * @param $endpoint
+		 * @param $ws_auth
+		 */
+		private function test_webservice( $endpoint, $ws_auth ) {
+			// Check that the server is available
+			try {
+				$soapclient = new SoapClient( $endpoint . 'server_other.php?wsdl' );
+			} catch ( SoapFault $exc ) {
+				$this->errors[] = __( 'The webservice is not available. Please check the URL.' );
+				$this->display_errors();
+
+				// No point in doing the next test
+				return;
+			}
+
+			$response = $soapclient->getVersions( $ws_auth );
+
+			if ( 'OK' == $response['result']->result_code ) {
+				$this->dolibarr_version = explode( '.', $response['dolibarr'] );
+			} else {
+				$this->errors[] = 'Webservice error:' . $response['result']->result_label;
+			}
+
+			// Not called by the framework
+			$this->display_errors();
 		}
 	}
 endif;
