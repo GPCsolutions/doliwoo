@@ -75,14 +75,22 @@ class Dolibarr {
 		 * We use non WSDL mode to workaround Dolibarr broken declaration marking all the fields as required
 		 * when they're not.
 		 */
-		$soap_client = new SoapClient(
-			null,
-			array(
-				'location' => $this->ws_endpoint . self::ORDER_ENDPOINT,
-				'uri'      => 'http://www.dolibar.org/ns/',
-			)
-		);
-		$order       = new DolibarrOrder();
+		try {
+			$soap_client = new SoapClient(
+				null,
+				array(
+					'location' => $this->ws_endpoint . self::ORDER_ENDPOINT,
+					'uri'      => 'http://www.dolibar.org/ns/',
+				)
+			);
+		} catch ( SoapFault $exception ) {
+			$this->logger->add( 'doliwoo', $exception->getMessage() );
+
+			// Do nothing.
+			return;
+		}
+
+		$order = new DolibarrOrder();
 
 		// Fill this array with all data required to create an order in Dolibarr
 		$user_id = get_current_user_id();
@@ -139,14 +147,21 @@ class Dolibarr {
 	/**
 	 * Checks if a thirdparty exists in Dolibarr
 	 *
-	 * @param int $user_id wordpress ID of an user
+	 * @param int $user_id Wordpress ID of an user
 	 *
-	 * @return int $result  array with the request results if it succeeds, null if there's an error
+	 * @return int $result Array with the request results if it succeeds, null if there's an error
 	 */
 	private function dolibarr_thirdparty_exists( $user_id ) {
-		$soap_client = new SoapClient(
-			$this->ws_endpoint . self::THIRDPARTY_ENDPOINT . self::WSDL_MODE
-		);
+		try {
+			$soap_client = new SoapClient(
+				$this->ws_endpoint . self::THIRDPARTY_ENDPOINT . self::WSDL_MODE
+			);
+		} catch ( SoapFault $exception ) {
+			$this->logger->add( 'doliwoo', $exception->getMessage() );
+
+			// Do nothing.
+			return null;
+		}
 
 		$dol_id = get_user_meta( $user_id, 'dolibarr_id', true );
 
@@ -179,13 +194,20 @@ class Dolibarr {
 		 * We use non WSDL mode to workaround Dolibarr broken declaration marking all the fields as required
 		 * when they're not.
 		 */
-		$soap_client = new SoapClient(
-			null,
-			array(
-				'location' => $this->ws_endpoint . self::THIRDPARTY_ENDPOINT,
-				'uri'      => 'http://www.dolibar.org/ns/',
-			)
-		);
+		try {
+			$soap_client = new SoapClient(
+				null,
+				array(
+					'location' => $this->ws_endpoint . self::THIRDPARTY_ENDPOINT,
+					'uri'      => 'http://www.dolibar.org/ns/',
+				)
+			);
+		} catch ( SoapFault $exception ) {
+			$this->logger->add( 'doliwoo', $exception->getMessage() );
+
+			// Do nothing.
+			return null;
+		}
 
 		$ref        = get_user_meta( $user_id, 'billing_company', true );
 		$individual = 0;
@@ -401,9 +423,16 @@ class Dolibarr {
 	 * @return int[] Attachment IDs
 	 */
 	private function get_product_image( $dolibarr_product, $post_id ) {
-		$soap_client = new SoapClient(
-			$this->ws_endpoint . self::OTHER_ENDPOINT . self::WSDL_MODE
-		);
+		try {
+			$soap_client = new SoapClient(
+				$this->ws_endpoint . self::OTHER_ENDPOINT . self::WSDL_MODE
+			);
+		} catch ( SoapFault $exception ) {
+			$this->logger->add( 'doliwoo', $exception->getMessage() );
+
+			// Do nothing.
+			return null;
+		}
 
 		$file_array = array();
 		$attach_ids = array();
