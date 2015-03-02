@@ -41,6 +41,15 @@ class Dolibarr {
 	private $ws_auth;
 
 	/**
+	 * Dolibarr webservices endpoints
+	 */
+	const ORDER_ENDPOINT      = 'server_order.php';
+	const THIRDPARTY_ENDPOINT = 'server_thirdparty.php';
+	const PRODUCT_ENDPOINT    = 'server_productorservice.php';
+	const OTHER_ENDPOINT      = 'server_other.php';
+	const WSDL_MODE           = '?wsdl';
+
+	/**
 	 * Init parameters
 	 */
 	public function __construct() {
@@ -62,14 +71,14 @@ class Dolibarr {
 	 * @return void
 	 */
 	public function dolibarr_create_order() {
-
-		$dolibarr_ws_url = $this->ws_endpoint . 'server_order.php?wsdl';
-
-		// Set the WebService URL
+		/*
+		 * We use non WSDL mode to workaround Dolibarr broken declaration marking all the fields as required
+		 * when they're not.
+		 */
 		$soap_client = new SoapClient(
 			null,
 			array(
-				'location' => $dolibarr_ws_url,
+				'location' => $this->ws_endpoint . self::ORDER_ENDPOINT,
 				'uri'      => 'http://www.dolibar.org/ns/',
 			)
 		);
@@ -135,10 +144,9 @@ class Dolibarr {
 	 * @return int $result  array with the request results if it succeeds, null if there's an error
 	 */
 	private function dolibarr_thirdparty_exists( $user_id ) {
-		$dolibarr_ws_url = $this->ws_endpoint . 'server_thirdparty.php?wsdl';
-
-		// Set the WebService URL
-		$soap_client = new SoapClient( $dolibarr_ws_url );
+		$soap_client = new SoapClient(
+			$this->ws_endpoint . self::THIRDPARTY_ENDPOINT . self::WSDL_MODE
+		);
 
 		$dol_id = get_user_meta( $user_id, 'dolibarr_id', true );
 
@@ -167,12 +175,14 @@ class Dolibarr {
 	 * @return int $result    the SOAP response
 	 */
 	public function dolibarr_create_thirdparty( $user_id ) {
-		$dolibarr_ws_url = $this->ws_endpoint . 'server_thirdparty.php?wsdl';
-		// Set the WebService URL
+		/*
+		 * We use non WSDL mode to workaround Dolibarr broken declaration marking all the fields as required
+		 * when they're not.
+		 */
 		$soap_client = new SoapClient(
 			null,
 			array(
-				'location' => $dolibarr_ws_url,
+				'location' => $this->ws_endpoint . self::THIRDPARTY_ENDPOINT,
 				'uri'      => 'http://www.dolibar.org/ns/',
 			)
 		);
@@ -243,12 +253,9 @@ class Dolibarr {
 	 * @return void
 	 */
 	public function dolibarr_import_products() {
-		// FIXME: protect executions if settings are not yet completed
-
-		// Set the WebService URL
 		try {
 			$soap_client = new SoapClient(
-				$this->ws_endpoint . 'server_productorservice.php?wsdl'
+				$this->ws_endpoint . self::PRODUCT_ENDPOINT . self::WSDL_MODE
 			);
 		} catch ( SoapFault $exception ) {
 			$this->logger->add( 'doliwoo', $exception->getMessage() );
@@ -395,7 +402,7 @@ class Dolibarr {
 	 */
 	private function get_product_image( $dolibarr_product, $post_id ) {
 		$soap_client = new SoapClient(
-			$this->ws_endpoint . 'server_other.php?wsdl'
+			$this->ws_endpoint . self::OTHER_ENDPOINT . self::WSDL_MODE
 		);
 
 		$file_array = array();

@@ -258,7 +258,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 
 			// Check that the server is available
 			try {
-				new SoapClient( $value . 'server_other.php?wsdl' );
+				new SoapClient( $value . Dolibarr::OTHER_ENDPOINT . Dolibarr::WSDL_MODE );
 			} catch ( SoapFault $exc ) {
 				$this->errors[] = __( 'The webservice is not available. Please check the URL.' );
 			}
@@ -324,13 +324,13 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 		 * Check that the webservice works.
 		 * Tests endpoint, authentication and actual response
 		 *
-		 * @param string $endpoint The webservice endpoint URL
+		 * @param string $webservice The webservice URL
 		 * @param string[] $ws_auth The webservice authentication array
 		 */
-		private function test_webservice( $endpoint, $ws_auth ) {
+		private function test_webservice( $webservice, $ws_auth ) {
 			// Check that the server is available
 			try {
-				$soapclient = new SoapClient( $endpoint . 'server_other.php?wsdl' );
+				$soapclient = new SoapClient( $webservice . Dolibarr::OTHER_ENDPOINT . Dolibarr::WSDL_MODE );
 			} catch ( SoapFault $exc ) {
 				$this->errors[] = __( 'The webservice is not available. Please check the URL.' );
 				$this->display_errors();
