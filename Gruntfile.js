@@ -105,10 +105,6 @@ module.exports = function (grunt) {
                     '!vendor/**'
                 ],
                 dest: 'release/<%= pkg.version %>/'
-            },
-            dist: {
-                src: 'readme.txt',
-                dest: 'README.md'
             }
         },
         compress: {
