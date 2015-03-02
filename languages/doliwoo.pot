@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DoliWoo 0.0.2-alpha\n"
 "Report-Msgid-Bugs-To: https://github.com/GPCsolutions/doliwoo/issues\n"
-"POT-Creation-Date: 2015-02-27 15:36:15+00:00\n"
+"POT-Creation-Date: 2015-03-02 15:25:28+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -52,105 +52,105 @@ msgstr ""
 msgid "Dolibarr webservices access"
 msgstr ""
 
-#: includes/settings.php:117
+#: includes/settings.php:116
 msgid "Source application"
 msgstr ""
 
-#: includes/settings.php:118
+#: includes/settings.php:117
 msgid "How this application will identify itself to the webservice."
 msgstr ""
 
-#: includes/settings.php:124
+#: includes/settings.php:123
 msgid "URL"
 msgstr ""
 
-#: includes/settings.php:125
+#: includes/settings.php:124
 msgid ""
 "Enter Dolibarr webservices root URL (i.e. "
 "https://mydolibarr.com/webservices)"
 msgstr ""
 
-#: includes/settings.php:134
+#: includes/settings.php:133
 msgid "Delay"
 msgstr ""
 
-#: includes/settings.php:135
+#: includes/settings.php:134
 msgid "Choose the automatic update frequency"
 msgstr ""
 
-#: includes/settings.php:139
+#: includes/settings.php:138
 msgid "Once Hourly"
 msgstr ""
 
-#: includes/settings.php:140
+#: includes/settings.php:139
 msgid "Twice Daily"
 msgstr ""
 
-#: includes/settings.php:141
+#: includes/settings.php:140
 msgid "Once Daily"
 msgstr ""
 
-#: includes/settings.php:146
+#: includes/settings.php:145
 msgid "Key"
 msgstr ""
 
-#: includes/settings.php:147
+#: includes/settings.php:146
 msgid "Enter your Dolibarr webservices key"
 msgstr ""
 
-#: includes/settings.php:153
+#: includes/settings.php:152
 msgid "User login"
 msgstr ""
 
-#: includes/settings.php:154
+#: includes/settings.php:153
 msgid "Dolibarr actions will be done as this user"
 msgstr ""
 
-#: includes/settings.php:160
+#: includes/settings.php:159
 msgid "User password"
 msgstr ""
 
-#: includes/settings.php:166
+#: includes/settings.php:165
 msgid "Entity"
 msgstr ""
 
-#: includes/settings.php:167
+#: includes/settings.php:166
 msgid ""
 "If you're using multicompany, the ID of the entity you want to integrate. "
 "Leave to 1 otherwise."
 msgstr ""
 
-#: includes/settings.php:173
+#: includes/settings.php:172
 msgid "Products category"
 msgstr ""
 
-#: includes/settings.php:174
+#: includes/settings.php:173
 msgid ""
 "The ID of the products category you want to automatically import products "
 "from."
 msgstr ""
 
-#: includes/settings.php:180
+#: includes/settings.php:179
 msgid "Generic thirdparty"
 msgstr ""
 
-#: includes/settings.php:181
+#: includes/settings.php:180
 msgid "The ID of the thirdparty that'll be used for anonymous orders."
 msgstr ""
 
-#: includes/settings.php:187
+#: includes/settings.php:186
 msgid "Dolibarr version"
 msgstr ""
 
-#: includes/settings.php:188
+#: includes/settings.php:187
 msgid "If the webservice communication is OK, it displays your Dolibarr version"
 msgstr ""
 
-#: includes/settings.php:254
+#: includes/settings.php:253
 msgid "The protocol to use is https://"
 msgstr ""
 
-#: includes/settings.php:264 includes/settings.php:328
+#: includes/settings.php:263 includes/settings.php:335
 msgid "The webservice is not available. Please check the URL."
 msgstr ""
 
@@ -168,4 +168,8 @@ msgstr ""
 
 #. Author of the plugin/theme
 msgid "GPC.solutions"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://gpcsolutions.fr"
 msgstr ""
