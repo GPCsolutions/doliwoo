@@ -171,7 +171,6 @@ module.exports = function (grunt) {
 
     grunt.registerTask('default', [
         'test',
-        'potupdate',
         'sync-json',
         'wp_readme_to_markdown'
     ]);
