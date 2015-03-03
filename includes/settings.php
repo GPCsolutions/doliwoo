@@ -331,7 +331,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 		private function test_webservice( $webservice, $ws_auth ) {
 			// Check that the server is available
 			try {
-				$soapclient = new SoapClient( $webservice . Dolibarr::OTHER_ENDPOINT . Dolibarr::WSDL_MODE );
+				$soap_client = new SoapClient( $webservice . Dolibarr::OTHER_ENDPOINT . Dolibarr::WSDL_MODE );
 			} catch ( SoapFault $exc ) {
 				$this->errors[] = __( 'The webservice is not available. Please check the URL.' );
 				$this->display_errors();
@@ -340,7 +340,15 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				return;
 			}
 
-			$response = $soapclient->getVersions( $ws_auth );
+			try {
+				$response = $soap_client->getVersions( $ws_auth );
+			} catch ( SoapFault $exc ) {
+				$this->errors[] = 'Webservice error:' . $exc->getMessage();
+				$this->display_errors();
+
+				// No point in doing the next test
+				return;
+			}
 
 			if ( 'OK' == $response['result']->result_code ) {
 				$this->dolibarr_version = explode( '.', $response['dolibarr'] );

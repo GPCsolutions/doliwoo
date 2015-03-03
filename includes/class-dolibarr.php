@@ -114,7 +114,14 @@ class Dolibarr {
 
 		$this->create_order_lines( $order );
 
-		$soap_client->createOrder( $this->ws_auth, $order );
+		try {
+			$soap_client->createOrder( $this->ws_auth, $order );
+		} catch ( SoapFault $exception ) {
+			$this->logger->add( 'doliwoo', $exception->getMessage() );
+
+			// Do nothing.
+			return;
+		}
 	}
 
 	/**
@@ -164,17 +171,24 @@ class Dolibarr {
 		}
 
 		$dol_id = get_user_meta( $user_id, 'dolibarr_id', true );
+		$dol_ref = get_user_meta( $user_id, 'billing_company', true );
 
-		// if the user has a Dolibarr ID, use it, else use his company name
+		// If the user has a Dolibarr ID, use it, else search his company name
 		if ( $dol_id ) {
-			$result = $soap_client->getThirdParty( $this->ws_auth, $dol_id );
+			$dol_ref = null;
 		} else {
-			$result = $soap_client->getThirdParty(
-				$this->ws_auth,
-				'',
-				get_user_meta( $user_id, 'billing_company', true )
-			);
+			$dol_id = '';
 		}
+
+		try {
+			$result = $soap_client->getThirdParty( $this->ws_auth, $dol_id, $dol_ref );
+		} catch ( SoapFault $exception ) {
+			$this->logger->add( 'doliwoo', $exception->getMessage() );
+
+			// Do nothing.
+			return null;
+		}
+
 		if ( $result ) {
 			return $result;
 		} else {
@@ -232,7 +246,14 @@ class Dolibarr {
 		$new_thirdparty->phone = get_user_meta( $user_id, 'billing_phone', true );
 		$new_thirdparty->email = get_user_meta( $user_id, 'billing_email', true );
 
-		$result = $soap_client->createThirdParty( $this->ws_auth, $new_thirdparty );
+		try {
+			$result = $soap_client->createThirdParty( $this->ws_auth, $new_thirdparty );
+		} catch ( SoapFault $exception ) {
+			$this->logger->add( 'doliwoo', $exception->getMessage() );
+
+			// Do nothing.
+			return null;
+		}
 
 		return $result;
 	}
@@ -287,10 +308,17 @@ class Dolibarr {
 		}
 
 		// Get all products that are meant to be displayed on the website
-		$result = $soap_client->getProductsForCategory(
-			$this->ws_auth,
-			$this->settings->dolibarr_category_id
-		);
+		try {
+			$result = $soap_client->getProductsForCategory(
+				$this->ws_auth,
+				$this->settings->dolibarr_category_id
+			);
+		} catch ( SoapFault $exception ) {
+			$this->logger->add( 'doliwoo', $exception->getMessage() );
+
+			// Do nothing.
+			return;
+		}
 
 		/** @var DolibarrProduct[] $dolibarr_products */
 		$dolibarr_products = $result['products'];
@@ -439,11 +467,18 @@ class Dolibarr {
 
 		foreach ( $dolibarr_product->images as $images ) {
 			// Get the image from Dolibarr
-			$result = $soap_client->getDocument(
-				$this->ws_auth,
-				'product',
-				$dolibarr_product->dir . $images->photo
-			);
+			try {
+				$result = $soap_client->getDocument(
+					$this->ws_auth,
+					'product',
+					$dolibarr_product->dir . $images->photo
+				);
+			} catch ( SoapFault $exception ) {
+				$this->logger->add( 'doliwoo', $exception->getMessage() );
+
+				// Do nothing.
+				continue;
+			}
 
 			if ( 'OK' == $result['result']->result_code ) {
 				$file_array['name']     = $images->photo;
