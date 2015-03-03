@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DoliWoo 0.0.2-alpha\n"
 "Report-Msgid-Bugs-To: https://github.com/GPCsolutions/doliwoo/issues\n"
-"POT-Creation-Date: 2015-03-03 15:12:59+00:00\n"
+"POT-Creation-Date: 2015-03-03 15:16:08+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -25,7 +25,7 @@ msgstr ""
 "X-Textdomain-Support: yes\n"
 
 #: doliwoo.php:231
-msgid "View WooCommerce Settings"
+msgid "View DoliWoo Settings"
 msgstr ""
 
 #: doliwoo.php:233
@@ -52,8 +52,8 @@ msgstr ""
 msgid "VAT"
 msgstr ""
 
-#: includes/settings.php:67
-msgid "DoliWoo Settings"
+#. Plugin Name of the plugin/theme
+msgid "DoliWoo"
 msgstr ""
 
 #: includes/settings.php:68
@@ -160,10 +160,6 @@ msgstr ""
 
 #: includes/settings.php:264 includes/settings.php:336
 msgid "The webservice is not available. Please check the URL."
-msgstr ""
-
-#. Plugin Name of the plugin/theme
-msgid "DoliWoo"
 msgstr ""
 
 #. Plugin URI of the plugin/theme

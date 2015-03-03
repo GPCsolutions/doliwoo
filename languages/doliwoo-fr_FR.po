@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DoliWoo\n"
 "Report-Msgid-Bugs-To: https://github.com/GPCsolutions/doliwoo/issues\n"
-"POT-Creation-Date: 2015-03-03 15:12:59+00:00\n"
-"PO-Revision-Date: 2015-03-03 15:13+0000\n"
+"POT-Creation-Date: 2015-03-03 15:15:10+00:00\n"
+"PO-Revision-Date: 2015-03-03 15:15+0000\n"
 "Last-Translator: Raphaël Doursenaud <rdoursenaud@gpcsolutions.fr>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/doliwoo/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -25,7 +25,7 @@ msgstr ""
 "X-Textdomain-Support: yes\n"
 
 #: doliwoo.php:231
-msgid "View WooCommerce Settings"
+msgid "View DoliWoo Settings"
 msgstr ""
 
 #: doliwoo.php:233
@@ -52,9 +52,9 @@ msgstr "Identifiant Utilisateur Dolibarr"
 msgid "VAT"
 msgstr "TVA"
 
-#: includes/settings.php:67
-msgid "DoliWoo Settings"
-msgstr "Réglages DoliWoo"
+#. Plugin Name of the plugin/theme
+msgid "DoliWoo"
+msgstr "DoliWoo"
 
 #: includes/settings.php:68
 msgid "Dolibarr webservices access"
@@ -162,10 +162,6 @@ msgstr "Le protocole à utiliser est https://"
 #: includes/settings.php:264 includes/settings.php:336
 msgid "The webservice is not available. Please check the URL."
 msgstr "Le webservice n'est pas disponible. Merci de vérifier l'URL."
-
-#. Plugin Name of the plugin/theme
-msgid "DoliWoo"
-msgstr "DoliWoo"
 
 #. Plugin URI of the plugin/theme
 msgid "http://gpcsolutions.github.io/doliwoo"
