@@ -323,7 +323,7 @@ class Dolibarr {
 		/** @var DolibarrProduct[] $dolibarr_products */
 		$dolibarr_products = $result['products'];
 
-		if ( 'OK' == $result['result']->result_code && $dolibarr_products ) {
+		if ( 'OK' == $result['result']->result_code && ! empty( $dolibarr_products ) ) {
 			foreach ( $dolibarr_products as $dolibarr_product ) {
 				if ( 0 == $dolibarr_product->status_tosell ) {
 					// This product is not for sale, let's skip it.
@@ -418,7 +418,7 @@ class Dolibarr {
 		}
 
 		// Product images management
-		if ( $dolibarr_product->images ) {
+		if ( ! empty( $dolibarr_product->images ) ) {
 			$this->import_product_images( $dolibarr_product, $post_id );
 		}
 
