@@ -186,6 +186,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 					'title'       => __( 'Dolibarr version', 'doliwoo' ),
 					'description' => __( 'If the webservice communication is OK, it displays your Dolibarr version' ),
 					'type'        => 'info',
+					'desc_tip'    => false,
 				),
 			);
 		}
