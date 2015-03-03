@@ -14,14 +14,15 @@ module.exports = function (grunt) {
                 files_std: [
                     '*.php',
                     '**/*.php',
+                    '!assets/**/*.php',
                     '!node_modules/**/*.php',
-                    '!wordpress/**/*.php',
-                    '!vendor/**/*.php'
+                    '!release/**/*.php',
+                    '!vendor/**/*.php',
+                    '!wordpress/**/*.php'
                 ], // Standard file match
                 files: '<%= paths.php.files_std %>', // Dynamic file match
                 exclude: [
                     'assets/.*',
-                    'wordpress/.*',
                     'composer.json',
                     'composer.lock',
                     'CONTRIBUTING.md',
@@ -36,7 +37,8 @@ module.exports = function (grunt) {
                     '.sensiolabs.yml',
                     '.travis.yml',
                     '.tx',
-                    'vendor/.*'
+                    'vendor/.*',
+                    'wordpress/.*'
                 ] // PHP regex match
             }
         },
