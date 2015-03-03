@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DoliWoo 0.0.2-alpha\n"
 "Report-Msgid-Bugs-To: https://github.com/GPCsolutions/doliwoo/issues\n"
-"POT-Creation-Date: 2015-03-02 15:25:28+00:00\n"
+"POT-Creation-Date: 2015-03-03 13:49:19+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -146,11 +146,11 @@ msgstr ""
 msgid "If the webservice communication is OK, it displays your Dolibarr version"
 msgstr ""
 
-#: includes/settings.php:253
+#: includes/settings.php:254
 msgid "The protocol to use is https://"
 msgstr ""
 
-#: includes/settings.php:263 includes/settings.php:335
+#: includes/settings.php:264 includes/settings.php:336
 msgid "The webservice is not available. Please check the URL."
 msgstr ""
 

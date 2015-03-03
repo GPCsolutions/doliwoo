@@ -103,6 +103,11 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 					// Initialize plugin settings
 					add_action( 'plugins_loaded', array( $this, 'init' ) );
 
+					// Add a link to settings
+					add_filter(
+						'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'plugin_action_links' )
+					);
+
 					// Setup dolibarr environment
 					add_action( 'woocommerce_loaded', array( &$this->dolibarr, 'set_woocommerce' ) );
 					add_action( 'woocommerce_init', array( $this, 'set_settings' ) );
@@ -210,6 +215,26 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 					$delay = $this->settings->delay_update;
 					wp_clear_scheduled_hook( 'import_products' );
 					wp_schedule_event( time(), $delay, 'import_products' );
+				}
+
+				/**
+				 * Show action links on the plugin screen.
+				 *
+				 * @param	mixed $links Plugin Action links
+				 * @return	array
+				 */
+				public static function plugin_action_links( $links ) {
+					$action_links = array(
+						'settings' => '<a href="' . admin_url(
+							'admin.php?page=wc-settings&tab=integration&section=doliwoo'
+						) . '" title="' . esc_attr(
+							__( 'View WooCommerce Settings', 'woocommerce' )
+						) . '">' . esc_attr(
+							__( 'Settings', 'woocommerce' )
+						) . '</a>',
+					);
+
+					return array_merge( $action_links, $links );
 				}
 
 				/**
