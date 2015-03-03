@@ -64,7 +64,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 		 */
 		public function __construct() {
 			$this->id                 = 'doliwoo';
-			$this->method_title       = __( 'DoliWoo Settings', 'doliwoo' );
+			$this->method_title       = __( 'DoliWoo', 'doliwoo' );
 			$this->method_description = __( 'Dolibarr webservices access', 'doliwoo' );
 
 			// Load the settings

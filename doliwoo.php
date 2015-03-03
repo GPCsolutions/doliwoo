@@ -228,9 +228,9 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 						'settings' => '<a href="' . admin_url(
 							'admin.php?page=wc-settings&tab=integration&section=doliwoo'
 						) . '" title="' . esc_attr(
-							__( 'View WooCommerce Settings', 'woocommerce' )
+							__( 'View DoliWoo Settings', 'doliwoo' )
 						) . '">' . esc_attr(
-							__( 'Settings', 'woocommerce' )
+							__( 'Settings', 'doliwoo' )
 						) . '</a>',
 					);
 
