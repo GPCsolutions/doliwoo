@@ -15,6 +15,7 @@ module.exports = function (grunt) {
                     '*.php',
                     '**/*.php',
                     '!assets/**/*.php',
+                    '!docs/**/*.php',
                     '!node_modules/**/*.php',
                     '!release/**/*.php',
                     '!vendor/**/*.php',
@@ -26,6 +27,7 @@ module.exports = function (grunt) {
                     'composer.json',
                     'composer.lock',
                     'CONTRIBUTING.md',
+                    'docs/.*',
                     '.git/.*',
                     '.gitignore',
                     '.gitmodules',
@@ -61,6 +63,15 @@ module.exports = function (grunt) {
                 src: '<%= paths.php.files %>'
             }
         },
+        phpdoc: {
+            target: {
+                src: [
+                    'doliwoo.php',
+                    'includes'
+                ],
+                dest: 'docs'
+            }
+        },
         makepot: {
             target: {
                 options: {
@@ -93,6 +104,7 @@ module.exports = function (grunt) {
                     '!composer.json',
                     '!composer.lock',
                     '!CONTRIBUTING.md',
+                    '!docs/**',
                     '!.git/**',
                     '!.gitignore',
                     '!.gitmodules',
@@ -170,7 +182,8 @@ module.exports = function (grunt) {
     grunt.registerTask('default', [
         'test',
         'sync-json',
-        'wp_readme_to_markdown'
+        'wp_readme_to_markdown',
+        'phpdoc'
     ]);
 
     grunt.registerTask('test', [
