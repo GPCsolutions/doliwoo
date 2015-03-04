@@ -18,13 +18,18 @@
  */
 
 /**
- * Parameters management
+ * Parameters management.
+ *
+ * We store some properties to link imported Dolibarr elements to their WooCommerce counterparts.
+ * This class ties everything together.
+ *
+ * @package DoliWoo
  */
 
 /**
- * Class Woocomerce_Parameters
+ * Parameters management
  */
-Class Woocomerce_Parameters {
+Class Doliwoo_WC_Params {
 
 	/**
 	 * Save Dolibarr ID field on edit user pages

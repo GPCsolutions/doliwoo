@@ -17,15 +17,18 @@
  */
 
 /**
- * SOAP reprentations hinting classes
+ * SOAP reprentations hinting classes.
+ *
+ * Just hinting pseudo classes to ease development.
+ * These element can be used for or returned by Dolibarr SOAP requests.
+ *
+ * @package DoliWoo
  */
 
 /**
- * Class DolibarrOrder
- *
- * SOAP orders representation
+ * SOAP orders representation.
  */
-class DolibarrOrder {
+class Dolibarr_Order {
 	/** @var string */
 	public $id;
 
@@ -38,16 +41,14 @@ class DolibarrOrder {
 	/** @var int */
 	public $status;
 
-	/** @var DolibarrOrderLine[] */
+	/** @var Dolibarr_Order_Line[] */
 	public $lines;
 }
 
 /**
- * Class DolibarrOrderLine
- *
  * SOAP order lines representation
  */
-class DolibarrOrderLine {
+class Dolibarr_Order_Line {
 	/** @var int */
 	public $type;
 
@@ -80,11 +81,9 @@ class DolibarrOrderLine {
 }
 
 /**
- * Class DolibarrThirdparty
- *
  * SOAP third parties representation
  */
-class DolibarrThirdparty {
+class Dolibarr_Thirdparty {
 	/** @var string */
 	public $id;
 
@@ -129,11 +128,9 @@ class DolibarrThirdparty {
 }
 
 /**
- * Class DolibarrProduct
- *
  * SOAP products representation
  */
-class DolibarrProduct {
+class Dolibarr_Product {
 	/** @var string */
 	public $id;
 

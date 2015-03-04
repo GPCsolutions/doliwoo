@@ -18,11 +18,15 @@
  */
 
 /**
- * Dolibarr interactions
+ * Dolibarr interactions.
+ *
+ * All Dolibarr interactions triggerred by WooCommerce are managed here.
+ *
+ * @package DoliWoo
  */
 
 /**
- * Class Dolibarr
+ * Dolibarr interactions.
  */
 class Dolibarr {
 	/** @var WC_Logger Logging */
@@ -90,7 +94,7 @@ class Dolibarr {
 			return;
 		}
 
-		$order = new DolibarrOrder();
+		$order = new Dolibarr_Order();
 
 		// Fill this array with all data required to create an order in Dolibarr
 		$user_id = get_current_user_id();
@@ -231,7 +235,7 @@ class Dolibarr {
 			$individual = 1;
 		}
 
-		$new_thirdparty = new DolibarrThirdparty();
+		$new_thirdparty = new Dolibarr_Thirdparty();
 
 		$new_thirdparty->ref        = $ref; // Company name or individual last name
 		$new_thirdparty->individual = $individual; // Individual
@@ -270,7 +274,7 @@ class Dolibarr {
 			/** @var WC_Product $woocommerce_product */
 			$woocommerce_product = $product['data'];
 
-			$line             = new DolibarrOrderLine();
+			$line             = new Dolibarr_Order_Line();
 			$line->type       = intval( get_post_meta( $product['product_id'], 'dolibarr_type', true ) );
 			$line->desc       = $woocommerce_product->post->post_content;
 			$line->product_id = intval( get_post_meta( $product['product_id'], 'dolibarr_id', true ) );
@@ -320,7 +324,7 @@ class Dolibarr {
 			return;
 		}
 
-		/** @var DolibarrProduct[] $dolibarr_products */
+		/** @var Dolibarr_Product[] $dolibarr_products */
 		$dolibarr_products = $result['products'];
 
 		if ( 'OK' == $result['result']->result_code && ! empty( $dolibarr_products ) ) {
@@ -385,7 +389,7 @@ class Dolibarr {
 	/**
 	 * Update the product attributes
 	 *
-	 * @param DolibarrProduct $dolibarr_product The dolibarr product
+	 * @param Dolibarr_Product $dolibarr_product The dolibarr product
 	 * @param int $post_id The woocommerce product ID
 	 */
 	private function update_product_attributes( $dolibarr_product, $post_id ) {
@@ -429,7 +433,7 @@ class Dolibarr {
 	/**
 	 * Import Dolibarr product images
 	 *
-	 * @param DolibarrProduct $dolibarr_product The Dolibarr product
+	 * @param Dolibarr_Product $dolibarr_product The Dolibarr product
 	 * @param int $post_id The WooCommerce product
 	 */
 	private function import_product_images( $dolibarr_product, $post_id ) {
@@ -445,7 +449,7 @@ class Dolibarr {
 	/**
 	 * Webservice calls to get the product's images
 	 *
-	 * @param DolibarrProduct $dolibarr_product SOAP product object
+	 * @param Dolibarr_Product $dolibarr_product SOAP product object
 	 * @param int $post_id WooCommerce product ID
 	 *
 	 * @return int[] Attachment IDs

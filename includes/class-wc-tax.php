@@ -18,15 +18,18 @@
  */
 
 /**
- * DoliWoo tax management
+ * Tax management
+ *
+ * Dolibarr and WooCommerce tax implementations differ vastly.
+ * We declare specific WooCommerce tax classes and rates to be used in Dolibarr syncing.
+ *
+ * @package DoliWoo
  */
 
 /**
- * Class WC_Tax_Doliwoo
- *
- * Extend WC_Tax() to insert and update tax rates
+ * Tax management
  */
-class WC_Tax_Doliwoo extends WC_Tax {
+class Doliwoo_WC_Tax extends WC_Tax {
 
 	/**
 	 * Get the tax class associated with a VAT rate

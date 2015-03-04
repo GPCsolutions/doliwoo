@@ -5,7 +5,7 @@ Plugin URI: http://gpcsolutions.github.io/doliwoo
 Description: Dolibarr WooCommerce integration
 Version: 0.0.2-alpha
 Author: GPC.solutions
-Author URI: http://gpcsolutions.fr
+Author URI: https://gpcsolutions.fr
 License: GPL-3.0+
 Text Domain: doliwoo
 Domain Path: /languages
@@ -30,7 +30,7 @@ Domain Path: /languages
  */
 
 /**
- * DoliWoo plugin
+ * DoliWoo plugin.
  *
  * Dolibarr WooCommerce integration.
  *
@@ -72,8 +72,6 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 		if ( ! class_exists( 'Doliwoo' ) ) {
 
 			/**
-			 * Class Doliwoo
-			 *
 			 * Dolibarr Integration for WooCommerce
 			 */
 			class Doliwoo {
@@ -91,13 +89,13 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				public $dolibarr;
 
 				/**
-				 * Constructor
+				 * DoliWoo plugin
 				 */
 				public function __construct() {
-					require_once 'includes/class-doliwoo-parameters.php';
+					require_once 'includes/class-wc-params.php';
 					require_once 'includes/class-dolibarr.php';
 
-					$this->woocommerce_parameters = new Woocomerce_Parameters();
+					$this->woocommerce_parameters = new Doliwoo_WC_Params();
 					$this->dolibarr               = new Dolibarr();
 
 					// Initialize plugin settings
@@ -161,16 +159,16 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				 */
 				public function init() {
 
-					require_once 'includes/class-tax-doliwoo.php';
+					require_once 'includes/class-wc-tax.php';
 
 					// Checks if WooCommerce is installed.
 					if ( class_exists( 'WC_Integration' ) ) {
 						// Include our integration class.
-						require_once 'includes/settings.php';
+						require_once 'includes/class-wc-integration.php';
 						// Register the integration.
 						add_filter( 'woocommerce_integrations', array( $this, 'add_integration' ) );
 					}
-					$this->dolibarr->taxes = new WC_Tax_Doliwoo();
+					$this->dolibarr->taxes = new Doliwoo_WC_Tax();
 				}
 
 				/**

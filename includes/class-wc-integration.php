@@ -18,17 +18,21 @@
  */
 
 /**
- * DoliWoo settings
+ * DoliWoo settings.
  *
  * WooCommerce settings integration.
+ *
+ * @package DoliWoo
  */
 
 if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 
 	/**
 	 * Doliwoo settings WooCommerce integration
+	 *
+	 * @see WC_Integration
 	 */
-	class WC_Integration_Doliwoo_Settings extends WC_Integration {
+	class WC_Integration_Doliwoo extends WC_Integration {
 		/** @var string The Dolibarr webservice URL */
 		public $dolibarr_ws_endpoint;
 
@@ -195,7 +199,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 		 * Display Dolibarr version and compatibility
 		 *
 		 * @param string $key Settings key
-		 * @param array $data Setting valupe
+		 * @param array $data Setting values
 		 *
 		 * @return string HTML to display
 		 */
