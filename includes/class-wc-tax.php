@@ -66,73 +66,10 @@ class Doliwoo_WC_Tax extends WC_Tax {
 		global $wpdb;
 		$tax_name = __( 'VAT', 'doliwoo' );
 
-		// First, create the rates
-		$declared_rates = array(
-			array(
-				'tax_rate_country'  => 'FR',
-				'tax_rate'          => '20',
-				'tax_rate_name'     => $tax_name,
-				'tax_rate_priority' => '1',
-				'tax_rate_order'    => '0',
-				'tax_rate_class'    => '',
-			),
-			array(
-				'tax_rate_country'  => 'FR',
-				'tax_rate'          => '10',
-				'tax_rate_name'     => $tax_name,
-				'tax_rate_priority' => '1',
-				'tax_rate_order'    => '0',
-				'tax_rate_class'    => 'reduced',
-			),
-			array(
-				'tax_rate_country'  => 'FR',
-				'tax_rate'          => '5',
-				'tax_rate_name'     => $tax_name,
-				'tax_rate_priority' => '1',
-				'tax_rate_order'    => '0',
-				'tax_rate_class'    => 'super-reduced',
-			),
-			array(
-				'tax_rate_country'  => 'FR',
-				'tax_rate'          => '2.1',
-				'tax_rate_name'     => $tax_name,
-				'tax_rate_priority' => '1',
-				'tax_rate_order'    => '0',
-				'tax_rate_class'    => 'minimum',
-			),
-			array(
-				'tax_rate_country'  => 'FR',
-				'tax_rate'          => '0',
-				'tax_rate_name'     => $tax_name,
-				'tax_rate_priority' => '1',
-				'tax_rate_order'    => '0',
-				'tax_rate_class'    => 'zero',
-			),
-			array(
-				'tax_rate_country'  => 'IT',
-				'tax_rate'          => '22',
-				'tax_rate_name'     => $tax_name,
-				'tax_rate_priority' => '1',
-				'tax_rate_order'    => '0',
-				'tax_rate_class'    => '',
-			),
-			array(
-				'tax_rate_country'  => 'IT',
-				'tax_rate'          => '10',
-				'tax_rate_name'     => $tax_name,
-				'tax_rate_priority' => '1',
-				'tax_rate_order'    => '0',
-				'tax_rate_class'    => 'reduced',
-			),
-			array(
-				'tax_rate_country'  => 'IT',
-				'tax_rate'          => '4',
-				'tax_rate_name'     => $tax_name,
-				'tax_rate_priority' => '1',
-				'tax_rate_order'    => '0',
-				'tax_rate_class'    => 'super-reduced',
-			),
-		);
+		$default_country = substr( strtolower( get_option( 'woocommerce_default_country' ) ), 0, 2 );
+
+		/** @var array $declared_rates The contry's VAT rate */
+		include( 'tax_rates/' . $default_country . '.php' );
 
 		$db_taxes = $wpdb->get_results(
 			'SELECT tax_rate_id
@@ -183,9 +120,10 @@ class Doliwoo_WC_Tax extends WC_Tax {
 		// Now declare the classes
 		$declared_classes = array_map( 'ucfirst', $declared_classes );
 		$classes_names    = implode( "\n", $declared_classes );
+		$existing_classes = get_option( 'woocommerce_tax_classes' );
 		update_option(
 			'woocommerce_tax_classes',
-			$classes_names
+			$existing_classes . $classes_names
 		);
 	}
 
