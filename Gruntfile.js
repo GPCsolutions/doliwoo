@@ -164,7 +164,6 @@ module.exports = function (grunt) {
             options: {
                 indent: 2,
                 include: [
-                    'version',
                     'description',
                     'keywords',
                     'homepage',

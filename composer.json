@@ -1,7 +1,6 @@
 {
   "name": "gpcsolutions/doliwoo",
   "description": "Integrate Dolibarr with a WooCommerce shop.",
-  "version": "0.0.2-alpha",
   "type": "wordpress-plugin",
   "keywords": [
     "wordpress",
