@@ -87,7 +87,9 @@ You may allow insecure requests by tweaking the source code if you know what you
 
 ## Screenshots ##
 
-**1. FIXME:** Placeholder  
+### 1. The configuration page ###
+![The configuration page](http://s.wordpress.org/extend/plugins/doliwoo/screenshot-1.png)
+
 
 ## Changelog ##
 
