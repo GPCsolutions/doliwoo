@@ -62,7 +62,7 @@ if ( false === extension_loaded( 'openssl' ) ) {
 }
 
 // Make sure the settings class is available
-if ( ! class_exists( 'WC_Integration_Doliwoo' ) ) :
+if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 
 	// If WooCommerce is active
 	if ( in_array(
@@ -76,7 +76,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo' ) ) :
 			 */
 			class Doliwoo {
 
-				/** @var WC_Integration_Doliwoo Doliwoo Settings */
+				/** @var Doliwoo_WC_Integration Doliwoo Settings */
 				public $settings;
 
 				/** @var array SOAP authentication parameters */
@@ -85,7 +85,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo' ) ) :
 				/** @var Doliwoo_WC_Params custom parameters */
 				public $woocommerce_parameters;
 
-				/** @var Dolibarr external requests */
+				/** @var Doliwoo_Dolibarr external requests */
 				public $dolibarr;
 
 				/**
@@ -96,7 +96,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo' ) ) :
 					require_once 'includes/class-dolibarr.php';
 
 					$this->woocommerce_parameters = new Doliwoo_WC_Params();
-					$this->dolibarr               = new Dolibarr();
+					$this->dolibarr               = new Doliwoo_Dolibarr();
 
 					// Initialize plugin settings
 					add_action( 'plugins_loaded', array( $this, 'init' ) );
@@ -199,7 +199,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo' ) ) :
 				 * @return string[] WooCommerce integrations
 				 */
 				public function add_integration( $integrations ) {
-					$integrations[] = 'WC_Integration_Doliwoo';
+					$integrations[] = 'Doliwoo_WC_Integration';
 
 					return $integrations;
 				}

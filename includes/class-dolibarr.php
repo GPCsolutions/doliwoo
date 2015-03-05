@@ -28,11 +28,11 @@
 /**
  * Dolibarr interactions.
  */
-class Dolibarr {
+class Doliwoo_Dolibarr {
 	/** @var WC_Logger Logging */
 	public $logger;
 
-	/** @var WC_Integration_Doliwoo Settings */
+	/** @var Doliwoo_WC_Integration Settings */
 	public $settings;
 
 	/** @var Doliwoo_WC_Tax WooCommerce taxes informations */
@@ -45,7 +45,7 @@ class Dolibarr {
 	private $ws_auth;
 
 	/**
-	 * Dolibarr webservices endpoints
+	 * Doliwoo_Dolibarr webservices endpoints
 	 */
 	const ORDER_ENDPOINT      = 'server_order.php';
 	const THIRDPARTY_ENDPOINT = 'server_thirdparty.php';
@@ -70,13 +70,13 @@ class Dolibarr {
 	/**
 	 * Hooks on process_checkout()
 	 *
-	 * While the order is processed, use the data to create a Dolibarr order via webservice
+	 * While the order is processed, use the data to create a Doliwoo_Dolibarr order via webservice
 	 *
 	 * @return void
 	 */
 	public function dolibarr_create_order() {
 		/*
-		 * We use non WSDL mode to workaround Dolibarr broken declaration marking all the fields as required
+		 * We use non WSDL mode to workaround Doliwoo_Dolibarr broken declaration marking all the fields as required
 		 * when they're not.
 		 */
 		try {
@@ -96,7 +96,7 @@ class Dolibarr {
 
 		$order = new Dolibarr_Order();
 
-		// Fill this array with all data required to create an order in Dolibarr
+		// Fill this array with all data required to create an order in Doliwoo_Dolibarr
 		$user_id = get_current_user_id();
 		if ( '' == $user_id ) {
 			// default to the generic user
@@ -129,7 +129,7 @@ class Dolibarr {
 	}
 
 	/**
-	 * Creates a thirdparty in Dolibarr via webservice using WooCommerce user data, if it doesn't already exists
+	 * Creates a thirdparty in Doliwoo_Dolibarr via webservice using WooCommerce user data, if it doesn't already exists
 	 *
 	 * @param  int $user_id a Wordpress user id
 	 *
@@ -156,7 +156,7 @@ class Dolibarr {
 	}
 
 	/**
-	 * Checks if a thirdparty exists in Dolibarr
+	 * Checks if a thirdparty exists in Doliwoo_Dolibarr
 	 *
 	 * @param int $user_id Wordpress ID of an user
 	 *
@@ -177,7 +177,7 @@ class Dolibarr {
 		$dol_id = get_user_meta( $user_id, 'dolibarr_id', true );
 		$dol_ref = get_user_meta( $user_id, 'billing_company', true );
 
-		// If the user has a Dolibarr ID, use it, else search his company name
+		// If the user has a Doliwoo_Dolibarr ID, use it, else search his company name
 		if ( $dol_id ) {
 			$dol_ref = null;
 		} else {
@@ -201,7 +201,7 @@ class Dolibarr {
 	}
 
 	/**
-	 * Creates a thirdparty in Dolibarr via webservice using WooCommerce user data
+	 * Creates a thirdparty in Doliwoo_Dolibarr via webservice using WooCommerce user data
 	 *
 	 * @param int $user_id a Wordpress user id
 	 *
@@ -209,7 +209,7 @@ class Dolibarr {
 	 */
 	public function dolibarr_create_thirdparty( $user_id ) {
 		/*
-		 * We use non WSDL mode to workaround Dolibarr broken declaration marking all the fields as required
+		 * We use non WSDL mode to workaround Doliwoo_Dolibarr broken declaration marking all the fields as required
 		 * when they're not.
 		 */
 		try {
@@ -295,7 +295,7 @@ class Dolibarr {
 	}
 
 	/**
-	 * Pull products data from Dolibarr via webservice and save it in Wordpress
+	 * Pull products data from Doliwoo_Dolibarr via webservice and save it in Wordpress
 	 *
 	 * @return void
 	 */
@@ -371,7 +371,7 @@ class Dolibarr {
 	/**
 	 * Checks for the existence of a product in Wordpress database
 	 *
-	 * @param  int $dolibarr_id ID of a product in Dolibarr
+	 * @param  int $dolibarr_id ID of a product in Doliwoo_Dolibarr
 	 *
 	 * @return WP_POST
 	 */
@@ -431,9 +431,9 @@ class Dolibarr {
 	}
 
 	/**
-	 * Import Dolibarr product images
+	 * Import Doliwoo_Dolibarr product images
 	 *
-	 * @param Dolibarr_Product $dolibarr_product The Dolibarr product
+	 * @param Dolibarr_Product $dolibarr_product The Doliwoo_Dolibarr product
 	 * @param int $post_id The WooCommerce product
 	 */
 	private function import_product_images( $dolibarr_product, $post_id ) {
@@ -470,7 +470,7 @@ class Dolibarr {
 		$attach_ids = array();
 
 		foreach ( $dolibarr_product->images as $images ) {
-			// Get the image from Dolibarr
+			// Get the image from Doliwoo_Dolibarr
 			try {
 				$result = $soap_client->getDocument(
 					$this->ws_auth,

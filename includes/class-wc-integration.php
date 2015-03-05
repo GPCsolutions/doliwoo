@@ -25,14 +25,14 @@
  * @package DoliWoo
  */
 
-if ( ! class_exists( 'WC_Integration_Doliwoo' ) ) :
+if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 
 	/**
 	 * Doliwoo settings WooCommerce integration
 	 *
 	 * @see WC_Integration
 	 */
-	class WC_Integration_Doliwoo extends WC_Integration {
+	class Doliwoo_WC_Integration extends WC_Integration {
 		/** @var string The Dolibarr webservice URL */
 		public $dolibarr_ws_endpoint;
 
@@ -263,7 +263,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo' ) ) :
 
 			// Check that the server is available
 			try {
-				new SoapClient( $value . Dolibarr::OTHER_ENDPOINT . Dolibarr::WSDL_MODE );
+				new SoapClient( $value . Doliwoo_Dolibarr::OTHER_ENDPOINT . Doliwoo_Dolibarr::WSDL_MODE );
 			} catch ( SoapFault $exc ) {
 				$this->errors[] = __( 'The webservice is not available. Please check the URL.' );
 			}
@@ -335,7 +335,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo' ) ) :
 		private function test_webservice( $webservice, $ws_auth ) {
 			// Check that the server is available
 			try {
-				$soap_client = new SoapClient( $webservice . Dolibarr::OTHER_ENDPOINT . Dolibarr::WSDL_MODE );
+				$soap_client = new SoapClient( $webservice . Doliwoo_Dolibarr::OTHER_ENDPOINT . Doliwoo_Dolibarr::WSDL_MODE );
 			} catch ( SoapFault $exc ) {
 				$this->errors[] = __( 'The webservice is not available. Please check the URL.' );
 				$this->display_errors();
