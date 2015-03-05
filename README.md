@@ -5,7 +5,7 @@
 **Plugin URI:**         https://gpcsolutions.github.io/doliwoo  
 **Requires at least:**  3.7.1  
 **Tested up to:**       3.7.1  
-**Stable tag:**         master  
+**Stable tag:**         1.0.0  
 **License:**            GPL-3.0+  
 **License URI:**        http://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -30,7 +30,6 @@ It leverages Dolibarr webservices feature to exchange data.
 
 **Known missing (TODO)**
 
-* International VAT rates management
 * Products stock informations resync on orders
 * Invoicing
 * Payments
@@ -39,18 +38,21 @@ It leverages Dolibarr webservices feature to exchange data.
 **Known issues**
 
 WooCommerce VAT management vastly differs from Dolibarr and we need equivalence tables.  
-Only French equivalence table is shipped at the moment.
+Only French and italian equivalence tables are shipped at the moment.
 
 ### Requirements ###
 
 **PHP extensions**
+
 * SOAP
 * OpenSSL
 
 **WordPress plugins**
+
 * Woocommerce >= 2.0.0
 
 **Dolibarr**
+
 * HTTPS access with a valid certificate
 * Dolibarr >= 3.4.0
 * Modules:
@@ -93,6 +95,13 @@ You may allow insecure requests by tweaking the source code if you know what you
 
 ## Changelog ##
 
+### 1.0.0 ###
+
+* First stable release
+* Polished errors reporting
+* Polished interface
+* Basic international VAT rates management
+
 ### 0.0.1 ###
 
 * First beta release
@@ -103,6 +112,6 @@ You may allow insecure requests by tweaking the source code if you know what you
 
 ## Upgrade Notice ##
 
-### 0.0.1 ###
+### 1.0.0 ###
 
-N.A.
+Stable release

@@ -1,6 +1,6 @@
 {
   "name": "doliwoo",
-  "version": "0.0.2-alpha",
+  "version": "1.0.0",
   "description": "Integrate Dolibarr with a WooCommerce shop.",
   "keywords": [
     "wordpress",
