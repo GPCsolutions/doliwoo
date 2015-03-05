@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DoliWoo 0.0.2-alpha\n"
 "Report-Msgid-Bugs-To: https://github.com/GPCsolutions/doliwoo/issues\n"
-"POT-Creation-Date: 2015-03-05 14:09:04+00:00\n"
+"POT-Creation-Date: 2015-03-05 14:30:32+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -134,11 +134,27 @@ msgstr ""
 msgid "If the webservice communication is OK, it displays your Dolibarr version"
 msgstr ""
 
-#: includes/class-wc-integration.php:251
+#: includes/class-wc-integration.php:211
+msgid "Please configure the plugin."
+msgstr ""
+
+#: includes/class-wc-integration.php:212
+msgid "Not compatible! Please use at least Dolibarr v3.4.0."
+msgstr ""
+
+#: includes/class-wc-integration.php:213
+msgid "OK!"
+msgstr ""
+
+#: includes/class-wc-integration.php:214
+msgid "(Detected v%s)"
+msgstr ""
+
+#: includes/class-wc-integration.php:255
 msgid "The protocol to use is https://"
 msgstr ""
 
-#: includes/class-wc-integration.php:261 includes/class-wc-integration.php:354
+#: includes/class-wc-integration.php:265 includes/class-wc-integration.php:358
 msgid "The webservice is not available. Please check the URL."
 msgstr ""
 

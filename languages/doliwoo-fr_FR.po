@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DoliWoo\n"
 "Report-Msgid-Bugs-To: https://github.com/GPCsolutions/doliwoo/issues\n"
-"POT-Creation-Date: 2015-03-05 14:09:04+00:00\n"
-"PO-Revision-Date: 2015-03-05 13:57+0000\n"
+"POT-Creation-Date: 2015-03-05 14:30:00+00:00\n"
+"PO-Revision-Date: 2015-03-05 14:30+0000\n"
 "Last-Translator: Raphaël Doursenaud <rdoursenaud@gpcsolutions.fr>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/doliwoo/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -135,11 +135,27 @@ msgid ""
 "If the webservice communication is OK, it displays your Dolibarr version"
 msgstr "Vérifie si la communication est établie au travers du webservice et récupère la version de Dolibarr"
 
-#: includes/class-wc-integration.php:251
+#: includes/class-wc-integration.php:211
+msgid "Please configure the plugin."
+msgstr "Veuillez configurer l'extension."
+
+#: includes/class-wc-integration.php:212
+msgid "Not compatible! Please use at least Dolibarr v3.4.0."
+msgstr "Version incompatible. Veuillez utiliser Dolibarr v3.4.0 minimum."
+
+#: includes/class-wc-integration.php:213
+msgid "OK!"
+msgstr "OK !"
+
+#: includes/class-wc-integration.php:214
+msgid "(Detected v%s)"
+msgstr "(v%s détectée)"
+
+#: includes/class-wc-integration.php:255
 msgid "The protocol to use is https://"
 msgstr "Le protocole à utiliser est https://"
 
-#: includes/class-wc-integration.php:261 includes/class-wc-integration.php:354
+#: includes/class-wc-integration.php:265 includes/class-wc-integration.php:358
 msgid "The webservice is not available. Please check the URL."
 msgstr "Le webservice n'est pas disponible. Merci de vérifier l'URL."
 

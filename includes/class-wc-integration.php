@@ -208,6 +208,11 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 				$version_ok = true;
 			}
 
+			$not_configured   = __( 'Please configure the plugin.', 'doliwoo' );
+			$not_compatible   = __( 'Not compatible! Please use at least Dolibarr v3.4.0.', 'doliwoo' );
+			$configuration_ok = __( 'OK!', 'doliwoo' );
+			$detected         = sprintf( __( '(Detected v%s)', 'doliwoo' ), implode( '.', $this->dolibarr_version ) );
+
 			ob_start();
 			?>
 			<tr valign="top">
@@ -217,17 +222,16 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 				</th>
 				<td class="forminp">
 					<?php
-					if ( $version_ok ){
-						// TODO: better use WooCommerce icons: https://github.com/woothemes/woocommerce-icons
-						esc_html_e( __( 'OK!', 'doliwoo' ) );
+					if ( empty ( $this->dolibarr_version ) ) {
+						esc_html_e( $not_configured );
 					} else {
-						esc_html_e( __( 'Not compatible! Please use at least Dolibarr v3.4.0.', 'doliwoo' ) );
+						if ( $version_ok ) {
+							esc_html_e( $configuration_ok );
+						} else {
+							esc_html_e( $not_compatible );
+						}
+						esc_html_e( '&nbsp;' . $detected );
 					}
-					esc_html_e(
-						'&nbsp;(v'
-						. implode( '.', $this->dolibarr_version )
-						. ')'
-					);
 					?>
 				</td>
 			</tr>
