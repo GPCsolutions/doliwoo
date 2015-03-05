@@ -1,22 +1,22 @@
-=== DoliWoo ===
-Contributors:       GPC.solutions
-Tags:               dolibarr, woocommerce, ecommerce, erp, integration
-Author URI:         https://gpcsolutions.fr
-Plugin URI:         https://gpcsolutions.github.io/doliwoo
-Requires at least:  3.7.1
-Tested up to:       3.7.1
-Stable tag:         1.0.0
-License:            GPL-3.0+
-License URI:        http://www.gnu.org/licenses/gpl-3.0.html
+# DoliWoo #
+**Contributors:**       GPC.solutions  
+**Tags:**               dolibarr, woocommerce, ecommerce, erp, integration  
+**Author URI:**         https://gpcsolutions.fr  
+**Plugin URI:**         https://gpcsolutions.github.io/doliwoo  
+**Requires at least:**  3.7.1  
+**Tested up to:**       3.7.1  
+**Stable tag:**         1.0.0  
+**License:**            GPL-3.0+  
+**License URI:**        http://www.gnu.org/licenses/gpl-3.0.html  
 
 Integrate Dolibarr with a WooCommerce shop.
 
-== Description ==
+## Description ##
 Doliwoo allows integration of Dolibarr into WooCommerce.
 
 It leverages Dolibarr webservices feature to exchange data.
 
-= Features =
+### Features ###
 
 **Dolibarr to WooCommerce**
 
@@ -40,7 +40,7 @@ It leverages Dolibarr webservices feature to exchange data.
 WooCommerce VAT management vastly differs from Dolibarr and we need equivalence tables.  
 Only French and italian equivalence tables are shipped at the moment.
 
-= Requirements =
+### Requirements ###
 
 **PHP extensions**
 
@@ -62,45 +62,47 @@ Only French and italian equivalence tables are shipped at the moment.
     * Categories (Products)
     * Orders
 
-== Installation ==
+## Installation ##
 
 1. Make sure the WooCommerce plugin is installed into your WordPress
 2. Extract the zip file to the 'wp-content/plugins/' directory of your WordPress installation
 3. Activate the plugin from 'Plugins' WordPress settings page
 4. Go to 'WooCommerce' 'Settings' under the 'Integration' tab and configure the 'Doliwoo' section
 
-== Frequently Asked Questions ==
+## Frequently Asked Questions ##
 
-= Is this plugin stable and useable in a production environment? =
+### Is this plugin stable and useable in a production environment? ###
 
 NO! This is beta code. This project started as an internal proof of concept and has just been reviewed.  
 But you're very welcome to test it on a pre-production environment.
 
-= OK, so how can I make it happen then? =
+### OK, so how can I make it happen then? ###
 
 You can help by testing, providing detailed bug reports, documentation or even code.  
-Alternatively, you can buy paid support and/or development services from us: [GPC.solutions](https://gpcsolutions.fr).
+**Alternatively, you can buy paid support and/or development services from us:** [GPC.solutions](https://gpcsolutions.fr).  
 
-= Why do I need to use HTTPS with a good known SSL certificate? =
+### Why do I need to use HTTPS with a good known SSL certificate? ###
 
 Otherwise SOAP requests will fail.  
 This is a security feature to make sure your important data is properly encrypted in transit between WooCommerce and Dolibarr.  
 You may allow insecure requests by tweaking the source code if you know what you're doing but we don't recommend that.  
 
-== Screenshots ==
+## Screenshots ##
 
-1. The configuration page
+### 1. The configuration page ###
+![The configuration page](/assets/screenshot-1.png)
 
-== Changelog ==
 
-= 1.0.0 =
+## Changelog ##
+
+### 1.0.0 ###
 
 * First stable release
 * Polished errors reporting
 * Polished interface
 * Basic international VAT rates management
 
-= 0.0.1 =
+### 0.0.1 ###
 
 * First beta release
 * Periodically sync products from a Dolibarr category
@@ -108,8 +110,8 @@ You may allow insecure requests by tweaking the source code if you know what you
 * Create or reuse a thirdparty for sales with a logged in user
 * Create an order into Dolibarr for each sale
 
-== Upgrade Notice ==
+## Upgrade Notice ##
 
-= 1.0.0 =
+### 1.0.0 ###
 
 Stable release

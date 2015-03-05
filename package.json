@@ -1,0 +1,47 @@
+{
+  "name": "doliwoo",
+  "version": "1.0.0",
+  "description": "Integrate Dolibarr with a WooCommerce shop.",
+  "keywords": [
+    "wordpress",
+    "dolibarr",
+    "woocommerce",
+    "ecommerce",
+    "erp",
+    "integration"
+  ],
+  "homepage": "https://gpcsolutions.github.io/doliwoo",
+  "bugs": "https://github.com/GPCsolutions/doliwoo/issues",
+  "license": "GPL-3.0+",
+  "author": "GPC.solutions",
+  "maintainers": [
+    "Raphaël Doursenaud <rdoursenaud@gpcsolutions.fr>"
+  ],
+  "contributors": [
+    "Cédric Salvador",
+    "Maxime Lafourcade"
+  ],
+  "main": "doliwoo.php",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GPCsolutions/doliwoo"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-checkwpversion": "^0.3.0",
+    "grunt-composer": "^0.4.4",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-compress": "^0.13.0",
+    "grunt-contrib-copy": "^0.7.0",
+    "grunt-exec": "^0.4.6",
+    "grunt-phpcs": "^0.2.3",
+    "grunt-phpdoc": "^0.1.1",
+    "grunt-phplint": "0.0.5",
+    "grunt-po2mo": "^0.1.2",
+    "grunt-sync-json": "^0.3.1",
+    "grunt-wp-i18n": "^0.5.0",
+    "grunt-wp-readme-to-markdown": "^0.8.0",
+    "load-grunt-tasks": "^3.1.0",
+    "time-grunt": "^1.0.0"
+  }
+}

@@ -1,13 +1,13 @@
-# Copyright (C) 2015 Doliwoo
-# This file is distributed under the same license as the Doliwoo package.
+# Copyright (C) 2015 GPC.solutions
+# This file is distributed under the GPL-3.0+.
 # Translators:
 # Raphaël Doursenaud <rdoursenaud@gpcsolutions.fr>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: DoliWoo\n"
-"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/doliwoo\n"
-"POT-Creation-Date: 2015-02-18 16:23:59+00:00\n"
-"PO-Revision-Date: 2015-02-18 18:45+0100\n"
+"Report-Msgid-Bugs-To: https://github.com/GPCsolutions/doliwoo/issues\n"
+"POT-Creation-Date: 2015-03-05 14:30:00+00:00\n"
+"PO-Revision-Date: 2015-03-05 14:30+0000\n"
 "Last-Translator: Raphaël Doursenaud <rdoursenaud@gpcsolutions.fr>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/doliwoo/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -15,139 +15,173 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.7.4\n"
+"X-Generator: grunt-wp-i18n 0.5.0\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-Country: United States\n"
+"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Textdomain-Support: yes\n"
 
-#: doliwoo.php:51
-msgid "This plugin needs SOAP and OpenSSL PHP extensions."
-msgstr "Cette extension nécessite les extensions PHP SOAP et OpenSSL."
+#: doliwoo.php:229
+msgid "View DoliWoo Settings"
+msgstr "Voir les réglages de DoliWoo"
 
-#: doliwoo.php:55
-msgid "This plugin needs SOAP PHP extension."
-msgstr "Cette extension nécessite l'extension PHP SOAP."
+#: doliwoo.php:231
+msgid "Settings"
+msgstr "Réglages"
 
-#: doliwoo.php:59
-msgid "This plugin needs OpenSSL PHP extension."
-msgstr "Cette extension nécessite l'extension PHP OpenSSL."
+#. Plugin Name of the plugin/theme
+msgid "DoliWoo"
+msgstr "DoliWoo"
 
-#: doliwoo.php:209
-msgid "This extension needs WooCommerce"
-msgstr "Cette extension nécessite WooCommerce"
-
-#: includes/class-doliwoo-parameters.php:62
-msgid "Dolibarr"
-msgstr "Dolibarr"
-
-#: includes/class-doliwoo-parameters.php:65 includes/class-doliwoo-parameters.php:128
-msgid "Dolibarr User ID"
-msgstr "Identifiant Utilisateur Dolibarr"
-
-#: includes/class-tax-doliwoo.php:63
-msgid "VAT"
-msgstr "TVA"
-
-#: includes/settings.php:37
-msgid "DoliWoo Settings"
-msgstr "Réglages DoliWoo"
-
-#: includes/settings.php:38
+#: includes/class-wc-integration.php:72
 msgid "Dolibarr webservices access"
 msgstr "Accès aux webservices Dolibarr"
 
-#: includes/settings.php:75
+#: includes/class-wc-integration.php:110
 msgid "Source application"
 msgstr "Nom de l'application"
 
-#: includes/settings.php:76
+#: includes/class-wc-integration.php:111
 msgid "How this application will identify itself to the webservice."
 msgstr "Comment cette application s'identifie auprès du webservice."
 
-#: includes/settings.php:82
+#: includes/class-wc-integration.php:117
 msgid "URL"
 msgstr "URL"
 
-#: includes/settings.php:83
-msgid "Enter Dolibarr webservices root URL (i.e. https://mydolibarr.com/webservices)"
+#: includes/class-wc-integration.php:118
+msgid ""
+"Enter Dolibarr webservices root URL (i.e. "
+"https://mydolibarr.com/webservices)"
 msgstr "Entrez l'URL racine des webservices de Dolibarr (i.e. https://mydolibarr.com/webservices)"
 
-#: includes/settings.php:90
+#: includes/class-wc-integration.php:127
 msgid "Delay"
 msgstr "Délai"
 
-#: includes/settings.php:91
+#: includes/class-wc-integration.php:128
 msgid "Choose the automatic update frequency"
 msgstr "Choisissez la fréquence de mise à jour automatique"
 
-#: includes/settings.php:95
+#: includes/class-wc-integration.php:132
 msgid "Once Hourly"
 msgstr "Une fois par heure"
 
-#: includes/settings.php:96
+#: includes/class-wc-integration.php:133
 msgid "Twice Daily"
 msgstr "Deux fois par jour"
 
-#: includes/settings.php:97
+#: includes/class-wc-integration.php:134
 msgid "Once Daily"
 msgstr "Une fois par jour"
 
-#: includes/settings.php:101
+#: includes/class-wc-integration.php:139
 msgid "Key"
 msgstr "Clé"
 
-#: includes/settings.php:102
+#: includes/class-wc-integration.php:140
 msgid "Enter your Dolibarr webservices key"
 msgstr "Entrez votre clé du webservices de Dolibarr"
 
-#: includes/settings.php:108
+#: includes/class-wc-integration.php:146
 msgid "User login"
 msgstr "Identifiant utilisateur"
 
-#: includes/settings.php:109
+#: includes/class-wc-integration.php:147
 msgid "Dolibarr actions will be done as this user"
 msgstr "Les actions de Dolibarr seront attribuées à cet utilisateur"
 
-#: includes/settings.php:115
+#: includes/class-wc-integration.php:153
 msgid "User password"
 msgstr "Mot de passe utilisateur"
 
-#: includes/settings.php:121
+#: includes/class-wc-integration.php:159
 msgid "Entity"
 msgstr "Entité"
 
-#: includes/settings.php:122
-msgid "If you're using multicompany, the ID of the entity you want to integrate. Leave to 1 otherwise."
+#: includes/class-wc-integration.php:160
+msgid ""
+"If you're using multicompany, the ID of the entity you want to integrate. "
+"Leave to 1 otherwise."
 msgstr "Si vous utilisez multi-société, l'ID de l'entité que vous souhaitez intégrer. Sinon laissez à 1."
 
-#: includes/settings.php:128
-msgid "Product category"
-msgstr "Catégorie du Produit"
+#: includes/class-wc-integration.php:166
+msgid "Products category"
+msgstr "Catégorie des produits"
 
-#: includes/settings.php:129
-msgid "The ID of the product category you want to automatically import products from."
-msgstr "L'ID de la catégorie de produits que vous souhaitez importer automatiquement."
+#: includes/class-wc-integration.php:167
+msgid ""
+"The ID of the products category you want to automatically import products "
+"from."
+msgstr "L'ID de la catégorie des produits que vous souhaitez importer automatiquement."
 
-#: includes/settings.php:135
+#: includes/class-wc-integration.php:173
 msgid "Generic thirdparty"
 msgstr "Tiers générique"
 
-#: includes/settings.php:136
+#: includes/class-wc-integration.php:174
 msgid "The ID of the thirdparty that'll be used for anonymous orders."
 msgstr "L'Id du tiers qui va être utilisé pour les commandes anonymes"
 
-#: includes/settings.php:156
+#: includes/class-wc-integration.php:180
+msgid "Dolibarr version"
+msgstr "Version de Dolibarr"
+
+#: includes/class-wc-integration.php:181
+msgid ""
+"If the webservice communication is OK, it displays your Dolibarr version"
+msgstr "Vérifie si la communication est établie au travers du webservice et récupère la version de Dolibarr"
+
+#: includes/class-wc-integration.php:211
+msgid "Please configure the plugin."
+msgstr "Veuillez configurer l'extension."
+
+#: includes/class-wc-integration.php:212
+msgid "Not compatible! Please use at least Dolibarr v3.4.0."
+msgstr "Version incompatible. Veuillez utiliser Dolibarr v3.4.0 minimum."
+
+#: includes/class-wc-integration.php:213
+msgid "OK!"
+msgstr "OK !"
+
+#: includes/class-wc-integration.php:214
+msgid "(Detected v%s)"
+msgstr "(v%s détectée)"
+
+#: includes/class-wc-integration.php:255
 msgid "The protocol to use is https://"
 msgstr "Le protocole à utiliser est https://"
 
-#: includes/settings.php:166
+#: includes/class-wc-integration.php:265 includes/class-wc-integration.php:358
 msgid "The webservice is not available. Please check the URL."
 msgstr "Le webservice n'est pas disponible. Merci de vérifier l'URL."
 
-#. Plugin Name of the plugin/theme
-msgid "Doliwoo"
-msgstr "DoliWoo"
+#: includes/class-wc-params.php:67
+msgid "Dolibarr"
+msgstr "Dolibarr"
+
+#: includes/class-wc-params.php:70
+msgid "User ID"
+msgstr "Identifiant utilisateur"
+
+#: includes/class-wc-params.php:71
+msgid "The Dolibarr ID for this user"
+msgstr "L'identifiant Dolibarr pour cet utilisateur"
+
+#: includes/class-wc-params.php:139
+msgid "Dolibarr User ID"
+msgstr "Identifiant Utilisateur Dolibarr"
+
+#: includes/class-wc-tax.php:67
+msgid "VAT"
+msgstr "TVA"
 
 #. Plugin URI of the plugin/theme
-msgid "TODO (https://gpcsolutions.fr/doliwoo)"
-msgstr "https://gpcsolutions.fr/doliwoo"
+msgid "http://gpcsolutions.github.io/doliwoo"
+msgstr "http://gpcsolutions.github.io/doliwoo"
 
 #. Description of the plugin/theme
 msgid "Dolibarr WooCommerce integration"
@@ -156,3 +190,7 @@ msgstr "Intégration Dolibarr WooCommerc"
 #. Author of the plugin/theme
 msgid "GPC.solutions"
 msgstr "GPC.solutions"
+
+#. Author URI of the plugin/theme
+msgid "https://gpcsolutions.fr"
+msgstr "https://gpcsolutions.fr"

@@ -18,13 +18,18 @@
  */
 
 /**
- * Parameters management
+ * Parameters management.
+ *
+ * We store some properties to link imported Dolibarr elements to their WooCommerce counterparts.
+ * This class ties everything together.
+ *
+ * @package DoliWoo
  */
 
 /**
- * Class Woocomerce_Parameters
+ * Parameters management
  */
-Class Woocomerce_Parameters {
+Class Doliwoo_WC_Params {
 
 	/**
 	 * Save Dolibarr ID field on edit user pages
@@ -38,8 +43,8 @@ Class Woocomerce_Parameters {
 		foreach ( $save_fields as $fieldset ) {
 			foreach ( $fieldset['fields'] as $key => $field ) {
 				if ( isset( $_POST[ $key ] ) ) {
-					update_user_meta( $user_id, $key,
-						wc_clean( $_POST[ $key ] ) );
+					update_user_meta( $user_id, $key, wc_clean( $_POST[ $key ] )
+					);
 				}
 			}
 		}
@@ -62,8 +67,8 @@ Class Woocomerce_Parameters {
 					'title'  => __( 'Dolibarr', 'doliwoo' ),
 					'fields' => array(
 						'dolibarr_id' => array(
-							'label'       => __( 'Dolibarr User ID', 'doliwoo' ),
-							'description' => 'The boss'
+							'label'       => __( 'User ID', 'doliwoo' ),
+							'description' => __( 'The Dolibarr ID for this user', 'doliwoo' ),
 						)
 					)
 				)
@@ -109,12 +114,18 @@ Class Woocomerce_Parameters {
 	/**
 	 * Define value for the Dolibarr ID column
 	 *
+	 * @param string $value The current value
+	 * @param string $column_name The curent custom column
 	 * @param mixed $user_id The ID of the user being displayed
 	 *
 	 * @return string Value for the column
 	 */
-	public function user_column_values( $user_id ) {
-		return get_user_meta( $user_id, 'dolibarr_id', true );
+	public function user_column_values( $value, $column_name, $user_id ) {
+		$user = get_userdata( $user_id );
+		if ( 'dolibarr_id' == $column_name ) {
+			return get_user_meta( $user->ID, 'dolibarr_id', true );
+		}
+		return $value;
 	}
 
 	/**

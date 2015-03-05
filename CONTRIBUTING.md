@@ -38,6 +38,8 @@ We'll integrate your contributions a few weeks before release.
 
 Documentation
 -------------
-The documentation is maintained on the [Wiki](https://github.com/GPCsolutions/doliwoo/wiki).
+The main documentation is maintained on the [Wiki](https://github.com/GPCsolutions/doliwoo/wiki).
 
 Access is currently restricted but you can suggest edits in the [Issues](https://github.com/GPCsolutions/doliwoo/issues).
+
+Code documentation can be generated with ```grunt phpdoc``` and is output into the ./docs subdirectory.

@@ -18,15 +18,18 @@
  */
 
 /**
- * DoliWoo tax management
+ * Tax management
+ *
+ * Dolibarr and WooCommerce tax implementations differ vastly.
+ * We declare specific WooCommerce tax classes and rates to be used in Dolibarr syncing.
+ *
+ * @package DoliWoo
  */
 
 /**
- * Class WC_Tax_Doliwoo
- *
- * Extend WC_Tax() to insert and update tax rates
+ * Tax management
  */
-class WC_Tax_Doliwoo extends WC_Tax {
+class Doliwoo_WC_Tax extends WC_Tax {
 
 	/**
 	 * Get the tax class associated with a VAT rate
@@ -43,7 +46,8 @@ class WC_Tax_Doliwoo extends WC_Tax {
 
 		foreach ( $tax_classes as $class ) {
 			$rates = $this->get_rates( $class );
-			if ( array_values( $rates )[0]['rate'] == $tax_rate ) {
+			$rates_values = array_values( $rates );
+			if ( $rates_values[0]['rate'] == $tax_rate ) {
 				// Use the first class found
 				return $class;
 			}
@@ -62,59 +66,21 @@ class WC_Tax_Doliwoo extends WC_Tax {
 		global $wpdb;
 		$tax_name = __( 'VAT', 'doliwoo' );
 
-		// First, create the rates
-		$declared_rates = array(
-			array(
-				'tax_rate_country'  => 'FR',
-				'tax_rate'          => '20',
-				'tax_rate_name'     => $tax_name,
-				'tax_rate_priority' => '1',
-				'tax_rate_order'    => '0',
-				'tax_rate_class'    => ''
-			),
-			array(
-				'tax_rate_country'  => 'FR',
-				'tax_rate'          => '10',
-				'tax_rate_name'     => $tax_name,
-				'tax_rate_priority' => '1',
-				'tax_rate_order'    => '0',
-				'tax_rate_class'    => 'reduced'
-			),
-			array(
-				'tax_rate_country'  => 'FR',
-				'tax_rate'          => '5',
-				'tax_rate_name'     => $tax_name,
-				'tax_rate_priority' => '1',
-				'tax_rate_order'    => '0',
-				'tax_rate_class'    => 'super-reduced'
-			),
-			array(
-				'tax_rate_country'  => 'FR',
-				'tax_rate'          => '2.1',
-				'tax_rate_name'     => $tax_name,
-				'tax_rate_priority' => '1',
-				'tax_rate_order'    => '0',
-				'tax_rate_class'    => 'minimum'
-			),
-			array(
-				'tax_rate_country'  => 'FR',
-				'tax_rate'          => '0',
-				'tax_rate_name'     => $tax_name,
-				'tax_rate_priority' => '1',
-				'tax_rate_order'    => '0',
-				'tax_rate_class'    => 'zero'
-			)
-		);
+		$default_country = substr( strtolower( get_option( 'woocommerce_default_country' ) ), 0, 2 );
+
+		/** @var array $declared_rates The contry's VAT rate */
+		include( 'tax_rates/' . $default_country . '.php' );
 
 		$db_taxes = $wpdb->get_results(
-			"SELECT tax_rate_id
- , tax_rate_country
- , tax_rate, tax_rate_name
- , tax_rate_priority
- , tax_rate_order
- , tax_rate_class
- FROM " . $wpdb->prefix . "woocommerce_tax_rates;",
-			ARRAY_A );
+			'SELECT tax_rate_id
+, tax_rate_country
+, tax_rate
+, tax_rate_name
+, tax_rate_priority
+, tax_rate_order
+, tax_rate_class FROM ' . $wpdb->prefix . 'woocommerce_tax_rates;',
+			ARRAY_A
+		);
 
 		// Struture database results
 		$database_rates = array();
@@ -125,8 +91,8 @@ class WC_Tax_Doliwoo extends WC_Tax {
 		}
 
 		// Insert missing classes
-		$declared_classes = array_column( $declared_rates, 'tax_rate_class' );
-		$database_classes = array_column( $database_rates, 'tax_rate_class' );
+		$declared_classes = wp_list_pluck( $declared_rates, 'tax_rate_class' );
+		$database_classes = wp_list_pluck( $database_rates, 'tax_rate_class' );
 		foreach ( $declared_classes as $key => $class ) {
 			if ( ! in_array( $class, $database_classes ) ) {
 				$to_create = $declared_rates[ $key ];
@@ -142,9 +108,10 @@ class WC_Tax_Doliwoo extends WC_Tax {
 				) {
 					// _assoc is important. It allows strict checking to take 0 into account!
 					if ( array_diff_assoc( $declared_rate, $database_rate ) ) {
-						( $this->update_tax(
+						$this->update_tax(
 							$tax_rate_id,
-							$declared_rate ) );
+							$declared_rate
+						);
 					}
 				}
 			}
@@ -153,9 +120,10 @@ class WC_Tax_Doliwoo extends WC_Tax {
 		// Now declare the classes
 		$declared_classes = array_map( 'ucfirst', $declared_classes );
 		$classes_names    = implode( "\n", $declared_classes );
+		$existing_classes = get_option( 'woocommerce_tax_classes' );
 		update_option(
 			'woocommerce_tax_classes',
-			$classes_names
+			$existing_classes . $classes_names
 		);
 	}
 
@@ -186,10 +154,10 @@ class WC_Tax_Doliwoo extends WC_Tax {
 		global $wpdb;
 
 		return $wpdb->update(
-			$wpdb->prefix . "woocommerce_tax_rates",
+			$wpdb->prefix . 'woocommerce_tax_rates',
 			$tax_rate,
 			array(
-				'tax_rate_id' => $tax_rate_id
+				'tax_rate_id' => $tax_rate_id,
 			)
 		);
 	}
