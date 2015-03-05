@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DoliWoo\n"
 "Report-Msgid-Bugs-To: https://github.com/GPCsolutions/doliwoo/issues\n"
-"POT-Creation-Date: 2015-03-05 11:10:46+00:00\n"
-"PO-Revision-Date: 2015-03-05 11:10+0000\n"
+"POT-Creation-Date: 2015-03-05 14:09:04+00:00\n"
+"PO-Revision-Date: 2015-03-05 13:57+0000\n"
 "Last-Translator: Raphaël Doursenaud <rdoursenaud@gpcsolutions.fr>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/doliwoo/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -40,106 +40,106 @@ msgstr "DoliWoo"
 msgid "Dolibarr webservices access"
 msgstr "Accès aux webservices Dolibarr"
 
-#: includes/class-wc-integration.php:120
+#: includes/class-wc-integration.php:110
 msgid "Source application"
 msgstr "Nom de l'application"
 
-#: includes/class-wc-integration.php:121
+#: includes/class-wc-integration.php:111
 msgid "How this application will identify itself to the webservice."
 msgstr "Comment cette application s'identifie auprès du webservice."
 
-#: includes/class-wc-integration.php:127
+#: includes/class-wc-integration.php:117
 msgid "URL"
 msgstr "URL"
 
-#: includes/class-wc-integration.php:128
+#: includes/class-wc-integration.php:118
 msgid ""
 "Enter Dolibarr webservices root URL (i.e. "
 "https://mydolibarr.com/webservices)"
 msgstr "Entrez l'URL racine des webservices de Dolibarr (i.e. https://mydolibarr.com/webservices)"
 
-#: includes/class-wc-integration.php:137
+#: includes/class-wc-integration.php:127
 msgid "Delay"
 msgstr "Délai"
 
-#: includes/class-wc-integration.php:138
+#: includes/class-wc-integration.php:128
 msgid "Choose the automatic update frequency"
 msgstr "Choisissez la fréquence de mise à jour automatique"
 
-#: includes/class-wc-integration.php:142
+#: includes/class-wc-integration.php:132
 msgid "Once Hourly"
 msgstr "Une fois par heure"
 
-#: includes/class-wc-integration.php:143
+#: includes/class-wc-integration.php:133
 msgid "Twice Daily"
 msgstr "Deux fois par jour"
 
-#: includes/class-wc-integration.php:144
+#: includes/class-wc-integration.php:134
 msgid "Once Daily"
 msgstr "Une fois par jour"
 
-#: includes/class-wc-integration.php:149
+#: includes/class-wc-integration.php:139
 msgid "Key"
 msgstr "Clé"
 
-#: includes/class-wc-integration.php:150
+#: includes/class-wc-integration.php:140
 msgid "Enter your Dolibarr webservices key"
 msgstr "Entrez votre clé du webservices de Dolibarr"
 
-#: includes/class-wc-integration.php:156
+#: includes/class-wc-integration.php:146
 msgid "User login"
 msgstr "Identifiant utilisateur"
 
-#: includes/class-wc-integration.php:157
+#: includes/class-wc-integration.php:147
 msgid "Dolibarr actions will be done as this user"
 msgstr "Les actions de Dolibarr seront attribuées à cet utilisateur"
 
-#: includes/class-wc-integration.php:163
+#: includes/class-wc-integration.php:153
 msgid "User password"
 msgstr "Mot de passe utilisateur"
 
-#: includes/class-wc-integration.php:169
+#: includes/class-wc-integration.php:159
 msgid "Entity"
 msgstr "Entité"
 
-#: includes/class-wc-integration.php:170
+#: includes/class-wc-integration.php:160
 msgid ""
 "If you're using multicompany, the ID of the entity you want to integrate. "
 "Leave to 1 otherwise."
 msgstr "Si vous utilisez multi-société, l'ID de l'entité que vous souhaitez intégrer. Sinon laissez à 1."
 
-#: includes/class-wc-integration.php:176
+#: includes/class-wc-integration.php:166
 msgid "Products category"
 msgstr "Catégorie des produits"
 
-#: includes/class-wc-integration.php:177
+#: includes/class-wc-integration.php:167
 msgid ""
 "The ID of the products category you want to automatically import products "
 "from."
 msgstr "L'ID de la catégorie des produits que vous souhaitez importer automatiquement."
 
-#: includes/class-wc-integration.php:183
+#: includes/class-wc-integration.php:173
 msgid "Generic thirdparty"
 msgstr "Tiers générique"
 
-#: includes/class-wc-integration.php:184
+#: includes/class-wc-integration.php:174
 msgid "The ID of the thirdparty that'll be used for anonymous orders."
 msgstr "L'Id du tiers qui va être utilisé pour les commandes anonymes"
 
-#: includes/class-wc-integration.php:190
+#: includes/class-wc-integration.php:180
 msgid "Dolibarr version"
 msgstr "Version de Dolibarr"
 
-#: includes/class-wc-integration.php:191
+#: includes/class-wc-integration.php:181
 msgid ""
 "If the webservice communication is OK, it displays your Dolibarr version"
 msgstr "Vérifie si la communication est établie au travers du webservice et récupère la version de Dolibarr"
 
-#: includes/class-wc-integration.php:258
+#: includes/class-wc-integration.php:251
 msgid "The protocol to use is https://"
 msgstr "Le protocole à utiliser est https://"
 
-#: includes/class-wc-integration.php:268 includes/class-wc-integration.php:345
+#: includes/class-wc-integration.php:261 includes/class-wc-integration.php:354
 msgid "The webservice is not available. Please check the URL."
 msgstr "Le webservice n'est pas disponible. Merci de vérifier l'URL."
 
@@ -177,4 +177,4 @@ msgstr "GPC.solutions"
 
 #. Author URI of the plugin/theme
 msgid "https://gpcsolutions.fr"
-msgstr ""
+msgstr "https://gpcsolutions.fr"
