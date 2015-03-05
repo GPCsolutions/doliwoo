@@ -86,16 +86,6 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 			$this->dolibarr_category_id = $this->get_option( 'dolibarr_category_id' );
 			$this->dolibarr_generic_id  = $this->get_option( 'dolibarr_generic_id' );
 
-			// Get Webservice infos
-			$ws_auth  = array(
-				'dolibarrkey'       => $this->dolibarr_key,
-				'sourceapplication' => $this->sourceapplication,
-				'login'             => $this->dolibarr_login,
-				'password'          => $this->dolibarr_password,
-				'entity'            => $this->dolibarr_entity,
-			);
-			$this->test_webservice( $this->dolibarr_ws_endpoint, $ws_auth );
-
 			// Actions
 			add_action(
 				'woocommerce_update_options_integration_' . $this->id,
@@ -204,6 +194,9 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 		 * @return string HTML to display
 		 */
 		protected function generate_info_html( $key, $data ) {
+			// Get Webservice infos
+			$this->test_webservice( );
+
 			$field = $this->plugin_id . $this->id . '_' . $key;
 
 			$version_ok = false;
@@ -332,10 +325,26 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 		 * @param string $webservice The webservice URL
 		 * @param string[] $ws_auth The webservice authentication array
 		 */
-		private function test_webservice( $webservice, $ws_auth ) {
-			if ( empty ($webservice) ) {
+		private function test_webservice(
+			$webservice = '',
+			$ws_auth = array()
+		) {
+			if ( empty ( $webservice ) && ! empty ( $this->dolibarr_ws_endpoint ) ) {
+				$webservice = $this->dolibarr_ws_endpoint;
+			}
+			if ( empty ( $webservice ) ) {
 				// We don't want to check unconfigured plugin
 				return;
+			}
+
+			if ( empty ( $ws_auth ) ) {
+				$ws_auth  = array(
+					'dolibarrkey'       => $this->dolibarr_key,
+					'sourceapplication' => $this->sourceapplication,
+					'login'             => $this->dolibarr_login,
+					'password'          => $this->dolibarr_password,
+					'entity'            => $this->dolibarr_entity,
+				);
 			}
 
 			// Check that the server is available
@@ -363,10 +372,8 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 				$this->dolibarr_version = explode( '.', $response['dolibarr'] );
 			} else {
 				$this->errors[] = 'Webservice error:' . $response['result']->result_label;
+				$this->display_errors();
 			}
-
-			// Not called by the framework
-			$this->display_errors();
 		}
 	}
 endif;
