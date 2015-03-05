@@ -333,6 +333,11 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 		 * @param string[] $ws_auth The webservice authentication array
 		 */
 		private function test_webservice( $webservice, $ws_auth ) {
+			if ( empty ($webservice) ) {
+				// We don't want to check unconfigured plugin
+				return;
+			}
+
 			// Check that the server is available
 			try {
 				$soap_client = new SoapClient( $webservice . Doliwoo_Dolibarr::OTHER_ENDPOINT . Doliwoo_Dolibarr::WSDL_MODE );
