@@ -32,10 +32,10 @@ class Dolibarr {
 	/** @var WC_Logger Logging */
 	public $logger;
 
-	/** @var WC_Integration_Doliwoo_Settings Settings */
+	/** @var WC_Integration_Doliwoo Settings */
 	public $settings;
 
-	/** @var WC_Tax_Doliwoo WooCommerce taxes informations */
+	/** @var Doliwoo_WC_Tax WooCommerce taxes informations */
 	public $taxes;
 
 	/** @var string Webservice endpoint */
@@ -265,7 +265,7 @@ class Dolibarr {
 	/**
 	 * Create order lines
 	 *
-	 * @param DolibarrOrder $order The order to add lines to
+	 * @param Dolibarr_Order $order The order to add lines to
 	 */
 	private function create_order_lines( $order ) {
 		$order->lines = array();

@@ -62,7 +62,7 @@ if ( false === extension_loaded( 'openssl' ) ) {
 }
 
 // Make sure the settings class is available
-if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
+if ( ! class_exists( 'WC_Integration_Doliwoo' ) ) :
 
 	// If WooCommerce is active
 	if ( in_array(
@@ -76,13 +76,13 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 			 */
 			class Doliwoo {
 
-				/** @var WC_Integration_Doliwoo_Settings Doliwoo Settings */
+				/** @var WC_Integration_Doliwoo Doliwoo Settings */
 				public $settings;
 
 				/** @var array SOAP authentication parameters */
 				public $ws_auth = array();
 
-				/** @var Woocomerce_Parameters custom parameters */
+				/** @var Doliwoo_WC_Params custom parameters */
 				public $woocommerce_parameters;
 
 				/** @var Dolibarr external requests */
@@ -199,7 +199,7 @@ if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
 				 * @return string[] WooCommerce integrations
 				 */
 				public function add_integration( $integrations ) {
-					$integrations[] = 'WC_Integration_Doliwoo_Settings';
+					$integrations[] = 'WC_Integration_Doliwoo';
 
 					return $integrations;
 				}

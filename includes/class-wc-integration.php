@@ -25,7 +25,7 @@
  * @package DoliWoo
  */
 
-if ( ! class_exists( 'WC_Integration_Doliwoo_Settings' ) ) :
+if ( ! class_exists( 'WC_Integration_Doliwoo' ) ) :
 
 	/**
 	 * Doliwoo settings WooCommerce integration
