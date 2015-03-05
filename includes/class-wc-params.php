@@ -68,7 +68,7 @@ Class Doliwoo_WC_Params {
 					'fields' => array(
 						'dolibarr_id' => array(
 							'label'       => __( 'User ID', 'doliwoo' ),
-							'description' => __( 'The Dolibarr ID for this user' ),
+							'description' => __( 'The Dolibarr ID for this user', 'doliwoo' ),
 						)
 					)
 				)

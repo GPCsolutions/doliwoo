@@ -49,15 +49,15 @@ load_plugin_textdomain(
 
 // Check required extensions
 if ( false === extension_loaded( 'soap' ) && false === extension_loaded( 'openssl' ) ) {
-	esc_html_e( __( 'This plugin needs SOAP and OpenSSL PHP extensions.' ) );
+	esc_html_e( __( 'This plugin needs SOAP and OpenSSL PHP extensions.', 'doliwoo' ) );
 	exit;
 }
 if ( false === extension_loaded( 'soap' ) ) {
-	esc_html_e( __( 'This plugin needs SOAP PHP extension.' ) );
+	esc_html_e( __( 'This plugin needs SOAP PHP extension.', 'doliwoo' ) );
 	exit;
 }
 if ( false === extension_loaded( 'openssl' ) ) {
-	esc_html_e( __( 'This plugin needs OpenSSL PHP extension.' ) );
+	esc_html_e( __( 'This plugin needs OpenSSL PHP extension.', 'doliwoo' ) );
 	exit;
 }
 
@@ -250,7 +250,7 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 		}
 	} else {
 		// WooCommerce is not available
-		esc_html_e( __( 'This extension needs WooCommerce' ) );
+		esc_html_e( __( 'This extension needs WooCommerce', 'doliwoo' ) );
 		exit;
 	}
 

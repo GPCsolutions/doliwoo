@@ -125,7 +125,7 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 				),
 				'delay_update'         => array(
 					'title'       => __( 'Delay', 'doliwoo' ),
-					'description' => __( 'Choose the automatic update frequency' ),
+					'description' => __( 'Choose the automatic update frequency', 'doliwoo' ),
 					'type'        => 'select',
 					'desc_tip'    => false,
 					'options'     => array(
@@ -178,7 +178,7 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 				),
 				'dolibarr_version'     => array(
 					'title'       => __( 'Dolibarr version', 'doliwoo' ),
-					'description' => __( 'If the webservice communication is OK, it displays your Dolibarr version' ),
+					'description' => __( 'If the webservice communication is OK, it displays your Dolibarr version', 'doliwoo' ),
 					'type'        => 'info',
 					'desc_tip'    => false,
 				),
@@ -219,9 +219,9 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 					<?php
 					if ( $version_ok ){
 						// TODO: better use WooCommerce icons: https://github.com/woothemes/woocommerce-icons
-						esc_html_e( __( 'OK!' ) );
+						esc_html_e( __( 'OK!', 'doliwoo' ) );
 					} else {
-						esc_html_e( __( 'Not compatible! Please use at least Dolibarr v3.4.0.' ) );
+						esc_html_e( __( 'Not compatible! Please use at least Dolibarr v3.4.0.', 'doliwoo' ) );
 					}
 					esc_html_e(
 						'&nbsp;(v'
@@ -248,7 +248,7 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 
 			// Make sure we use HTTPS
 			if ( 'https://' !== ( substr( $value, 0, 8 ) ) ) {
-				$this->errors[] = __( 'The protocol to use is https://' );
+				$this->errors[] = __( 'The protocol to use is https://', 'doliwoo' );
 			}
 
 			// Make sure we have the trailing slash
@@ -258,7 +258,7 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 			try {
 				new SoapClient( $value . Doliwoo_Dolibarr::OTHER_ENDPOINT . Doliwoo_Dolibarr::WSDL_MODE );
 			} catch ( SoapFault $exc ) {
-				$this->errors[] = __( 'The webservice is not available. Please check the URL.' );
+				$this->errors[] = __( 'The webservice is not available. Please check the URL.', 'doliwoo' );
 			}
 
 			return $value;
@@ -351,7 +351,7 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 			try {
 				$soap_client = new SoapClient( $webservice . Doliwoo_Dolibarr::OTHER_ENDPOINT . Doliwoo_Dolibarr::WSDL_MODE );
 			} catch ( SoapFault $exc ) {
-				$this->errors[] = __( 'The webservice is not available. Please check the URL.' );
+				$this->errors[] = __( 'The webservice is not available. Please check the URL.', 'doliwoo' );
 				$this->display_errors();
 
 				// No point in doing the next test
