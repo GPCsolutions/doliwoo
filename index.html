@@ -32,25 +32,17 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h1>
-<a id="informations" class="anchor" href="#informations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Informations</h1>
+<a id="doliwoo" class="anchor" href="#doliwoo" aria-hidden="true"><span class="octicon octicon-link"></span></a>DoliWoo</h1>
 
-<p>Contributors: GPC.solutions (<a href="https://github.com/csalvador" class="user-mention">@csalvador</a>, <a href="https://github.com/rdoursenaud" class="user-mention">@rdoursenaud</a> &amp; <a href="https://github.com/maxoumic" class="user-mention">@maxoumic</a>)</p>
-
-<p>Tags: dolibarr, woocommerce, ecommerce, erp, integration</p>
-
-<p>Author URI: <a href="https://gpcsolutions.fr">https://gpcsolutions.fr</a></p>
-
-<p>Plugin URI: <a href="https://gpcsolutions.github.io/doliwoo">https://gpcsolutions.github.io/doliwoo</a></p>
-
-<p>Requires at least: 3.7.1</p>
-
-<p>Tested up to: 3.7.1</p>
-
-<p>Stable tag: master</p>
-
-<p>License: GPLv3</p>
-
-<p>License URI: <a href="http://www.gnu.org/licenses/gpl-3.0.html">http://www.gnu.org/licenses/gpl-3.0.html</a></p>
+<p><strong>Contributors:</strong>       GPC.solutions<br>
+<strong>Tags:</strong>               dolibarr, woocommerce, ecommerce, erp, integration<br>
+<strong>Author URI:</strong>         <a href="https://gpcsolutions.fr">https://gpcsolutions.fr</a><br>
+<strong>Plugin URI:</strong>         <a href="https://gpcsolutions.github.io/doliwoo">https://gpcsolutions.github.io/doliwoo</a><br>
+<strong>Requires at least:</strong>  3.7.1<br>
+<strong>Tested up to:</strong>       3.7.1<br>
+<strong>Stable tag:</strong>         1.0.0<br>
+<strong>License:</strong>            GPL-3.0+<br>
+<strong>License URI:</strong>        <a href="http://www.gnu.org/licenses/gpl-3.0.html">http://www.gnu.org/licenses/gpl-3.0.html</a>  </p>
 
 <p>Integrate Dolibarr with a WooCommerce shop.</p>
 
@@ -81,16 +73,16 @@
 <p><strong>Known missing (TODO)</strong></p>
 
 <ul>
-<li>International VAT rates management</li>
 <li>Products stock informations resync on orders</li>
 <li>Invoicing</li>
 <li>Payments</li>
 <li>Multiple languages products management</li>
 </ul>
 
-<p><strong>Known issues</strong>
-WooCommerce VAT management vastly differs from Dolibarr and we need equivalence tables.
-Only French equivalence table is shipped at the moment.</p>
+<p><strong>Known issues</strong></p>
+
+<p>WooCommerce VAT management vastly differs from Dolibarr and we need equivalence tables.<br>
+Only French and italian equivalence tables are shipped at the moment.</p>
 
 <h3>
 <a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Requirements</h3>
@@ -128,12 +120,12 @@ Only French equivalence table is shipped at the moment.</p>
 <h2>
 <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
 
-<ul>
+<ol>
 <li>Make sure the WooCommerce plugin is installed into your WordPress</li>
 <li>Extract the zip file to the 'wp-content/plugins/' directory of your WordPress installation</li>
 <li>Activate the plugin from 'Plugins' WordPress settings page</li>
 <li>Go to 'WooCommerce' 'Settings' under the 'Integration' tab and configure the 'Doliwoo' section</li>
-</ul>
+</ol>
 
 <h2>
 <a id="frequently-asked-questions" class="anchor" href="#frequently-asked-questions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Frequently Asked Questions</h2>
@@ -141,31 +133,42 @@ Only French equivalence table is shipped at the moment.</p>
 <h3>
 <a id="is-this-plugin-stable-and-useable-in-a-production-environment" class="anchor" href="#is-this-plugin-stable-and-useable-in-a-production-environment" aria-hidden="true"><span class="octicon octicon-link"></span></a>Is this plugin stable and useable in a production environment?</h3>
 
-<p>NO! This is beta code. This project started as an internal proof of concept and has just been reviewed.
+<p>NO! This is beta code. This project started as an internal proof of concept and has just been reviewed.<br>
 But you're very welcome to test it on a pre-production environment.</p>
 
 <h3>
 <a id="ok-so-how-can-i-make-it-happen-then" class="anchor" href="#ok-so-how-can-i-make-it-happen-then" aria-hidden="true"><span class="octicon octicon-link"></span></a>OK, so how can I make it happen then?</h3>
 
-<p>You can help by testing, providing detailed bug reports, documentation or even code.
-Alternatively, you can buy paid support and/or development services from us: <a href="https://gpcsolutions.fr">GPC.solutions</a>.</p>
+<p>You can help by testing, providing detailed bug reports, documentation or even code.<br>
+<strong>Alternatively, you can buy paid support and/or development services from us:</strong> <a href="https://gpcsolutions.fr">GPC.solutions</a>.  </p>
 
 <h3>
 <a id="why-do-i-need-to-use-https-with-a-good-known-ssl-certificate" class="anchor" href="#why-do-i-need-to-use-https-with-a-good-known-ssl-certificate" aria-hidden="true"><span class="octicon octicon-link"></span></a>Why do I need to use HTTPS with a good known SSL certificate?</h3>
 
-<p>Otherwise SOAP requests will fail.</p>
-
-<p>This is a security feature to make sure your important data is properly encrypted in transit between WooCommerce and Dolibarr.</p>
-
-<p>You may allow insecure requests by tweaking the source code if you know what you're doing but we don't recommend that.</p>
+<p>Otherwise SOAP requests will fail.<br>
+This is a security feature to make sure your important data is properly encrypted in transit between WooCommerce and Dolibarr.<br>
+You may allow insecure requests by tweaking the source code if you know what you're doing but we don't recommend that.  </p>
 
 <h2>
 <a id="screenshots" class="anchor" href="#screenshots" aria-hidden="true"><span class="octicon octicon-link"></span></a>Screenshots</h2>
 
-<p>None yet</p>
+<h3>
+<a id="1-the-configuration-page" class="anchor" href="#1-the-configuration-page" aria-hidden="true"><span class="octicon octicon-link"></span></a>1. The configuration page</h3>
+
+<p><img src="https://raw.githubusercontent.com/GPCsolutions/doliwoo/master/assets/screenshot-1.png" alt="The configuration page"></p>
 
 <h2>
 <a id="changelog" class="anchor" href="#changelog" aria-hidden="true"><span class="octicon octicon-link"></span></a>Changelog</h2>
+
+<h3>
+<a id="100" class="anchor" href="#100" aria-hidden="true"><span class="octicon octicon-link"></span></a>1.0.0</h3>
+
+<ul>
+<li>First stable release</li>
+<li>Polished errors reporting</li>
+<li>Polished interface</li>
+<li>Basic international VAT rates management</li>
+</ul>
 
 <h3>
 <a id="001" class="anchor" href="#001" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.0.1</h3>
@@ -182,9 +185,9 @@ Alternatively, you can buy paid support and/or development services from us: <a 
 <a id="upgrade-notice" class="anchor" href="#upgrade-notice" aria-hidden="true"><span class="octicon octicon-link"></span></a>Upgrade Notice</h2>
 
 <h3>
-<a id="001-1" class="anchor" href="#001-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.0.1</h3>
+<a id="100-1" class="anchor" href="#100-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>1.0.0</h3>
 
-<p>N.A.</p>
+<p>Stable release</p>
       </section>
     </div>
 
