@@ -3,7 +3,7 @@
 Plugin Name: DoliWoo
 Plugin URI: http://gpcsolutions.github.io/doliwoo
 Description: Dolibarr WooCommerce integration
-Version: 1.0.0
+Version: 1.0.1
 Author: GPC.solutions
 Author URI: https://gpcsolutions.fr
 License: GPL-3.0+
