@@ -121,7 +121,10 @@ class Doliwoo_Dolibarr {
 		try {
 			$result = $soap_client->createOrder( $this->ws_auth, $order );
 		} catch ( SoapFault $exception ) {
-			$this->logger->add( 'doliwoo', $exception->getMessage() );
+			$this->logger->add(
+				'doliwoo',
+				'createOrder request:' . $exception->getMessage()
+			);
 
 			// Do nothing.
 			return;
@@ -130,7 +133,7 @@ class Doliwoo_Dolibarr {
 		if ( ! ( 'OK' == $result['result']->result_code ) ) {
 			$this->logger->add(
 				'doliwoo',
-				$result['result']->result_code . ': ' . $result['result']->result_label
+				'createOrder response: ' . $result['result']->result_code . ': ' . $result['result']->result_label
 			);
 
 			// Do nothing
@@ -149,28 +152,12 @@ class Doliwoo_Dolibarr {
 		$user_id
 	) {
 		$result = $this->dolibarr_thirdparty_exists( $user_id );
-		if ( $result ) {
-			if (
-				$result['thirdparty']
-				&& get_user_meta( $user_id, 'dolibarr_id', true ) != $result['thirdparty']->id
-			) {
-				update_user_meta( $user_id, 'dolibarr_id', $result['thirdparty']->id );
-			} elseif ( null === $result['thirdparty'] ) {
-				$result = $this->dolibarr_create_thirdparty( $user_id );
 
-				if ( ! ( 'OK' == $result['result']->result_code ) ) {
-					$this->logger->add(
-						'doliwoo',
-						$result['result']->result_code . ': ' . $result['result']->result_label
-					);
-
-					// Do nothing
-					return;
-				}
-
-				update_user_meta( $user_id, 'dolibarr_id', $result->id );
-			}
+		if ( null === $result ) {
+			// Does not exist, create it
+			$result = $this->dolibarr_create_thirdparty( $user_id );
 		}
+		update_user_meta( $user_id, 'dolibarr_id', $result['id'] );
 	}
 
 	/**
@@ -205,7 +192,10 @@ class Doliwoo_Dolibarr {
 		try {
 			$result = $soap_client->getThirdParty( $this->ws_auth, $dol_id, $dol_ref );
 		} catch ( SoapFault $exception ) {
-			$this->logger->add( 'doliwoo', $exception->getMessage() );
+			$this->logger->add(
+				'doliwoo',
+				'getThirdParty request: ' . $exception->getMessage()
+			);
 
 			// Do nothing.
 			return null;
@@ -214,18 +204,14 @@ class Doliwoo_Dolibarr {
 		if ( ! ( 'OK' == $result['result']->result_code ) ) {
 			$this->logger->add(
 				'doliwoo',
-				$result['result']->result_code . ': ' . $result['result']->result_label
+				'getThirdParty response: ' . $result['result']->result_code . ': ' . $result['result']->result_label
 			);
 
 			// Do nothing
 			return null;
 		}
 
-		if ( $result ) {
-			return $result;
-		} else {
-			return null;
-		}
+		return $result;
 	}
 
 	/**
@@ -281,7 +267,10 @@ class Doliwoo_Dolibarr {
 		try {
 			$result = $soap_client->createThirdParty( $this->ws_auth, $new_thirdparty );
 		} catch ( SoapFault $exception ) {
-			$this->logger->add( 'doliwoo', $exception->getMessage() );
+			$this->logger->add(
+				'doliwoo',
+				'createThirdParty request: ' . $exception->getMessage()
+			);
 
 			// Do nothing.
 			return null;
@@ -290,11 +279,11 @@ class Doliwoo_Dolibarr {
 		if ( ! ( 'OK' == $result['result']->result_code ) ) {
 			$this->logger->add(
 				'doliwoo',
-				$result['result']->result_code . ': ' . $result['result']->result_label
+				'createThirdParty response: ' . $result['result']->result_code . ': ' . $result['result']->result_label
 			);
 
 			// Do nothing
-			return;
+			return null;
 		}
 
 		return $result;
@@ -356,7 +345,10 @@ class Doliwoo_Dolibarr {
 				$this->settings->dolibarr_category_id
 			);
 		} catch ( SoapFault $exception ) {
-			$this->logger->add( 'doliwoo', $exception->getMessage() );
+			$this->logger->add(
+				'doliwoo',
+				'getProductsForCategory request: ' . $exception->getMessage()
+			);
 
 			// Do nothing.
 			return;
@@ -365,7 +357,7 @@ class Doliwoo_Dolibarr {
 		if ( ! ( 'OK' == $result['result']->result_code ) ) {
 			$this->logger->add(
 				'doliwoo',
-				$result['result']->result_code . ': ' . $result['result']->result_label
+				'getProductsForCategory response: ' . $result['result']->result_code . ': ' . $result['result']->result_label
 			);
 
 			// Do nothing
@@ -526,7 +518,10 @@ class Doliwoo_Dolibarr {
 					$dolibarr_product->dir . $images->photo
 				);
 			} catch ( SoapFault $exception ) {
-				$this->logger->add( 'doliwoo', $exception->getMessage() );
+				$this->logger->add(
+					'doliwoo',
+					'getDocument request:' . $exception->getMessage()
+				);
 
 				// Do nothing.
 				continue;
@@ -535,7 +530,7 @@ class Doliwoo_Dolibarr {
 			if ( ! ( 'OK' == $result['result']->result_code ) ) {
 				$this->logger->add(
 					'doliwoo',
-					$result['result']->result_code . ': ' . $result['result']->result_label
+					'getDocument response: ' . $result['result']->result_code . ': ' . $result['result']->result_label
 				);
 
 				// Do nothing
