@@ -181,6 +181,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('default', [
         'test',
+        'potupdate',
         'sync-json',
         'wp_readme_to_markdown',
         'phpdoc'
@@ -203,7 +204,6 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('i18n', [
-        'potupdate',
         'poupdate',
         'po2mo'
     ]);
