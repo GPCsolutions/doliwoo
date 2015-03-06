@@ -5,7 +5,7 @@
 **Plugin URI:**         https://gpcsolutions.github.io/doliwoo  
 **Requires at least:**  3.7.1  
 **Tested up to:**       3.7.1  
-**Stable tag:**         1.0.1  
+**Stable tag:**         1.0.2  
 **License:**            GPL-3.0+  
 **License URI:**        http://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -95,7 +95,13 @@ You may allow insecure requests by tweaking the source code if you know what you
 
 ## Changelog ##
 
+### 1.0.2 ###
+
+* Even better logging
+* Fixed thirdparties creation (prevented Dolibarr order creation for logged-in users)
+
 ### 1.0.1 ###
+
 * Better logging on unexpected SOAP responses
 
 ### 1.0.0 ###
@@ -114,6 +120,12 @@ You may allow insecure requests by tweaking the source code if you know what you
 * Create an order into Dolibarr for each sale
 
 ## Upgrade Notice ##
+
+### 1.0.2 ###
+
+Upgrade required.
+
+Critical bug preventing thirdparties and order creations for logged-in users fixed.
 
 ### 1.0.1 ###
 
