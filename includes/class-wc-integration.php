@@ -199,19 +199,20 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 
 			$field = $this->plugin_id . $this->id . '_' . $key;
 
-			$version_ok = false;
-			if (
-				// Is version > 3.4.0
-				4 <= $this->dolibarr_version[0]
-				|| ( 3 <= $this->dolibarr_version[0] && 4 <= $this->dolibarr_version[1] )
-			) {
-				$version_ok = true;
+			if ( empty ( $this->dolibarr_version ) ) {
+				$message = __( 'Please configure the plugin.', 'doliwoo' );
+			} else {
+				if (
+					// Is version > 3.4.0
+					4 <= $this->dolibarr_version[0]
+					|| ( 3 <= $this->dolibarr_version[0] && 4 <= $this->dolibarr_version[1] )
+				) {
+					$message = __( 'OK!', 'doliwoo' );
+				} else {
+					$message = __( 'Not compatible! Please use at least Dolibarr v3.4.0.', 'doliwoo' );
+				}
+				$message .= '&nbsp;' . sprintf( __( '(Detected v%s)', 'doliwoo' ), implode( '.', $this->dolibarr_version ) );
 			}
-
-			$not_configured   = __( 'Please configure the plugin.', 'doliwoo' );
-			$not_compatible   = __( 'Not compatible! Please use at least Dolibarr v3.4.0.', 'doliwoo' );
-			$configuration_ok = __( 'OK!', 'doliwoo' );
-			$detected         = sprintf( __( '(Detected v%s)', 'doliwoo' ), implode( '.', $this->dolibarr_version ) );
 
 			ob_start();
 			?>
@@ -222,16 +223,7 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 				</th>
 				<td class="forminp">
 					<?php
-					if ( empty ( $this->dolibarr_version ) ) {
-						esc_html_e( $not_configured );
-					} else {
-						if ( $version_ok ) {
-							esc_html_e( $configuration_ok );
-						} else {
-							esc_html_e( $not_compatible );
-						}
-						esc_html_e( '&nbsp;' . $detected );
-					}
+					esc_html_e( $message );
 					?>
 				</td>
 			</tr>

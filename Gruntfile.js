@@ -116,7 +116,8 @@ module.exports = function (grunt) {
                     '!.sensiolabs.yml',
                     '!.travis.yml',
                     '!.tx',
-                    '!vendor/**'
+                    '!vendor/**',
+                    '!*.iml'
                 ],
                 dest: 'release/<%= pkg.version %>/'
             }
