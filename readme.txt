@@ -93,6 +93,9 @@ You may allow insecure requests by tweaking the source code if you know what you
 
 == Changelog ==
 
+= 1.0.1 =
+* Better logging on unexpected SOAP responses
+
 = 1.0.0 =
 
 * First stable release
@@ -109,6 +112,10 @@ You may allow insecure requests by tweaking the source code if you know what you
 * Create an order into Dolibarr for each sale
 
 == Upgrade Notice ==
+
+= 1.0.1 =
+
+Upgrade optional. No functional changes only more logging.
 
 = 1.0.0 =
 
