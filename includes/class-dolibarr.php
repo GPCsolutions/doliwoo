@@ -123,7 +123,8 @@ class Doliwoo_Dolibarr {
 		} catch ( SoapFault $exception ) {
 			$this->logger->add(
 				'doliwoo',
-				'createOrder request:' . $exception->getMessage() );
+				'createOrder request:' . $exception->getMessage()
+			);
 
 			// Do nothing.
 			return;
@@ -151,28 +152,12 @@ class Doliwoo_Dolibarr {
 		$user_id
 	) {
 		$result = $this->dolibarr_thirdparty_exists( $user_id );
-		if ( $result ) {
-			if (
-				$result['thirdparty']
-				&& get_user_meta( $user_id, 'dolibarr_id', true ) != $result['thirdparty']->id
-			) {
-				update_user_meta( $user_id, 'dolibarr_id', $result['thirdparty']->id );
-			} elseif ( null === $result['thirdparty'] ) {
-				$result = $this->dolibarr_create_thirdparty( $user_id );
 
-				if ( ! ( 'OK' == $result['result']->result_code ) ) {
-					$this->logger->add(
-						'doliwoo',
-						$result['result']->result_code . ': ' . $result['result']->result_label
-					);
-
-					// Do nothing
-					return;
-				}
-
-				update_user_meta( $user_id, 'dolibarr_id', $result->id );
-			}
+		if ( null === $result ) {
+			// Does not exist, create it
+			$result = $this->dolibarr_create_thirdparty( $user_id );
 		}
+		update_user_meta( $user_id, 'dolibarr_id', $result['id'] );
 	}
 
 	/**
