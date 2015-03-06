@@ -97,6 +97,9 @@ You may allow insecure requests by tweaking the source code if you know what you
 
 ### 1.0.2 ###
 
+* Even better logging
+* Fixed thirdparties creation (prevented Dolibarr order creation for logged-in users)
+
 ### 1.0.1 ###
 
 * Better logging on unexpected SOAP responses
@@ -119,6 +122,10 @@ You may allow insecure requests by tweaking the source code if you know what you
 ## Upgrade Notice ##
 
 ### 1.0.2 ###
+
+Upgrade required.
+
+Critical bug preventing thirdparties and order creations for logged-in users fixed.
 
 ### 1.0.1 ###
 
