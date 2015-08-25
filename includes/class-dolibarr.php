@@ -512,7 +512,7 @@ class Doliwoo_Dolibarr {
 
 		foreach ( $attachments as $attachment ) {
 			if ( false === wp_delete_attachment( $attachment->ID , true ) ) {
-				$this->logger(
+				$this->logger->add(
 					'doliwoo',
 					'Failed to delete attachment #' . $attachment->ID . ' from post #' . $post_id
 				);
