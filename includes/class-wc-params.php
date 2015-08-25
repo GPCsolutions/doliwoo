@@ -29,7 +29,7 @@
 /**
  * Parameters management
  */
-Class Doliwoo_WC_Params {
+class Doliwoo_WC_Params {
 
 	/**
 	 * Save Dolibarr ID field on edit user pages
@@ -60,19 +60,17 @@ Class Doliwoo_WC_Params {
 		if ( ! current_user_can( 'manage_woocommerce' ) ) {
 			return null;
 		}
+		$dolibarr_id = array(
+			'label'       => __( 'User ID', 'doliwoo' ),
+			'description' => __( 'The Dolibarr ID for this user', 'doliwoo' ),
+		);
+		$dolibarr = array(
+			'title'  => __( 'Dolibarr', 'doliwoo' ),
+			'fields' => array( 'dolibarr_id' => $dolibarr_id ),
+		);
 		$show_fields = apply_filters(
 			'customer_meta_fields',
-			array(
-				'dolibarr' => array(
-					'title'  => __( 'Dolibarr', 'doliwoo' ),
-					'fields' => array(
-						'dolibarr_id' => array(
-							'label'       => __( 'User ID', 'doliwoo' ),
-							'description' => __( 'The Dolibarr ID for this user', 'doliwoo' ),
-						)
-					)
-				)
-			)
+			array( 'dolibarr' => $dolibarr )
 		);
 
 		return $show_fields;

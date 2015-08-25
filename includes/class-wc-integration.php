@@ -199,7 +199,7 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 
 			$field = $this->plugin_id . $this->id . '_' . $key;
 
-			if ( empty ( $this->dolibarr_version ) ) {
+			if ( empty( $this->dolibarr_version ) ) {
 				$message = __( 'Please configure the plugin.', 'doliwoo' );
 			} else {
 				if (
@@ -325,15 +325,15 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 			$webservice = '',
 			$ws_auth = array()
 		) {
-			if ( empty ( $webservice ) && ! empty ( $this->dolibarr_ws_endpoint ) ) {
+			if ( empty( $webservice ) && ! empty( $this->dolibarr_ws_endpoint ) ) {
 				$webservice = $this->dolibarr_ws_endpoint;
 			}
-			if ( empty ( $webservice ) ) {
+			if ( empty( $webservice ) ) {
 				// We don't want to check unconfigured plugin
 				return;
 			}
 
-			if ( empty ( $ws_auth ) ) {
+			if ( empty( $ws_auth ) ) {
 				$ws_auth  = array(
 					'dolibarrkey'       => $this->dolibarr_key,
 					'sourceapplication' => $this->sourceapplication,
