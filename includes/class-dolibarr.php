@@ -507,13 +507,15 @@ class Doliwoo_Dolibarr {
 			'post_type'      => 'attachment',
 			'posts_per_page' => - 1,
 			'post_status'    => 'any',
-			'post_parent'    => $post_id
+			'post_parent'    => $post_id,
 		) );
 
 		foreach ( $attachments as $attachment ) {
 			if ( false === wp_delete_attachment( $attachment->ID , true ) ) {
-				$this->logger( 'doliwoo',
-					'Failed to delete attachment #' . $attachment->ID . ' from post #' . $post_id );
+				$this->logger(
+					'doliwoo',
+					'Failed to delete attachment #' . $attachment->ID . ' from post #' . $post_id
+				);
 			}
 		}
 	}
