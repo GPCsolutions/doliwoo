@@ -485,6 +485,9 @@ class Doliwoo_Dolibarr {
 	 * @param int $post_id The WooCommerce product
 	 */
 	private function import_product_images( $dolibarr_product, $post_id ) {
+		// Delete existing images
+		$this->delete_post_attachments( $post_id );
+
 		$image_attachment_ids = $this->get_product_image( $dolibarr_product, $post_id );
 
 		// Use the first image as the product thumbnail
@@ -492,6 +495,27 @@ class Doliwoo_Dolibarr {
 
 		// Fill the image gallery
 		update_post_meta( $post_id, '_product_image_gallery', implode( ',', $image_attachment_ids ) );
+	}
+
+	/**
+	 * Delete post attachments
+	 *
+	 * @param int $post_id WooCommerce product ID
+	 */
+	private function delete_post_attachments( $post_id ) {
+		$attachments = get_posts( array(
+			'post_type'      => 'attachment',
+			'posts_per_page' => - 1,
+			'post_status'    => 'any',
+			'post_parent'    => $post_id
+		) );
+
+		foreach ( $attachments as $attachment ) {
+			if ( false === wp_delete_attachment( $attachment->ID , true ) ) {
+				$this->logger( 'doliwoo',
+					'Failed to delete attachment #' . $attachment->ID . ' from post #' . $post_id );
+			}
+		}
 	}
 
 	/**
