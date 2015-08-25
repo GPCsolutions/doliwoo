@@ -227,7 +227,7 @@ class Doliwoo_Dolibarr {
 	 *
 	 * @param int $user_id A Wordpress user ID
 	 *
-	 * @return array() $result The SOAP response
+	 * @return array $result The SOAP response
 	 */
 	public function dolibarr_create_thirdparty( $user_id ) {
 		/*
