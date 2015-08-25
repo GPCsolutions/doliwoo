@@ -240,7 +240,10 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 		 * @return string The form value
 		 */
 		public function validate_dolibarr_ws_endpoint_field( $key ) {
-			$value = $_POST[ $this->plugin_id . $this->id . '_' . $key ];
+			// Check nonce
+			if ( ! empty( $_POST ) && check_admin_referer( 'woocommerce-settings' ) ) {
+				$value = $_POST[ $this->plugin_id . $this->id . '_' . $key ];
+			}
 
 			// Make sure we use HTTPS
 			if ( 'https://' !== ( substr( $value, 0, 8 ) ) ) {

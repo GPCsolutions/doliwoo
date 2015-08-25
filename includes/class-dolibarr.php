@@ -108,7 +108,15 @@ class Doliwoo_Dolibarr {
 			$order->thirdparty_id = intval( $thirdparty_id );
 		} else {
 			if ( get_user_meta( $user_id, 'billing_company', true ) == '' ) {
-				update_user_meta( $user_id, 'billing_company', $_POST['billing_company'] );
+				if ( wp_verify_nonce( 'woocommerce-cart' ) ) {
+					$billing_company = $_POST['billing_company'];
+				} else {
+					// TODO: fail message?
+					$this->logger->add( 'doliwoo', 'Failed to verify nonce' );
+					exit;
+				}
+
+				update_user_meta( $user_id, 'billing_company', $billing_company );
 			}
 			$this->dolibarr_create_thirdparty_if_not_exists( $user_id );
 			$order->thirdparty_id = intval( get_user_meta( $user_id, 'dolibarr_id', true ) );
