@@ -40,11 +40,13 @@ class Doliwoo_WC_Params {
 	 */
 	public function save_customer_meta_fields( $user_id ) {
 		$save_fields = $this->get_customer_meta_fields();
-		foreach ( $save_fields as $fieldset ) {
-			foreach ( $fieldset['fields'] as $key => $field ) {
-				if ( isset( $_POST[ $key ] ) ) {
-					update_user_meta( $user_id, $key, wc_clean( $_POST[ $key ] )
-					);
+		if ( ! empty( $_POST ) && check_admin_referer( 'update-user_' . $user_id ) ) {
+			foreach ( $save_fields as $fieldset ) {
+				foreach ( $fieldset['fields'] as $key => $field ) {
+					if ( isset( $_POST[ $key ] ) ) {
+						update_user_meta( $user_id, $key, wc_clean( $_POST[ $key ] )
+						);
+					}
 				}
 			}
 		}
