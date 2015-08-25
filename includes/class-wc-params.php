@@ -93,7 +93,7 @@ class Doliwoo_WC_Params {
 
 		$show_fields = $this->get_customer_meta_fields();
 		foreach ( $show_fields as $fieldset ) {
-			echo '<h3>', $fieldset['title'], '</h3>',
+			echo '<h3>', esc_html( $fieldset['title'] ), '</h3>',
 			'<table class="form-table">';
 			foreach ( $fieldset['fields'] as $key => $field ) {
 				echo '<tr>',
