@@ -1,3 +1,5 @@
+sudo: false  # Use the new infrastructure
+
 language: php
 
 php:
