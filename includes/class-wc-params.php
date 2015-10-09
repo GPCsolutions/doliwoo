@@ -122,7 +122,7 @@ class Doliwoo_WC_Params {
 	 */
 	public function user_column_values( $value, $column_name, $user_id ) {
 		$user = get_userdata( $user_id );
-		if ( 'dolibarr_id' == $column_name ) {
+		if ( 'dolibarr_id' === $column_name ) {
 			return get_user_meta( $user->ID, 'dolibarr_id', true );
 		}
 		return $value;

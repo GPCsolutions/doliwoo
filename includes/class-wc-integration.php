@@ -54,10 +54,10 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 		/** @var string Dolibarr entity we want webservice responses from */
 		public $dolibarr_entity;
 
-		/** @var string ID of the Dolibarr category we sync products from */
+		/** @var int ID of the Dolibarr category we sync products from */
 		public $dolibarr_category_id;
 
-		/** @var string ID of the Dolibarr thirdparty to use when we make a sale without a user logged in */
+		/** @var int ID of the Dolibarr thirdparty to use when we make a sale without a user logged in */
 		public $dolibarr_generic_id;
 
 		/** @var int[] The distant Dolibarr version */
@@ -295,7 +295,7 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 		 *
 		 * @return void
 		 */
-		public function display_errors( ) {
+		public function display_errors() {
 			if ( empty( $this->errors ) ) {
 				// Nothing to do
 				return;
@@ -367,7 +367,7 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 				return;
 			}
 
-			if ( 'OK' == $response['result']->result_code ) {
+			if ( 'OK' === $response['result']->result_code ) {
 				$this->dolibarr_version = explode( '.', $response['dolibarr'] );
 			} else {
 				$this->errors[] = 'Webservice error:' . $response['result']->result_label;

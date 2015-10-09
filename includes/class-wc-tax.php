@@ -47,7 +47,7 @@ class Doliwoo_WC_Tax extends WC_Tax {
 		foreach ( $tax_classes as $class ) {
 			$rates = $this->get_rates( $class );
 			$rates_values = array_values( $rates );
-			if ( $rates_values[0]['rate'] == $tax_rate ) {
+			if ( floatval( $rates_values[0]['rate'] ) === $tax_rate ) {
 				// Use the first class found
 				return $class;
 			}
@@ -104,7 +104,7 @@ class Doliwoo_WC_Tax extends WC_Tax {
 		foreach ( $declared_rates as $declared_rate ) {
 			foreach ( $database_rates as $tax_rate_id => $database_rate ) {
 				if ( $declared_rate['tax_rate_class']
-				     == $database_rate['tax_rate_class']
+				     === $database_rate['tax_rate_class']
 				) {
 					// _assoc is important. It allows strict checking to take 0 into account!
 					if ( array_diff_assoc( $declared_rate, $database_rate ) ) {
