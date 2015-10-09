@@ -1,0 +1,19 @@
+php:
+  version: '5.5.16'
+
+hooks:
+  pre_setup: npm install grunt-cli && npm install
+
+cache:
+  key_paths:
+    - package.json
+    - composer.json
+    - composer.lock
+  save_paths:
+    - node_modules
+    - vendor
+
+test_pattern: 'none'
+
+tests:
+    - node_modules/grunt-cli/bin/grunt test
