@@ -98,16 +98,10 @@ class Doliwoo_Dolibarr {
 
 		// Fill this array with all data required to create an order in Dolibarr
 		$user_id = get_current_user_id();
-		if ( 0 === $user_id ) {
-			// default to the generic user
-			$thirdparty_id = $this->settings->dolibarr_generic_id;
-		} else {
-			$thirdparty_id = intval( get_user_meta( $user_id, 'dolibarr_id', true ) );
-		}
 		
 		// Check thirdparty exists
-		if ( 0 !== $thirdparty_id  && $this->dolibarr_thirdparty_exists( $thirdparty_id ) ) {
-			$order->thirdparty_id = $thirdparty_id;
+		if ( $this->dolibarr_thirdparty_exists( $user_id ) ) {
+			$order->thirdparty_id = intval( get_user_meta( $user_id, 'dolibarr_id', true ) );
 		} else {
 			$billing_company = get_user_meta( $user_id, 'billing_company', true );
 			if ( empty ( $billing_company ) ) {
