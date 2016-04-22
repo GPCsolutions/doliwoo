@@ -107,7 +107,8 @@ class Doliwoo_Dolibarr {
 		if ( 0 !== $thirdparty_id ) {
 			$order->thirdparty_id = $thirdparty_id;
 		} else {
-			if ( 0 === intval( get_user_meta( $user_id, 'billing_company', true ) ) ) {
+			$billing_company = get_user_meta( $user_id, 'billing_company', true );
+			if ( empty ( $billing_company ) ) {
 				if ( wp_verify_nonce( 'woocommerce-cart' ) ) {
 					$billing_company = $_POST['billing_company'];
 				} else {
