@@ -104,7 +104,9 @@ class Doliwoo_Dolibarr {
 		} else {
 			$thirdparty_id = intval( get_user_meta( $user_id, 'dolibarr_id', true ) );
 		}
-		if ( 0 !== $thirdparty_id ) {
+		
+		// Check thirdparty exists
+		if ( 0 !== $thirdparty_id  && $this->dolibarr_thirdparty_exists( $thirdparty_id ) ) {
 			$order->thirdparty_id = $thirdparty_id;
 		} else {
 			$billing_company = get_user_meta( $user_id, 'billing_company', true );
