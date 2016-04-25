@@ -47,7 +47,7 @@ module.exports = function (grunt) {
         },
         phpcs: {
             application: {
-                dir: '<%= paths.php.files %>'
+                src: '<%= paths.php.files %>'
             },
             options: {
                 bin: 'vendor/bin/phpcs',
@@ -149,6 +149,9 @@ module.exports = function (grunt) {
                 files: {
                     'README.md': 'readme.txt'
                 }
+            },
+            options: {
+                screenshot_url: 'assets/{screenshot}.png'
             }
         },
         checkwpversion: {
