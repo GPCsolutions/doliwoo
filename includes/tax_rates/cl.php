@@ -8,7 +8,7 @@ $declared_rates = array(
 		'tax_rate_order'    => '0',
 		'tax_rate_class'    => '',
 	),
-		array(
+	array(
 		'tax_rate_country'  => 'CL',
 		'tax_rate'          => '0',
 		'tax_rate_name'     => $tax_name,

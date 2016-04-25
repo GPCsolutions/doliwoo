@@ -67,7 +67,8 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 	// If WooCommerce is active
 	if ( in_array(
 		'woocommerce/woocommerce.php',
-		apply_filters( 'active_plugins', get_option( 'active_plugins' ) )
+		apply_filters( 'active_plugins', get_option( 'active_plugins' ) ),
+		true
 	) ) {
 		if ( ! class_exists( 'Doliwoo' ) ) {
 
@@ -254,6 +255,6 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 		exit;
 	}
 
-	$Doliwoo = new Doliwoo();
+	$doliwoo = new Doliwoo();
 
 	endif;

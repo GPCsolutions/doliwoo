@@ -94,7 +94,7 @@ class Doliwoo_WC_Tax extends WC_Tax {
 		$declared_classes = wp_list_pluck( $declared_rates, 'tax_rate_class' );
 		$database_classes = wp_list_pluck( $database_rates, 'tax_rate_class' );
 		foreach ( $declared_classes as $key => $class ) {
-			if ( ! in_array( $class, $database_classes ) ) {
+			if ( ! in_array( $class, $database_classes, true ) ) {
 				$to_create = $declared_rates[ $key ];
 				$this->insert_tax( $to_create );
 			}
