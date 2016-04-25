@@ -32,12 +32,12 @@
     "wpackagist-plugin/woocommerce": ">=2.0.0"
   },
   "require-dev": {
-    "wp-coding-standards/wpcs": "dev-master"
+    "wp-coding-standards/wpcs": "=0.9.0"
   },
   "repositories": [
     {
       "type": "composer",
-      "url": "http://wpackagist.org"
+      "url": "https://wpackagist.org"
     }
   ],
   "extra": {
