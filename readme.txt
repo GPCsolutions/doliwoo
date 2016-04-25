@@ -38,7 +38,13 @@ It leverages Dolibarr webservices feature to exchange data.
 **Known issues**
 
 WooCommerce VAT management vastly differs from Dolibarr and we need equivalence tables.  
-Only French, Italian and Spanish equivalence tables are shipped at the moment.
+Supplied tables:
+* Chile
+* France
+* Germany
+* Italy
+* Spain
+All other countries are missing. Contributions welcome!
 
 = Requirements =
 
