@@ -85,6 +85,8 @@ class Doliwoo_Dolibarr {
 				array(
 					'location' => $this->ws_endpoint . self::ORDER_ENDPOINT,
 					'uri'      => 'http://www.dolibar.org/ns/',
+					'wsdl_cache' => 0,
+					'trace' => 1,
 				)
 			);
 		} catch ( SoapFault $exception ) {
@@ -108,14 +110,20 @@ class Doliwoo_Dolibarr {
 			$order->thirdparty_id = $thirdparty_id;
 		} else {
 			if ( 0 === intval( get_user_meta( $user_id, 'billing_company', true ) ) ) {
-				if ( wp_verify_nonce( 'woocommerce-cart' ) ) {
+
+				// CMOINON (OPEN-DSI) Correctif 
+				//if ( wp_verify_nonce( 'woocommerce-cart' ) ) {
+
+				/* Suppression de lal vérification => contrôle à revoir dans un deuxième temps
+				if ( isset( $_POST['_wpnonce'] ) && wp_verify_nonce( $_POST['_wpnonce'] , 'woocommerce-process_checkout')) {
 					$billing_company = $_POST['billing_company'];
 				} else {
 					// TODO: fail message?
 					$this->logger->add( 'doliwoo', 'Failed to verify nonce' );
 					exit;
-				}
+				}*/
 
+				$billing_company = $_POST['billing_company'];
 				update_user_meta( $user_id, 'billing_company', $billing_company );
 			}
 			$this->dolibarr_create_thirdparty_if_not_exists( $user_id );
@@ -125,7 +133,7 @@ class Doliwoo_Dolibarr {
 		$order->status = 1;
 
 		$this->create_order_lines( $order );
-
+ 
 		try {
 			$result = $soap_client->createOrder( $this->ws_auth, $order );
 		} catch ( SoapFault $exception ) {
@@ -159,13 +167,18 @@ class Doliwoo_Dolibarr {
 	private function dolibarr_create_thirdparty_if_not_exists(
 		$user_id
 	) {
+		
 		$result = $this->dolibarr_thirdparty_exists( $user_id );
 
 		if ( null === $result ) {
 			// Does not exist, create it
 			$result = $this->dolibarr_create_thirdparty( $user_id );
+			update_user_meta( $user_id, 'dolibarr_id', $result['id'] ); 	
+		} else {
+			// find in Dolibarr
+			update_user_meta( $user_id, 'dolibarr_id', $result['thirdparty']->id );
 		}
-		update_user_meta( $user_id, 'dolibarr_id', $result['id'] );
+		
 	}
 
 	/**
@@ -176,6 +189,7 @@ class Doliwoo_Dolibarr {
 	 * @return int $result Array with the request results if it succeeds, null if there's an error
 	 */
 	private function dolibarr_thirdparty_exists( $user_id ) {
+
 		try {
 			$soap_client = new SoapClient(
 				$this->ws_endpoint . self::THIRDPARTY_ENDPOINT . self::WSDL_MODE
@@ -189,6 +203,11 @@ class Doliwoo_Dolibarr {
 
 		$dol_id = get_user_meta( $user_id, 'dolibarr_id', true );
 		$dol_ref = get_user_meta( $user_id, 'billing_company', true );
+
+		// If the user has not a billing_company $dol_ref = last_name + first_name
+		if ( ! $dol_ref) {
+			$dol_ref = get_user_meta( $user_id, 'billing_last_name', true ) . ' ' . get_user_meta( $user_id, 'billing_first_name', true );  
+		}
 
 		// If the user has a Dolibarr ID, use it, else search his company name
 		if ( $dol_id ) {
