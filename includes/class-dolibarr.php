@@ -79,6 +79,14 @@ class Doliwoo_Dolibarr {
 		 * We use non WSDL mode to workaround Dolibarr broken declaration marking all the fields as required
 		 * when they're not.
 		 */
+
+		// if no synchronization order with Dolibarr
+		if ( $this->settings->dolibarr_order_sync === 'no' ) {
+			// Do nothing
+			return ;
+		}
+
+
 		try {
 			$soap_client = new SoapClient(
 				null,
@@ -110,12 +118,11 @@ class Doliwoo_Dolibarr {
 			$order->thirdparty_id = $thirdparty_id;
 		} else {
 			if ( 0 === intval( get_user_meta( $user_id, 'billing_company', true ) ) ) {
-
 				// CMOINON (OPEN-DSI) Correctif 
 				//if ( wp_verify_nonce( 'woocommerce-cart' ) ) {
 
-				/* Suppression de lal vérification => contrôle à revoir dans un deuxième temps
-				if ( isset( $_POST['_wpnonce'] ) && wp_verify_nonce( $_POST['_wpnonce'] , 'woocommerce-process_checkout')) {
+				// Suppression de lal vérification => contrôle à revoir dans un deuxième temps
+/*				if ( isset( $_POST['_wpnonce'] )  && wp_verify_nonce( $_POST['_wpnonce'] , 'woocommerce-process_checkout')) {
 					$billing_company = $_POST['billing_company'];
 				} else {
 					// TODO: fail message?
