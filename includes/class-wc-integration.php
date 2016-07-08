@@ -66,6 +66,9 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 		/** @var boolean Parameter to disable order synchronization */
 		public $dolibarr_order_sync;
 
+		/** @var boolean Parameter to disable images load */
+		public $dolibarr_images_sync;		
+
 		/**
 		 * Init and hook in the integration.
 		 */
@@ -89,6 +92,7 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 			$this->dolibarr_category_id = $this->get_option( 'dolibarr_category_id' );
 			$this->dolibarr_generic_id  = $this->get_option( 'dolibarr_generic_id' );
 			$this->dolibarr_order_sync  = $this->get_option( 'dolibarr_order_sync' );
+			$this->dolibarr_images_sync  = $this->get_option( 'dolibarr_images_sync' );
 
 			// Actions
 			add_action(
@@ -189,7 +193,16 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 					'checkboxgroup'   => 'start',
 					'desc_tip'    => false,
 					'default'	  => 'yes'	
-				),								
+				),	
+				'dolibarr_images_sync'     => array(
+					'title'        => __( 'Images synchronisation', 'doliwoo' ),
+					'desc'        => __( 'Dolibarr images synchronisation', 'doliwoo' ),
+					'description' => __( 'If is checked the images of product in Dolibarr will be loaded in WooCommerce', 'doliwoo' ),
+					'type'        => 'checkbox',
+					'checkboxgroup'   => 'start',
+					'desc_tip'    => false,
+					'default'	  => 'yes'	
+				),											
 				'dolibarr_version'     => array(
 					'title'       => __( 'Dolibarr version', 'doliwoo' ),
 					'description' => __( 'If the webservice communication is OK, it displays your Dolibarr version', 'doliwoo' ),

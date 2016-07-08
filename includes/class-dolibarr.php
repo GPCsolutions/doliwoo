@@ -368,6 +368,7 @@ class Doliwoo_Dolibarr {
 	 * @return void
 	 */
 	public function dolibarr_import_products() {
+		
 		try {
 			$soap_client = new SoapClient(
 				$this->ws_endpoint . self::PRODUCT_ENDPOINT . self::WSDL_MODE
@@ -507,13 +508,16 @@ class Doliwoo_Dolibarr {
 			}
 		}
 
-		// Check if the product has images 
-		$the_product = $this->dolibarr_images_exit($dolibarr_product->id);
+		// If synchronize images with Dolibarr
+		if ( 'yes' === $this->settings->dolibarr_images_sync ) {
+			// Check if the product has images 
+			$the_product = $this->dolibarr_images_exit($dolibarr_product->id);
 
-		// Product images management
-		if ( $the_product && ! empty($the_product->images) ) {
-			$this->import_product_images( $the_product, $post_id );
-		}
+			// Product images management
+			if ( $the_product && ! empty($the_product->images) ) {
+				$this->import_product_images( $the_product, $post_id );
+			}
+		}	
 
 		// Cleanup
 		wc_delete_product_transients( $post_id );
