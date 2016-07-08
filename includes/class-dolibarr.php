@@ -483,13 +483,40 @@ class Doliwoo_Dolibarr {
 		add_post_meta( $post_id, 'dolibarr_type', $dolibarr_product->type, true );
 		update_post_meta( $post_id, '_sku', $dolibarr_product->ref );
 		update_post_meta( $post_id, '_purchase_note', $dolibarr_product->note );
-/*		update_post_meta( $post_id, '_regular_price', $dolibarr_product->price_net );
-		update_post_meta( $post_id, '_sale_price', $dolibarr_product->price_net );
-		update_post_meta( $post_id, '_price', $dolibarr_product->price_net );*/
-		// Update in July 2016 CMOINON => get the price instead if the price_net witch is false with de webservice 
-		// if we have multiple-price 
-		update_post_meta( $post_id, '_regular_price', $dolibarr_product->price );
-		update_post_meta( $post_id, '_price', $dolibarr_product->price );
+
+
+		// Update in July 2016 CMOINON => 
+		// if in woocommerce price not include tax
+		//  => if not price_list => price_net else multiprice[level_price]
+		// else woocommerce price include tax
+		//  => if not price_list => price else multiprice_ttc[level_price]    
+
+		$level = $this->settings->dolibarr_price_level ;
+
+		if ($level > count($dolibarr_product->multiprices)) {
+			$level = '';
+		} 
+		if ( 'no' === get_option( 'woocommerce_prices_include_tax' ) ) {
+			if ( '' === $level) {
+				update_post_meta( $post_id, '_regular_price', $dolibarr_product->price_net );
+				update_post_meta( $post_id, '_sale_price', $dolibarr_product->price_net );
+				update_post_meta( $post_id, '_price', $dolibarr_product->price_net );
+			} else {
+				update_post_meta( $post_id, '_regular_price', $dolibarr_product->multiprices[$level-1] );
+				update_post_meta( $post_id, '_sale_price', $dolibarr_product->multiprices[$level-1] );
+				update_post_meta( $post_id, '_price', $dolibarr_product->multiprices[$level-1] );
+			}
+		} else {
+			if ( '' === $level) {
+				update_post_meta( $post_id, '_regular_price', $dolibarr_product->price );
+				update_post_meta( $post_id, '_sale_price', $dolibarr_product->price );
+				update_post_meta( $post_id, '_price', $dolibarr_product->price );
+			} else {
+				update_post_meta( $post_id, '_regular_price', $dolibarr_product->multiprices_ttc[$level-1] );
+				update_post_meta( $post_id, '_sale_price', $dolibarr_product->multiprices_ttc[$level-1] );
+				update_post_meta( $post_id, '_price', $dolibarr_product->multiprices_ttc[$level-1] );
+			}
+		}
 
 		update_post_meta( $post_id, '_visibility', 'visible' );
 		update_post_meta(

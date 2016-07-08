@@ -69,6 +69,9 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 		/** @var boolean Parameter to disable images load */
 		public $dolibarr_images_sync;		
 
+		/** @var int Price level to load */
+		public $dolibarr_price_level;		
+
 		/**
 		 * Init and hook in the integration.
 		 */
@@ -93,6 +96,7 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 			$this->dolibarr_generic_id  = $this->get_option( 'dolibarr_generic_id' );
 			$this->dolibarr_order_sync  = $this->get_option( 'dolibarr_order_sync' );
 			$this->dolibarr_images_sync  = $this->get_option( 'dolibarr_images_sync' );
+			$this->dolibarr_price_level  = $this->get_option( 'dolibarr_price_level' );
 
 			// Actions
 			add_action(
@@ -185,12 +189,19 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 					'default'     => '',
 				),
 
+				'dolibarr_price_level'  => array(
+					'title'       => __( 'Price Level for price', 'doliwoo' ),
+					'description' => __( 'The level of price to load for the product. If no price list, leave blank.', 'doliwoo' ),
+					'type'        => 'text',
+					'desc_tip'    => false,
+					'default'     => '',
+				),				
+
 				'dolibarr_order_sync'     => array(
 					'title'        => __( 'Order synchronisation', 'doliwoo' ),
 					'desc'        => __( 'Dolibarr order synchronisation', 'doliwoo' ),
 					'description' => __( 'If is checked the orders will be synchronized with Dolibarr ', 'doliwoo' ),
 					'type'        => 'checkbox',
-					'checkboxgroup'   => 'start',
 					'desc_tip'    => false,
 					'default'	  => 'yes'	
 				),	
@@ -199,7 +210,6 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 					'desc'        => __( 'Dolibarr images synchronisation', 'doliwoo' ),
 					'description' => __( 'If is checked the images of product in Dolibarr will be loaded in WooCommerce', 'doliwoo' ),
 					'type'        => 'checkbox',
-					'checkboxgroup'   => 'start',
 					'desc_tip'    => false,
 					'default'	  => 'yes'	
 				),											
