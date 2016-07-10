@@ -47,9 +47,12 @@ class Doliwoo_WC_Tax extends WC_Tax {
 		foreach ( $tax_classes as $class ) {
 			$rates = $this->get_rates( $class );
 			$rates_values = array_values( $rates );
-			if ( floatval( $rates_values[0]['rate'] ) === $tax_rate ) {
-				// Use the first class found
-				return $class;
+			// Ajout CMO - Juillet 2016
+			if(array_key_exists(0, $rates_values)){
+				if ( floatval( $rates_values[0]['rate'] ) === $tax_rate ) {
+					// Use the first class found
+					return $class;
+				}
 			}
 		}
 

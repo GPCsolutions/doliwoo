@@ -79,12 +79,22 @@ class Doliwoo_Dolibarr {
 		 * We use non WSDL mode to workaround Dolibarr broken declaration marking all the fields as required
 		 * when they're not.
 		 */
+
+		// if no synchronization order with Dolibarr
+		if ( $this->settings->dolibarr_order_sync === 'no' ) {
+			// Do nothing
+			return ;
+		}
+
+
 		try {
 			$soap_client = new SoapClient(
 				null,
 				array(
 					'location' => $this->ws_endpoint . self::ORDER_ENDPOINT,
 					'uri'      => 'http://www.dolibar.org/ns/',
+					'wsdl_cache' => 0,
+					'trace' => 1,
 				)
 			);
 		} catch ( SoapFault $exception ) {
@@ -108,14 +118,25 @@ class Doliwoo_Dolibarr {
 			$order->thirdparty_id = $thirdparty_id;
 		} else {
 			if ( 0 === intval( get_user_meta( $user_id, 'billing_company', true ) ) ) {
-				if ( wp_verify_nonce( 'woocommerce-cart' ) ) {
+				// CMOINON (OPEN-DSI) Correctif 
+				//if ( wp_verify_nonce( 'woocommerce-cart' ) ) {
+
+				// Suppression de lal vérification => contrôle à revoir dans un deuxième temps
+/*				if ( isset( $_POST['_wpnonce'] )  && wp_verify_nonce( $_POST['_wpnonce'] , 'woocommerce-process_checkout')) {
 					$billing_company = $_POST['billing_company'];
 				} else {
 					// TODO: fail message?
 					$this->logger->add( 'doliwoo', 'Failed to verify nonce' );
 					exit;
-				}
+				}*/
 
+				// if it is not a company, billing_company = first_name + last_name ( as Dolibarr)
+				if (! $_POST['billing_company']) {
+					$billing_company = $_POST['billing_first_name'] . ' ' . $_POST['billing_last_name'];
+				} else {
+					$billing_company = $_POST['billing_company'];
+				}
+	
 				update_user_meta( $user_id, 'billing_company', $billing_company );
 			}
 			$this->dolibarr_create_thirdparty_if_not_exists( $user_id );
@@ -125,7 +146,7 @@ class Doliwoo_Dolibarr {
 		$order->status = 1;
 
 		$this->create_order_lines( $order );
-
+ 
 		try {
 			$result = $soap_client->createOrder( $this->ws_auth, $order );
 		} catch ( SoapFault $exception ) {
@@ -159,13 +180,24 @@ class Doliwoo_Dolibarr {
 	private function dolibarr_create_thirdparty_if_not_exists(
 		$user_id
 	) {
+		
 		$result = $this->dolibarr_thirdparty_exists( $user_id );
 
 		if ( null === $result ) {
 			// Does not exist, create it
 			$result = $this->dolibarr_create_thirdparty( $user_id );
+			update_user_meta( $user_id, 'dolibarr_id', $result['id'] ); 	
+		} else {
+			// find in Dolibarr
+			// if same email => get the id of Dolibarr
+			if ($result['thirdparty']->email == $_POST['billing_email']) {
+				update_user_meta( $user_id, 'dolibarr_id', $result['thirdparty']->id );
+			// else create a new thirdparty in Dolibarr
+			} else {
+				$result = $this->dolibarr_create_thirdparty( $user_id );
+				update_user_meta( $user_id, 'dolibarr_id', $result['id'] ); 
+			}		
 		}
-		update_user_meta( $user_id, 'dolibarr_id', $result['id'] );
 	}
 
 	/**
@@ -176,6 +208,7 @@ class Doliwoo_Dolibarr {
 	 * @return int $result Array with the request results if it succeeds, null if there's an error
 	 */
 	private function dolibarr_thirdparty_exists( $user_id ) {
+
 		try {
 			$soap_client = new SoapClient(
 				$this->ws_endpoint . self::THIRDPARTY_ENDPOINT . self::WSDL_MODE
@@ -335,6 +368,7 @@ class Doliwoo_Dolibarr {
 	 * @return void
 	 */
 	public function dolibarr_import_products() {
+		
 		try {
 			$soap_client = new SoapClient(
 				$this->ws_endpoint . self::PRODUCT_ENDPOINT . self::WSDL_MODE
@@ -449,9 +483,41 @@ class Doliwoo_Dolibarr {
 		add_post_meta( $post_id, 'dolibarr_type', $dolibarr_product->type, true );
 		update_post_meta( $post_id, '_sku', $dolibarr_product->ref );
 		update_post_meta( $post_id, '_purchase_note', $dolibarr_product->note );
-		update_post_meta( $post_id, '_regular_price', $dolibarr_product->price_net );
-		update_post_meta( $post_id, '_sale_price', $dolibarr_product->price_net );
-		update_post_meta( $post_id, '_price', $dolibarr_product->price_net );
+
+
+		// Update in July 2016 CMOINON => 
+		// if in woocommerce price not include tax
+		//  => if not price_list => price_net else multiprice[level_price]
+		// else woocommerce price include tax
+		//  => if not price_list => price else multiprice_ttc[level_price]    
+
+		$level = $this->settings->dolibarr_price_level ;
+
+		if ($level > count($dolibarr_product->multiprices)) {
+			$level = '';
+		} 
+		if ( 'no' === get_option( 'woocommerce_prices_include_tax' ) ) {
+			if ( '' === $level) {
+				update_post_meta( $post_id, '_regular_price', $dolibarr_product->price_net );
+				update_post_meta( $post_id, '_sale_price', $dolibarr_product->price_net );
+				update_post_meta( $post_id, '_price', $dolibarr_product->price_net );
+			} else {
+				update_post_meta( $post_id, '_regular_price', $dolibarr_product->multiprices[$level-1] );
+				update_post_meta( $post_id, '_sale_price', $dolibarr_product->multiprices[$level-1] );
+				update_post_meta( $post_id, '_price', $dolibarr_product->multiprices[$level-1] );
+			}
+		} else {
+			if ( '' === $level) {
+				update_post_meta( $post_id, '_regular_price', $dolibarr_product->price );
+				update_post_meta( $post_id, '_sale_price', $dolibarr_product->price );
+				update_post_meta( $post_id, '_price', $dolibarr_product->price );
+			} else {
+				update_post_meta( $post_id, '_regular_price', $dolibarr_product->multiprices_ttc[$level-1] );
+				update_post_meta( $post_id, '_sale_price', $dolibarr_product->multiprices_ttc[$level-1] );
+				update_post_meta( $post_id, '_price', $dolibarr_product->multiprices_ttc[$level-1] );
+			}
+		}
+
 		update_post_meta( $post_id, '_visibility', 'visible' );
 		update_post_meta(
 			$post_id,
@@ -469,10 +535,16 @@ class Doliwoo_Dolibarr {
 			}
 		}
 
-		// Product images management
-		if ( ! empty( $dolibarr_product->images ) ) {
-			$this->import_product_images( $dolibarr_product, $post_id );
-		}
+		// If synchronize images with Dolibarr
+		if ( 'yes' === $this->settings->dolibarr_images_sync ) {
+			// Check if the product has images 
+			$the_product = $this->dolibarr_images_exit($dolibarr_product->id);
+
+			// Product images management
+			if ( $the_product && ! empty($the_product->images) ) {
+				$this->import_product_images( $the_product, $post_id );
+			}
+		}	
 
 		// Cleanup
 		wc_delete_product_transients( $post_id );
@@ -520,6 +592,50 @@ class Doliwoo_Dolibarr {
 		}
 	}
 
+	/** 
+	*  Check if in Dolibar there is an images => call Webservice 
+	*
+	*  @param $dolibar->product_id
+	*/
+
+	private function dolibarr_images_exit($product_id) {
+		try {
+			$soap_client = new SoapClient(
+				$this->ws_endpoint . self::PRODUCT_ENDPOINT . self::WSDL_MODE
+			);
+		} catch ( SoapFault $exception ) {
+			$this->logger->add( 'doliwoo', $exception->getMessage() );
+
+			// Do nothing.
+			return null;
+		}
+
+		// Get the product 
+		try {
+			$result = $soap_client->getProductOrService(
+				$this->ws_auth,
+				$product_id
+			);
+		} catch ( SoapFault $exception ) {
+			$this->logger->add(
+				'doliwoo',
+				'getProductOrService request: ' . $exception->getMessage()
+			);
+		}
+
+		if ( ! ( 'OK' === $result['result']->result_code ) ) {
+			$this->logger->add(
+				'doliwoo',
+				'getProductOrService response: ' . $result['result']->result_code . ': ' . $result['result']->result_label
+			);
+
+			// Do nothing
+			return false;
+		} else {
+			return $result['product'] ;
+		}
+	} 
+
 	/**
 	 * Webservice calls to get the product's images
 	 *
@@ -529,6 +645,15 @@ class Doliwoo_Dolibarr {
 	 * @return int[] Attachment IDs
 	 */
 	private function get_product_image( $dolibarr_product, $post_id ) {
+		
+		// Ajout CMOINON 
+		// Need to require these files 
+ 		if ( !function_exists('media_handle_upload') ) {
+			require_once(ABSPATH . "wp-admin" . '/includes/image.php');
+			require_once(ABSPATH . "wp-admin" . '/includes/file.php') ;
+			require_once(ABSPATH . "wp-admin" . '/includes/media.php');
+   		}
+
 		try {
 			$soap_client = new SoapClient(
 				$this->ws_endpoint . self::OTHER_ENDPOINT . self::WSDL_MODE
