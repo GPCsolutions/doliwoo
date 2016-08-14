@@ -211,6 +211,7 @@ if ( ! class_exists( 'Doliwoo_WC_Integration' ) ) :
 				 * @return void
 				 */
 				public function reschedule_import_products() {
+					$this->settings = new Doliwoo_WC_Integration();
 					$delay = $this->settings->delay_update;
 					wp_clear_scheduled_hook( 'import_products' );
 					wp_schedule_event( time(), $delay, 'import_products' );
